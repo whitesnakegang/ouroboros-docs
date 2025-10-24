@@ -1,9 +1,9 @@
-name: Deploy to GitHub Pages
+name: CI
 
 on:
   push:
-    branches: [ main ]   # 기본 브랜치에 맞게 변경 (예: master)
-  workflow_dispatch:
+    branches: [ main ]
+  workflow_dispatch: {}   # ← 수동 실행 허용
 
 permissions:
   contents: read
@@ -26,6 +26,8 @@ jobs:
 
       - name: Install deps
         run: npm ci
+        # 락파일 없으면 임시로 아래로 바꿔도 됨:
+        # run: npm install --no-audit --no-fund
 
       - name: Build
         run: npm run build
@@ -33,14 +35,14 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist   # Vite 기본 출력 경로
+          path: ./dist
 
   deploy:
+    needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
     steps:
       - name: Configure Pages
         uses: actions/configure-pages@v5
