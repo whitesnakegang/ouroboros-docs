@@ -17,8 +17,11 @@ import ProjectStructure from './pages/ProjectStructure';
 import Contributing from './pages/Contributing';
 
 function App() {
+  // 개발 환경에서는 basename을 사용하지 않음
+  const basename = import.meta.env.PROD ? '/ouroboros-docs' : undefined;
+  
   return (
-    <BrowserRouter basename="/ouroboros-docs">
+    <BrowserRouter basename={basename}>
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
