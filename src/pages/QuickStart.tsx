@@ -101,55 +101,37 @@ export default function QuickStart() {
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">7단계: Try 기능 사용하기</h2>
         <p className="text-gray-700 mb-4">
-          Try 기능은 API 요청의 성능을 추적하고 분석하는 기능입니다. 웹 UI에서 간단하게 사용할 수 있습니다.
-        </p>
-        
-        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">Try 기능 설정 (선택사항)</h3>
-        <p className="text-gray-700 mb-3">
-          Try 기능을 사용하려면 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">application.properties</code>에 다음 설정을 추가하세요:
-        </p>
-        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`# Tempo 연동 (Trace 저장소)
-ouroboros.tempo.enabled=true
-ouroboros.tempo.base-url=http://localhost:3200
-
-# 메서드 추적 (tryId 와 span 매핑)
-ouroboros.method-tracing.enabled=true
-ouroboros.method-tracing.allowed-packages[0]=com.example`}</code></pre>
-        <p className="text-gray-700 mt-3 text-sm">
-          자세한 설정 방법은 <a href="/guide/try-feature" className="text-primary hover:underline">Try 기능 가이드</a>를 참고하세요.
+          Try 기능은 API 요청의 실행 시간을 추적하고 기록합니다. <strong>별도 설정 없이 기본으로 활성화</strong>되어 있으며, 메모리 기반 저장소를 사용해 즉시 결과를 확인할 수 있습니다.
         </p>
 
-        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">OpenTelemetry Exporter 설정</h3>
-        <p className="text-gray-700 mb-3">
-          Grafana Tempo에 트레이스를 전송하려면 Spring Boot Actuator 추적 설정이 필요합니다.
-        </p>
-        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`management.tracing.enabled=true
-management.tracing.sampling.probability=1.0
-management.otlp.tracing.endpoint=http://localhost:4318/v1/traces`}</code></pre>
-        <p className="text-gray-700 mt-3 text-sm">
-          수집된 Trace는 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">X-Ouroboros-Try: on</code> 헤더가 포함된 요청만 저장됩니다.
-        </p>
-
-        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">웹 UI에서 Try 요청 보내기</h3>
-        <ol className="list-decimal list-inside space-y-2 text-gray-700 mb-4">
-          <li>웹 UI에서 API 명세서 선택</li>
-          <li>"Try" 버튼 클릭</li>
-          <li>요청 파라미터 입력 (필요한 경우)</li>
-          <li>"실행" 버튼 클릭</li>
-        </ol>
-        <p className="text-gray-700 mt-3">
-          웹 UI가 자동으로 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">X-Ouroboros-Try</code> 헤더를 추가하여 요청을 추적합니다.
-        </p>
-
-        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">Try 결과 확인</h3>
-        <p className="text-gray-700 mb-3">
-          Try 요청 실행 후 웹 UI에서 다음 정보를 확인할 수 있습니다:
-        </p>
+        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">기본 사용</h3>
         <ul className="list-disc list-inside space-y-2 text-gray-700 mb-4">
-          <li>요청 실행 시간 및 성능 지표</li>
-          <li>트레이스 데이터 분석 결과</li>
-          <li>성능 이슈 자동 감지 결과</li>
+          <li>웹 UI의 “Try” 탭에서 실행하면 헤더가 자동으로 추가됩니다.</li>
+          <li>직접 호출 시 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">X-Ouroboros-Try: on</code> 헤더를 붙이세요.</li>
         </ul>
+        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`curl -X GET "http://localhost:8080/api/your-endpoint" \
+  -H "X-Ouroboros-Try: on"`}</code></pre>
+        <p className="text-gray-700 mt-3 text-sm">
+          응답 헤더의 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">X-Ouroboros-Try-Id</code> 값을 사용해 조회 API에서 상세 정보를 확인할 수 있습니다.
+        </p>
+
+        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">웹 UI에서 확인</h3>
+        <ol className="list-decimal list-inside space-y-2 text-gray-700 mb-4">
+          <li>API 상세 화면에서 “Try” 탭 선택</li>
+          <li>요청 파라미터 입력 후 “Send” 클릭</li>
+          <li>결과 영역과 “History” 패널에서 실행 이력 확인</li>
+        </ol>
+
+        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">선택 사항: Method Tracing</h3>
+        <p className="text-gray-700 mb-3">
+          메소드 수준까지 추적하려면 다음 설정을 추가합니다. (Try 기능 기본 사용에는 필요 없음)
+        </p>
+        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`ouroboros.method-tracing.enabled=true
+ouroboros.method-tracing.allowed-packages=your.package
+management.tracing.sampling.probability=1.0`}</code></pre>
+        <p className="text-gray-700 mt-3 text-sm">
+          상세 설정은 <a href="/guide/try-feature" className="text-primary hover:underline">Try 기능 가이드</a>와 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">OUROBOROS_TRY_SETUP.md</code>를 참고하세요.
+        </p>
       </section>
 
       <section className="mb-12">
