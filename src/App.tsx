@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import QuickStart from './pages/QuickStart';
@@ -19,16 +19,8 @@ import Developer from './pages/Developer';
 import TryApi from './pages/TryApi';
 
 function App() {
-  // .env 파일이 있으면 개발환경 (basename 없음)
-  // .env 파일이 없으면 배포환경 (package.json의 homepage 경로 사용)
-  const hasEnvFile = String(import.meta.env.VITE_HAS_ENV_FILE) === 'true';
-  const homepage = import.meta.env.VITE_HOMEPAGE || '';
-  const basename = hasEnvFile 
-    ? undefined 
-    : (homepage ? new URL(homepage).pathname : undefined);
-  
   return (
-    <BrowserRouter basename={basename}>
+    <HashRouter>
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -50,7 +42,7 @@ function App() {
           <Route path="/developer" element={<Developer />} />
         </Routes>
       </Layout>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
