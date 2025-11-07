@@ -13,6 +13,9 @@ export default function QuickStart() {
           <li>Spring Boot 3.x</li>
           <li>Gradle 또는 Maven</li>
         </ul>
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-lg px-4 py-3 text-sm">
+          Lombok을 사용하는 프로젝트라면 <code className="bg-amber-100 px-1.5 py-0.5 rounded">annotationProcessor 'org.projectlombok:lombok'</code> 설정이 필수입니다. 누락되면 <code className="bg-amber-100 px-1.5 py-0.5 rounded">@ApiState</code> 스캔이 이루어지지 않아 명세-구현 자동 검증이 동작하지 않습니다.
+        </div>
       </section>
 
       <section className="mb-12">
@@ -33,6 +36,7 @@ export default function QuickStart() {
           라이브러리는 내부적으로 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">spring-boot-starter-actuator</code>와
           <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">spring-boot-starter-aop</code>를 함께 제공합니다.
           <span className="block mt-2">Mock 서버와 REST API 컨트롤러는 자동 구성으로 등록되므로 별도 설정 없이 사용할 수 있습니다.</span>
+          <span className="block mt-2 text-sm text-gray-600">Lombok을 사용한다면 반드시 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">annotationProcessor 'org.projectlombok:lombok'</code>를 추가해야 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@ApiState</code> 기반 자동 스캔이 정상 동작합니다.</span>
         </p>
       </section>
 

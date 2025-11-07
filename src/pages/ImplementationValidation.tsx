@@ -6,6 +6,10 @@ export default function ImplementationValidation() {
         웹 UI에서 명세와 구현 진행 상태를 관리하고 확인하는 방법을 소개합니다.
       </p>
 
+      <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-lg px-4 py-3 mb-8 text-sm">
+        Lombok을 사용하는 프로젝트라면 반드시 <code className="bg-amber-100 px-1.5 py-0.5 rounded">annotationProcessor 'org.projectlombok:lombok'</code>를 빌드 설정에 포함해야 합니다. 이 설정이 없으면 <code className="bg-amber-100 px-1.5 py-0.5 rounded">@ApiState</code> 메타데이터가 생성되지 않아 자동 검증이 동작하지 않습니다.
+      </div>
+
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">진행 상태 관리</h2>
         <ul className="list-disc list-inside space-y-2 text-gray-700">
@@ -35,6 +39,7 @@ export default function ImplementationValidation() {
           <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-diff</code>: 요청/응답/엔드포인트 차이를 자동 표시</li>
           <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-progress</code>: 구현 완료 시 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">completed</code>로 자동 조정</li>
           <li>웹 UI에서 강조 표시된 필드를 통해 차이점을 바로 확인할 수 있습니다.</li>
+          <li className="text-sm text-gray-600">Lombok을 사용하는 프로젝트라면 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">annotationProcessor 'org.projectlombok:lombok'</code> 설정이 있어야 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@ApiState</code> 스캔이 정상 동작합니다.</li>
         </ul>
       </section>
     </div>
