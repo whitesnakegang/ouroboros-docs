@@ -19,8 +19,16 @@ import Developer from './pages/Developer';
 import TryApi from './pages/TryApi';
 
 function App() {
+  // .env 파일이 있으면 개발환경 (basename 없음)
+  // .env 파일이 없으면 배포환경 (package.json의 homepage 경로 사용)
+  const hasEnvFile = String(import.meta.env.VITE_HAS_ENV_FILE) === 'true';
+  const homepage = import.meta.env.VITE_HOMEPAGE || '';
+  const basename = hasEnvFile 
+    ? undefined 
+    : (homepage ? new URL(homepage).pathname : undefined);
+  
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />

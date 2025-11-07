@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom';
+import logo from '../assets/logo.svg';
 
 export default function Home() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
       <div className="text-center mb-16">
-        <h1 className="text-5xl font-bold text-gray-900 mb-4">
-          <span className="text-primary">Ouroboros</span>
-        </h1>
+        <div className="flex items-center justify-center gap-4 mb-4">
+          <img src={logo} alt="Ouroboros" className="h-24 w-24" />
+          <h1 className="text-5xl font-bold text-gray-900">
+            <span className="text-primary">Ouroboros</span>
+          </h1>
+        </div>
         <p className="text-xl text-gray-600 mb-8">
           OpenAPI 3.1.0 기반 REST API 명세 관리 및 Mock 서버 라이브러리
         </p>
