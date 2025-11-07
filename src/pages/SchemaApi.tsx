@@ -3,13 +3,13 @@ export default function SchemaApi() {
     <div className="max-w-4xl mx-auto px-6 py-12">
       <h1 className="text-4xl font-bold text-gray-900 mb-4">Schema 관리</h1>
       <p className="text-xl text-gray-600 mb-12">
-        웹 UI를 통해 재사용 가능한 Schema 컴포넌트를 관리하는 방법입니다.
+        웹 UI에서 스키마를 작성하고 유지하는 기본 절차를 정리했습니다.
       </p>
 
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">웹 UI에서 Schema 관리</h2>
         <p className="text-gray-700 mb-4">
-          웹 UI를 통해 Schema를 생성, 조회, 수정, 삭제할 수 있습니다.
+          스키마 탭에서는 생성, 수정, 삭제가 모두 지원됩니다. REST API를 통한 제어는 <a href="/guide/schema" className="text-primary hover:underline">Schema 가이드</a>에서 확인하세요.
         </p>
       </section>
 
@@ -33,7 +33,7 @@ export default function SchemaApi() {
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Schema 수정</h2>
         <p className="text-gray-700 mb-3">
-          웹 UI에서 Schema를 선택하여 수정할 수 있습니다.
+          우측 패널에서 속성을 수정하면 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">orders</code>, <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">required</code> 항목이 자동으로 정렬됩니다.
         </p>
       </section>
 
@@ -77,6 +77,7 @@ export default function SchemaApi() {
         <ul className="list-disc list-inside space-y-2 text-gray-700">
           <li><a href="/guide/schema" className="text-primary hover:underline">Schema 관리 가이드</a></li>
           <li><a href="/guide/mock-api" className="text-primary hover:underline">Mock API 사용법</a></li>
+          <li><a href="/guide/api-spec" className="text-primary hover:underline">API 명세서 작성</a></li>
         </ul>
       </section>
     </div>

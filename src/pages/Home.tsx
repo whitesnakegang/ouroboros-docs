@@ -63,7 +63,7 @@ export default function Home() {
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-3">1. 의존성 추가</h3>
           <pre className="bg-gray-900 text-gray-100 rounded p-4 overflow-x-auto text-sm mb-4"><code>{`dependencies {
-    implementation 'io.github.whitesnakegang:ouroboros:0.1.0-SNAPSHOT'
+    implementation 'io.github.whitesnakegang:ouroboros:1.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 }`}</code></pre>
           
@@ -72,7 +72,7 @@ export default function Home() {
           
           <h3 className="text-lg font-semibold text-gray-900 mb-3">3. 웹 UI 접속</h3>
           <p className="text-gray-700 mb-4">
-            브라우저에서 <code className="bg-gray-200 px-1.5 py-0.5 rounded text-sm">http://localhost:8080/ouroboros/index.html</code> 으로 접속하세요.
+            브라우저에서 <code className="bg-gray-200 px-1.5 py-0.5 rounded text-sm">http://localhost:8080/ouroboros/</code> 으로 접속하세요.
           </p>
           
           <Link

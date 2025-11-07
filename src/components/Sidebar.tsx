@@ -35,6 +35,7 @@ const menuItems: MenuItem[] = [
       { title: 'REST API 개요', path: '/api' },
       { title: 'Specification 관리', path: '/api/specification' },
       { title: 'Schema 관리', path: '/api/schema' },
+      { title: 'Try & 성능 추적', path: '/api/try' },
     ],
   },
   {

@@ -3,7 +3,7 @@ export default function QuickStart() {
     <div className="max-w-4xl mx-auto px-6 py-12">
       <h1 className="text-4xl font-bold text-gray-900 mb-4">Quick Start</h1>
       <p className="text-xl text-gray-600 mb-12">
-        Ouroboros를 빠르게 시작하는 방법을 안내합니다.
+        Ouroboros를 프로젝트에 추가하고 기본 기능을 동작시키는 절차를 정리합니다.
       </p>
 
       <section className="mb-12">
@@ -19,7 +19,7 @@ export default function QuickStart() {
         <h2 className="text-2xl font-bold text-gray-900 mb-4">1단계: 설치</h2>
         <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">Gradle</h3>
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`dependencies {
-    implementation 'io.github.whitesnakegang:ouroboros:0.1.0-SNAPSHOT'
+    implementation 'io.github.whitesnakegang:ouroboros:1.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 }`}</code></pre>
 
@@ -27,8 +27,13 @@ export default function QuickStart() {
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`<dependency>
     <groupId>io.github.whitesnakegang</groupId>
     <artifactId>ouroboros</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 </dependency>`}</code></pre>
+        <p className="text-gray-700 mt-3">
+          라이브러리는 내부적으로 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">spring-boot-starter-actuator</code>와
+          <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">spring-boot-starter-aop</code>를 함께 제공합니다.
+          <span className="block mt-2">Mock 서버와 REST API 컨트롤러는 자동 구성으로 등록되므로 별도 설정 없이 사용할 수 있습니다.</span>
+        </p>
       </section>
 
       <section className="mb-12">
@@ -41,6 +46,9 @@ export default function QuickStart() {
   server:
     url: http://localhost:8080
     description: Local Development Server`}</code></pre>
+        <p className="text-gray-700 mt-3 text-sm">
+          설정을 비활성화하면 모든 컨트롤러, 필터, 자동 구성이 등록되지 않습니다. (예: <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">ouroboros.enabled=false</code>)
+        </p>
       </section>
 
       <section className="mb-12">
@@ -56,7 +64,7 @@ export default function QuickStart() {
         <p className="text-gray-700 mb-3">
           브라우저에서 다음 주소로 접속하세요:
         </p>
-        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`http://localhost:8080/ouroboros/index.html`}</code></pre>
+        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`http://localhost:8080/ouroboros/`}</code></pre>
         <p className="text-gray-700 mt-3">
           웹 UI에서 API 명세를 생성하고 관리할 수 있습니다.
         </p>
@@ -85,6 +93,9 @@ export default function QuickStart() {
           해당 엔드포인트로 요청하면 자동으로 Mock 응답이 반환됩니다.
         </p>
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`curl http://localhost:8080/api/users`}</code></pre>
+        <p className="text-gray-700 mt-3 text-sm">
+          Mock 엔드포인트 판정은 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-progress</code> 값이 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">mock</code>인 경우에만 이루어집니다.
+        </p>
       </section>
 
       <section className="mb-12">
@@ -97,12 +108,26 @@ export default function QuickStart() {
         <p className="text-gray-700 mb-3">
           Try 기능을 사용하려면 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">application.properties</code>에 다음 설정을 추가하세요:
         </p>
-        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`# Try 기능 설정
+        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`# Tempo 연동 (Trace 저장소)
 ouroboros.tempo.enabled=true
+ouroboros.tempo.base-url=http://localhost:3200
+
+# 메서드 추적 (tryId 와 span 매핑)
 ouroboros.method-tracing.enabled=true
-ouroboros.method-tracing.allowed-packages=your.package.name`}</code></pre>
+ouroboros.method-tracing.allowed-packages[0]=com.example`}</code></pre>
         <p className="text-gray-700 mt-3 text-sm">
           자세한 설정 방법은 <a href="/guide/try-feature" className="text-primary hover:underline">Try 기능 가이드</a>를 참고하세요.
+        </p>
+
+        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">OpenTelemetry Exporter 설정</h3>
+        <p className="text-gray-700 mb-3">
+          Grafana Tempo에 트레이스를 전송하려면 Spring Boot Actuator 추적 설정이 필요합니다.
+        </p>
+        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`management.tracing.enabled=true
+management.tracing.sampling.probability=1.0
+management.otlp.tracing.endpoint=http://localhost:4318/v1/traces`}</code></pre>
+        <p className="text-gray-700 mt-3 text-sm">
+          수집된 Trace는 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">X-Ouroboros-Try: on</code> 헤더가 포함된 요청만 저장됩니다.
         </p>
 
         <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">웹 UI에서 Try 요청 보내기</h3>
@@ -135,6 +160,15 @@ ouroboros.method-tracing.allowed-packages=your.package.name`}</code></pre>
           <li><a href="/guide/mock-api" className="text-primary hover:underline">Mock API</a> - Mock 서버 사용법</li>
           <li><a href="/guide/try-feature" className="text-primary hover:underline">Try 기능</a> - 성능 추적 및 분석</li>
         </ul>
+      </section>
+
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">참고: 명세 저장 위치</h2>
+        <p className="text-gray-700 mb-3">
+          모든 REST 명세는 애플리케이션 루트 기준 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/main/resources/ouroboros/rest/ourorest.yml</code> 파일 하나에 저장됩니다.
+          라이브러리는 <span className="text-primary font-medium">ReentrantReadWriteLock</span>을 사용해 해당 파일을 안전하게 읽고 쓰며,
+          저장 시 자동으로 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-*</code> 확장 필드를 채워 넣습니다.
+        </p>
       </section>
     </div>
   );

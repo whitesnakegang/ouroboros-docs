@@ -50,7 +50,7 @@ Optional body explaining what and why`}</code></pre>
 
 # 테스트 프로젝트에서 사용
 dependencies {
-    implementation 'kr.co:ouroboros:0.0.1-SNAPSHOT'
+    implementation 'io.github.whitesnakegang:ouroboros:1.0.0'
 }`}</code></pre>
       </section>
     </div>

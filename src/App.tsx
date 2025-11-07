@@ -15,6 +15,8 @@ import SpecificationApi from './pages/SpecificationApi';
 import SchemaApi from './pages/SchemaApi';
 import ProjectStructure from './pages/ProjectStructure';
 import Contributing from './pages/Contributing';
+import Developer from './pages/Developer';
+import TryApi from './pages/TryApi';
 
 function App() {
   return (
@@ -34,8 +36,10 @@ function App() {
           <Route path="/api" element={<RestApiDocs />} />
           <Route path="/api/specification" element={<SpecificationApi />} />
           <Route path="/api/schema" element={<SchemaApi />} />
+          <Route path="/api/try" element={<TryApi />} />
           <Route path="/developer/project-structure" element={<ProjectStructure />} />
           <Route path="/developer/contributing" element={<Contributing />} />
+          <Route path="/developer" element={<Developer />} />
         </Routes>
       </Layout>
     </BrowserRouter>

@@ -20,4 +20,14 @@
   code:not(pre code) {
     @apply bg-gray-100 px-1.5 py-0.5 rounded text-sm;
   }
+
+  pre.has-copy-btn {
+    @apply relative;
+  }
+
+  pre.has-copy-btn .copy-btn {
+    @apply absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 rounded transition-opacity;
+    @apply hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500;
+    opacity: 0.75;
+  }
 }

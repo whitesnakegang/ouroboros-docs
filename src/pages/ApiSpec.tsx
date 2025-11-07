@@ -3,44 +3,43 @@ export default function ApiSpec() {
     <div className="max-w-4xl mx-auto px-6 py-12">
       <h1 className="text-4xl font-bold text-gray-900 mb-4">API 명세서 작성</h1>
       <p className="text-xl text-gray-600 mb-12">
-        REST API 명세서를 작성하고 관리하는 방법을 안내합니다.
+        Ouroboros 웹 UI에서 REST API 명세를 작성하고 관리하는 방법을 안내합니다.
       </p>
 
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">웹 UI에서 작성</h2>
-        <p className="text-gray-700 mb-3">
-          웹 UI (<code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">http://localhost:8080/ouroboros/index.html</code>)에서 
-          시각적으로 API 명세서를 작성할 수 있습니다.
-        </p>
-        <ol className="list-decimal list-inside space-y-2 text-gray-700 mb-4">
-          <li>"New API" 버튼 클릭</li>
-          <li>경로, HTTP 메서드, 요약 입력</li>
-          <li>요청 파라미터, 요청 본문, 응답 스키마 정의</li>
-          <li>저장</li>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">새 API 추가</h2>
+        <ol className="list-decimal list-inside space-y-3 text-gray-700">
+          <li>좌측 사이드바에서 “APIs”를 선택한 뒤 “New API” 버튼을 누릅니다.</li>
+          <li>Path, Method, Summary, Description을 입력합니다.</li>
+          <li>Parameters, Request Body, Responses 영역에서 필요한 항목을 추가하거나 Schema를 연결합니다.</li>
+          <li>오른쪽 상단 “Save” 버튼을 눌러 명세를 저장하면 Mock 엔드포인트가 즉시 생성됩니다.</li>
         </ol>
-        <p className="text-gray-700 mt-3">
-          저장하면 자동으로 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">ourorest.yml</code> 파일에 반영되며,
-          Mock API가 생성되어 바로 테스트할 수 있습니다.
+      </section>
+
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">명세 수정 및 관리</h2>
+        <ul className="list-disc list-inside space-y-2 text-gray-700">
+          <li>세부 화면에서 Summary, Description, Schema 연결 등을 수정한 뒤 저장하면 즉시 반영됩니다.</li>
+          <li>“Duplicate” 기능으로 유사한 엔드포인트를 빠르게 복제할 수 있습니다.</li>
+          <li>Progress(진행 상태)를 “mock” → “completed”로 바꾸어 구현 완료 여부를 표시하세요.</li>
+          <li>“Delete” 버튼으로 명세를 삭제하면 관련 Mock 엔드포인트도 함께 제거됩니다.</li>
+        </ul>
+      </section>
+
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Import / Export</h2>
+        <p className="text-gray-700 mb-3">
+          상단 메뉴의 “Import YAML”, “Export YAML” 버튼으로 OpenAPI 3.1 YAML 파일을 가져오거나 내보낼 수 있습니다. 기존 명세가 있는 상태에서 Import하면 UI가 자동으로 병합 결과를 안내합니다.
         </p>
       </section>
 
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">명세서 수정 및 삭제</h2>
-        <p className="text-gray-700 mb-3">
-          웹 UI에서 명세서를 선택하여 수정하거나 삭제할 수 있습니다. 
-          모든 변경사항은 자동으로 파일에 저장됩니다.
-        </p>
-      </section>
-
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">명세서 저장 위치</h2>
-        <p className="text-gray-700 mb-3">
-          모든 API 명세서는 다음 위치에 단일 파일로 저장됩니다:
-        </p>
-        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`{프로젝트}/src/main/resources/ouroboros/rest/ourorest.yml`}</code></pre>
-        <p className="text-gray-700 mt-3">
-          이 파일은 OpenAPI 3.1.0 표준을 따르며, 모든 API 명세가 통합되어 관리됩니다.
-        </p>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">유용한 팁</h2>
+        <ul className="list-disc list-inside space-y-2 text-gray-700">
+          <li>Schema를 먼저 등록한 뒤 API에서 참조하면 반복 입력을 줄일 수 있습니다.</li>
+          <li>Mock 응답 예시는 상세 화면 하단 “Try” 탭에서 바로 확인할 수 있습니다.</li>
+          <li>가져온 YAML이 많을 경우 좌측 필터를 사용해 태그/상태별로 명세를 빠르게 찾을 수 있습니다.</li>
+        </ul>
       </section>
     </div>
   );
