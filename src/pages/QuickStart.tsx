@@ -22,7 +22,7 @@ export default function QuickStart() {
         <h2 className="text-2xl font-bold text-gray-900 mb-4">1단계: 설치</h2>
         <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">Gradle</h3>
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`dependencies {
-    implementation 'io.github.whitesnakegang:ouroboros:1.0.0'
+    implementation 'io.github.whitesnakegang:ouroboros:1.0.1'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 }`}</code></pre>
 
@@ -30,7 +30,7 @@ export default function QuickStart() {
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`<dependency>
     <groupId>io.github.whitesnakegang</groupId>
     <artifactId>ouroboros</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>`}</code></pre>
         <p className="text-gray-700 mt-3">
           라이브러리는 내부적으로 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">spring-boot-starter-actuator</code>와

@@ -67,7 +67,7 @@ export default function Home() {
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-3">1. 의존성 추가</h3>
           <pre className="bg-gray-900 text-gray-100 rounded p-4 overflow-x-auto text-sm mb-4"><code>{`dependencies {
-    implementation 'io.github.whitesnakegang:ouroboros:1.0.0'
+    implementation 'io.github.whitesnakegang:ouroboros:1.0.1'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 }`}</code></pre>
           
