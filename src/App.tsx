@@ -17,6 +17,7 @@ import ProjectStructure from './pages/ProjectStructure';
 import Contributing from './pages/Contributing';
 import Developer from './pages/Developer';
 import TryApi from './pages/TryApi';
+import KnownIssues from './pages/KnownIssues';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/guide/openapi-extension" element={<OpenApiExtension />} />
           <Route path="/guide/try-feature" element={<TryFeature />} />
           <Route path="/guide/implementation-validation" element={<ImplementationValidation />} />
+          <Route path="/guide/known-issues" element={<KnownIssues />} />
           <Route path="/api" element={<RestApiDocs />} />
           <Route path="/api/specification" element={<SpecificationApi />} />
           <Route path="/api/schema" element={<SchemaApi />} />

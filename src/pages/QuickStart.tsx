@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export default function QuickStart() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
@@ -13,8 +15,13 @@ export default function QuickStart() {
           <li>Spring Boot 3.x</li>
           <li>Gradle 또는 Maven</li>
         </ul>
-        <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-lg px-4 py-3 text-sm">
-          Lombok을 사용하는 프로젝트라면 <code className="bg-amber-100 px-1.5 py-0.5 rounded">annotationProcessor 'org.projectlombok:lombok'</code> 설정이 필수입니다. 누락되면 <code className="bg-amber-100 px-1.5 py-0.5 rounded">@ApiState</code> 스캔이 이루어지지 않아 명세-구현 자동 검증이 동작하지 않습니다.
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-lg px-4 py-3 text-sm space-y-2">
+          <p>
+            Lombok을 사용하는 프로젝트라면 <code className="bg-amber-100 px-1.5 py-0.5 rounded">annotationProcessor 'org.projectlombok:lombok'</code> 설정이 필수입니다. 누락되면 <code className="bg-amber-100 px-1.5 py-0.5 rounded">@ApiState</code> 스캔이 이루어지지 않아 명세-구현 자동 검증이 동작하지 않습니다.
+          </p>
+          <p>
+            Swagger UI (springdoc-openapi)를 함께 사용하는 경우, <code className="bg-amber-100 px-1.5 py-0.5 rounded">springdoc-openapi-starter-webmvc-ui</code> 버전이 <strong>2.8.13 이상</strong>이어야 합니다. 2.2.0 같은 낮은 버전에서는 충돌이 발생할 수 있습니다. 자세한 내용은 <Link to="/guide/known-issues" className="text-amber-900 underline font-medium">알려진 버그</Link>를 참고하세요.
+          </p>
         </div>
       </section>
 

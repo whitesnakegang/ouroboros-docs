@@ -26,6 +26,7 @@ const menuItems: MenuItem[] = [
       { title: 'OpenAPI 확장', path: '/guide/openapi-extension' },
       { title: 'Try 기능', path: '/guide/try-feature' },
       { title: '구현 검증', path: '/guide/implementation-validation' },
+      { title: '알려진 버그', path: '/guide/known-issues' },
     ],
   },
   {
