@@ -39,7 +39,7 @@ export default function ImplementationValidation() {
           <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-diff</code>: 요청/응답/엔드포인트 차이를 자동 표시</li>
           <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-progress</code>: 구현 완료 시 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">completed</code>로 자동 조정</li>
           <li>웹 UI에서 강조 표시된 필드를 통해 차이점을 바로 확인할 수 있습니다.</li>
-          <li className="text-sm text-gray-600">Lombok을 사용하는 프로젝트라면 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">annotationProcessor 'org.projectlombok:lombok'</code> 설정이 있어야 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@ApiState</code> 스캔이 정상 동작합니다.</li>
+          <li className="text-sm text-gray-600">Lombok을 사용하는 프로젝트라면 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">annotationProcessor 'org.projectlombok:lombok'</code> 설정이 있어야 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">사용자의 lombock이</code>정상 동작합니다.</li>
         </ul>
       </section>
     </div>
