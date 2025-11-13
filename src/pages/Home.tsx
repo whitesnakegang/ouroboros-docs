@@ -64,6 +64,11 @@ export default function Home() {
 
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">빠른 시작</h2>
+        <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+          <p className="text-sm text-red-800">
+            <strong>주의:</strong> Ouroboros는 <strong>Spring Boot 3.5.7 이하</strong> 버전만 지원합니다. Spring Boot 4.0.0에서는 작동하지 않습니다. 자세한 내용은 <Link to="/guide/known-issues" className="text-red-900 underline font-medium">알려진 버그</Link>를 참고하세요.
+          </p>
+        </div>
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-3">1. 의존성 추가</h3>
           <pre className="bg-gray-900 text-gray-100 rounded p-4 overflow-x-auto text-sm mb-4"><code>{`dependencies {

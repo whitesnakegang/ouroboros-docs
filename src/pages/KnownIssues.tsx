@@ -48,6 +48,36 @@ implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13'
       </section>
 
       <section className="mb-12">
+        <div className="bg-red-50 border-l-4 border-red-500 p-6 mb-6">
+          <h2 className="text-2xl font-bold text-red-900 mb-3">Spring Boot 4.0.0 미지원</h2>
+          <p className="text-gray-800 mb-4">
+            <strong>문제:</strong> Ouroboros는 현재 Spring Boot 4.0.0에서 작동하지 않습니다.
+          </p>
+          <p className="text-gray-800 mb-4">
+            <strong>지원 버전:</strong> Ouroboros는 <strong>Spring Boot 3.5.7 이하</strong> 버전만 지원합니다.
+          </p>
+          <p className="text-gray-800 mb-4">
+            <strong>원인:</strong> Spring Boot 4.0.0에서 패키지 경로가 변경되어 Ouroboros가 기존 경로를 참조하는 부분에서 호환성 문제가 발생합니다.
+          </p>
+          <div className="bg-white border border-red-200 rounded-lg p-4 mt-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">해결 방법</h3>
+            <p className="text-gray-700 mb-3">
+              Spring Boot 버전을 <strong>3.5.7 이하</strong>로 다운그레이드하거나, Spring Boot 4.0.0 지원이 추가될 때까지 기다려주세요.
+            </p>
+            <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm"><code>{`// Gradle
+implementation platform('org.springframework.boot:spring-boot-dependencies:3.5.7')
+
+// Maven
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.5.7</version>
+</parent>`}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">버그 리포트</h2>
         <p className="text-gray-700 mb-4">
           다른 버그를 발견하셨거나 개선 사항이 있으시면 GitHub Issues에 리포트해 주세요.
