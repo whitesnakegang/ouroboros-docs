@@ -1,0 +1,290 @@
+/* 챗봇 컨테이너를 오른쪽 하단에 고정 */
+.chatbot-container {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 9999;
+  overflow: visible !important;
+  pointer-events: none !important;
+}
+
+.chatbot-container > * {
+  pointer-events: auto !important;
+}
+
+/* 커스텀 챗봇 버튼 (이미지 사용) */
+.custom-chatbot-button {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 50% !important;
+  background-color: white !important;
+  border: 3px solid #dc2626 !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2) !important;
+  cursor: pointer !important;
+  z-index: 10001 !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+.custom-chatbot-button:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.3) !important;
+  border-color: #b91c1c !important;
+}
+
+.custom-chatbot-button img {
+  width: 85% !important;
+  height: 85% !important;
+  object-fit: contain !important;
+  padding: 2px !important;
+}
+
+/* 버튼은 항상 표시되지만 챗봇이 열려있을 때는 z-index가 낮아서 챗봇 뒤에 위치 */
+
+/* 챗봇 래퍼 */
+.chatbot-wrapper {
+  position: relative;
+}
+
+/* react-chatbot-kit의 기본 스타일 오버라이드 */
+.chatbot-container .react-chatbot-kit-chat-container {
+  position: fixed !important;
+  bottom: -600px !important;
+  right: 20px !important;
+  width: 370px !important;
+  height: 600px !important;
+  max-height: calc(100vh - 110px) !important;
+  margin: 0 !important;
+  box-shadow: 0 -4px 20px rgba(220, 38, 38, 0.4) !important;
+  border-radius: 10px 10px 0 0 !important;
+  display: block !important;
+  transition: bottom 0.3s ease-in-out !important;
+  z-index: 10002 !important;
+  overflow: hidden !important;
+  border-bottom-left-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+}
+
+.chatbot-container .react-chatbot-kit-chat-container[style*="display: block"] {
+  bottom: 90px !important; /* 버튼 위에 위치 */
+  border-bottom-right-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+}
+
+.chatbot-container .react-chatbot-kit-chat-bot-message-container {
+  margin-left: 0 !important;
+  padding: 10px !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 15px !important;
+}
+
+/* 프로필(아바타/이모지)과 메시지 버블 사이 간격 줄이기 */
+.chatbot-container .react-chatbot-kit-chat-bot-avatar-container {
+  margin-right: 0 !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+.chatbot-container .react-chatbot-kit-chat-bot-message {
+  margin-left: 0 !important;
+  padding: 8px 12px !important;
+  /* 말풍선 크기는 그대로 유지 */
+  min-width: auto !important;
+  max-width: calc(100% - 50px) !important;
+  width: auto !important;
+  flex: 0 1 auto !important;
+}
+
+/* 사용자 메시지도 동일하게 적용 */
+.chatbot-container .react-chatbot-kit-user-chat-message-container,
+.chatbot-container .react-chatbot-kit-user-message-container,
+.chatbot-container [class*="user-message-container"] {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 15px !important;
+  margin-right: 0 !important;
+  padding: 10px !important;
+  justify-content: flex-end !important;
+}
+
+.chatbot-container .react-chatbot-kit-user-avatar-container,
+.chatbot-container [class*="user-avatar-container"] {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+.chatbot-container .react-chatbot-kit-user-message,
+.chatbot-container [class*="user-message"]:not([class*="container"]) {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  padding: 8px 12px !important;
+  /* 말풍선 크기는 그대로 유지 */
+  min-width: auto !important;
+  max-width: calc(100% - 50px) !important;
+  width: auto !important;
+  flex: 0 1 auto !important;
+}
+
+/* 챗봇 메시지 영역 스타일 */
+.chatbot-container .react-chatbot-kit-chat-inner-container {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+.chatbot-container .react-chatbot-kit-chat-message-container {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 10px !important;
+  margin: 0 !important;
+}
+
+/* 스크롤바 숨기기 */
+.chatbot-container .react-chatbot-kit-chat-message-container::-webkit-scrollbar {
+  width: 6px !important;
+}
+
+.chatbot-container .react-chatbot-kit-chat-message-container::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.chatbot-container .react-chatbot-kit-chat-message-container::-webkit-scrollbar-thumb {
+  background: rgba(220, 38, 38, 0.3) !important;
+  border-radius: 3px !important;
+}
+
+.chatbot-container .react-chatbot-kit-chat-message-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(220, 38, 38, 0.5) !important;
+}
+
+/* 입력 영역 스타일 */
+.chatbot-container .react-chatbot-kit-chat-input-container {
+  padding: 10px !important;
+  margin: 0 !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-bottom-left-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+  overflow: hidden !important;
+}
+
+.chatbot-container .react-chatbot-kit-chat-input-form {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 메시지 간격 조정 */
+.chatbot-container .react-chatbot-kit-chat-bot-message {
+  margin-bottom: 10px !important;
+}
+
+.chatbot-container .react-chatbot-kit-user-message {
+  margin-bottom: 10px !important;
+}
+
+.chatbot-container .react-chatbot-kit-chat-btn-send {
+  background-color: #dc2626 !important;
+}
+
+.chatbot-container .react-chatbot-kit-chat-btn-send:hover {
+  background-color: #b91c1c !important;
+}
+
+/* 챗봇 헤더 스타일 */
+.chatbot-container .react-chatbot-kit-chat-header {
+  background-color: #dc2626 !important;
+  color: white !important;
+}
+
+/* 챗봇 입력창 스타일 */
+.chatbot-container .react-chatbot-kit-chat-input {
+  border: 2px solid #dc2626 !important;
+  border-radius: 8px !important;
+  margin-right: 8px !important;
+}
+
+.chatbot-container .react-chatbot-kit-chat-input:focus {
+  border-color: #b91c1c !important;
+  border-bottom: 2px solid #b91c1c !important;
+  outline-color: #b91c1c !important;
+}
+
+/* 보내기 버튼 약간 둥글게 */
+.chatbot-container .react-chatbot-kit-chat-btn-send {
+  background-color: #dc2626 !important;
+  border-radius: 8px !important;
+}
+
+/* 기본 챗봇 버튼 숨기기 */
+.chatbot-container .react-chatbot-kit-chat-button {
+  display: none !important;
+}
+
+/* X 닫기 버튼 */
+.chatbot-close-button {
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  color: #dc2626 !important;
+  border: none !important;
+  font-size: 24px !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  z-index: 10003 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: background-color 0.2s ease !important;
+  padding: 0 !important;
+  font-weight: bold !important;
+}
+
+.chatbot-close-button:hover {
+  background-color: rgba(255, 255, 255, 1) !important;
+  color: #b91c1c !important;
+}
+
+/* 챗봇 헤더 영역에 X 버튼 위치 조정 */
+.chatbot-container .react-chatbot-kit-chat-header {
+  position: relative !important;
+}
+
+/* X 버튼을 챗봇 헤더 내부에 위치시키기 */
+.chatbot-wrapper .chatbot-close-button {
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  z-index: 10003 !important;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .chatbot-container .react-chatbot-kit-chat-container {
+    width: 100% !important;
+    height: 100% !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    border-radius: 0 !important;
+  }
+  
+  .chatbot-close-button {
+    top: 15px !important;
+    right: 15px !important;
+  }
+}
+
