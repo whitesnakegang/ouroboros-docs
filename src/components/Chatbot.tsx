@@ -77,10 +77,6 @@ export default function ChatbotComponent() {
     setIsOpen(!isOpen);
   };
 
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-
   return (
     <div className="chatbot-container" ref={chatbotRef}>
       <button 
@@ -96,15 +92,6 @@ export default function ChatbotComponent() {
           messageParser={MessageParser}
           actionProvider={ActionProvider}
         />
-        {isOpen && (
-          <button 
-            className="chatbot-close-button"
-            onClick={handleClose}
-            aria-label="챗봇 닫기"
-          >
-            ×
-          </button>
-        )}
       </div>
     </div>
   );

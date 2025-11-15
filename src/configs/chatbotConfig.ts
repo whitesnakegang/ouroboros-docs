@@ -5,6 +5,7 @@ const config = {
     createChatBotMessage("안녕하세요! 무엇을 도와드릴까요?", {}),
   ],
   botName: "Ouroboros Assistant",
+  botAvatarSrc: "/chatbot-msg.png",
   customStyles: {
     botMessageBox: {
       backgroundColor: "#376B7E",

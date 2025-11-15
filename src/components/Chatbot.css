@@ -91,6 +91,36 @@
   margin-right: 0 !important;
   padding: 0 !important;
   flex-shrink: 0 !important;
+  position: relative !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background-color: white !important;
+  border: 2px solid #dc2626 !important;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.2) !important;
+  overflow: hidden !important;
+}
+
+/* 챗봇 아바타 이미지 변경 - chatbot-msg.png 사용 */
+.chatbot-container .react-chatbot-kit-chat-bot-avatar-container img,
+.chatbot-container .react-chatbot-kit-chat-bot-avatar-container svg {
+  display: none !important;
+}
+
+.chatbot-container .react-chatbot-kit-chat-bot-avatar-container::after {
+  content: "" !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  background-image: url("/chatbot-msg.png") !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  border-radius: 50% !important;
+  padding: 4px !important;
 }
 
 .chatbot-container .react-chatbot-kit-chat-bot-message {
@@ -101,6 +131,34 @@
   max-width: calc(100% - 50px) !important;
   width: auto !important;
   flex: 0 1 auto !important;
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  line-height: 1.5 !important;
+}
+
+/* 코드 블록 스타일링 */
+.chatbot-container .react-chatbot-kit-chat-bot-message code {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+  padding: 2px 4px !important;
+  border-radius: 3px !important;
+  font-family: 'Courier New', monospace !important;
+  font-size: 0.9em !important;
+}
+
+.chatbot-container .react-chatbot-kit-chat-bot-message pre {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+  padding: 8px 12px !important;
+  border-radius: 4px !important;
+  overflow-x: auto !important;
+  margin: 8px 0 !important;
+  font-family: 'Courier New', monospace !important;
+  font-size: 0.85em !important;
+  line-height: 1.4 !important;
+}
+
+.chatbot-container .react-chatbot-kit-chat-bot-message pre code {
+  background-color: transparent !important;
+  padding: 0 !important;
 }
 
 /* 사용자 메시지도 동일하게 적용 */
@@ -141,14 +199,18 @@
   display: flex !important;
   flex-direction: column !important;
   overflow: hidden !important;
+  position: relative !important;
 }
 
 .chatbot-container .react-chatbot-kit-chat-message-container {
-  flex: 1 !important;
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
-  padding: 10px !important;
+  padding: 10px 10px 5px 10px !important;
   margin: 0 !important;
+  position: relative !important;
 }
 
 /* 스크롤바 숨기기 */
@@ -161,22 +223,26 @@
 }
 
 .chatbot-container .react-chatbot-kit-chat-message-container::-webkit-scrollbar-thumb {
-  background: rgba(220, 38, 38, 0.3) !important;
+  background: rgba(128, 128, 128, 0.4) !important;
   border-radius: 3px !important;
 }
 
 .chatbot-container .react-chatbot-kit-chat-message-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(220, 38, 38, 0.5) !important;
+  background: rgba(128, 128, 128, 0.6) !important;
 }
 
 /* 입력 영역 스타일 */
 .chatbot-container .react-chatbot-kit-chat-input-container {
-  padding: 10px !important;
+  padding: 5px 10px 10px 10px !important;
   margin: 0 !important;
   border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
   border-bottom-left-radius: 10px !important;
   border-bottom-right-radius: 10px !important;
   overflow: hidden !important;
+  flex: 0 0 auto !important;
+  flex-shrink: 0 !important;
+  position: relative !important;
+  z-index: 1 !important;
 }
 
 .chatbot-container .react-chatbot-kit-chat-input-form {
@@ -205,6 +271,8 @@
 .chatbot-container .react-chatbot-kit-chat-header {
   background-color: #dc2626 !important;
   color: white !important;
+  flex: 0 0 auto !important;
+  flex-shrink: 0 !important;
 }
 
 /* 챗봇 입력창 스타일 */
@@ -231,47 +299,6 @@
   display: none !important;
 }
 
-/* X 닫기 버튼 */
-.chatbot-close-button {
-  position: absolute !important;
-  top: 10px !important;
-  right: 10px !important;
-  width: 32px !important;
-  height: 32px !important;
-  border-radius: 50% !important;
-  background-color: rgba(255, 255, 255, 0.9) !important;
-  color: #dc2626 !important;
-  border: none !important;
-  font-size: 24px !important;
-  line-height: 1 !important;
-  cursor: pointer !important;
-  z-index: 10003 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transition: background-color 0.2s ease !important;
-  padding: 0 !important;
-  font-weight: bold !important;
-}
-
-.chatbot-close-button:hover {
-  background-color: rgba(255, 255, 255, 1) !important;
-  color: #b91c1c !important;
-}
-
-/* 챗봇 헤더 영역에 X 버튼 위치 조정 */
-.chatbot-container .react-chatbot-kit-chat-header {
-  position: relative !important;
-}
-
-/* X 버튼을 챗봇 헤더 내부에 위치시키기 */
-.chatbot-wrapper .chatbot-close-button {
-  position: absolute !important;
-  top: 10px !important;
-  right: 10px !important;
-  z-index: 10003 !important;
-}
-
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .chatbot-container .react-chatbot-kit-chat-container {
@@ -280,11 +307,6 @@
     right: 0 !important;
     bottom: 0 !important;
     border-radius: 0 !important;
-  }
-  
-  .chatbot-close-button {
-    top: 15px !important;
-    right: 15px !important;
   }
 }
 

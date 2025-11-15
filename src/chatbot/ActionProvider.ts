@@ -10,19 +10,44 @@ class ActionProvider {
     this.setState = setStateFunc;
   }
 
-  greet() {
-    const message = this.createChatBotMessage("안녕하세요! Ouroboros 문서에 오신 것을 환영합니다.", {});
-    this.setState((prev: any) => ({
-      ...prev,
-      messages: [...prev.messages, message],
-    }));
+  async handleApiRequest(userMessage: string) {
+    try {
+      const response = await fetch("https://k13c102.p.ssafy.io/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: userMessage,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const botMessage = this.createChatBotMessage(data.response || "응답을 받지 못했습니다.", {});
+      
+      this.setState((prev: any) => ({
+        ...prev,
+        messages: [...prev.messages, botMessage],
+      }));
+    } catch (error) {
+      console.error("API 요청 실패:", error);
+      const errorMessage = this.createChatBotMessage(
+        "죄송합니다. 서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.",
+        {}
+      );
+      this.setState((prev: any) => ({
+        ...prev,
+        messages: [...prev.messages, errorMessage],
+      }));
+    }
   }
 
-  handleHelp() {
-    const message = this.createChatBotMessage(
-      "도움이 필요하시군요! Ouroboros에 대해 궁금한 점이 있으시면 언제든지 물어보세요.",
-      {}
-    );
+  greet() {
+    const message = this.createChatBotMessage("안녕하세요! Ouroboros 문서에 오신 것을 환영합니다.", {});
     this.setState((prev: any) => ({
       ...prev,
       messages: [...prev.messages, message],
