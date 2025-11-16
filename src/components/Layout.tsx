@@ -2,6 +2,8 @@ import { type ReactNode, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
+import ChatbotComponent from './Chatbot';
+import 'react-chatbot-kit/build/main.css';
 
 interface LayoutProps {
   children: ReactNode;
@@ -70,6 +72,7 @@ export default function Layout({ children }: LayoutProps) {
           {children}
         </main>
       </div>
+      <ChatbotComponent />
     </div>
   );
 } 
