@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export default function SpecificationApi() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
@@ -58,8 +60,8 @@ export default function SpecificationApi() {
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">관련 문서</h2>
         <ul className="list-disc list-inside space-y-2 text-gray-700">
-          <li><a href="/guide/api-spec" className="text-primary hover:underline">API 명세서 작성 가이드</a></li>
-          <li><a href="/guide/basic-usage" className="text-primary hover:underline">기본 사용법</a></li>
+          <li><Link to="/guide/api-spec" className="text-primary hover:underline">API 명세서 작성 가이드</Link></li>
+          <li><Link to="/guide/basic-usage" className="text-primary hover:underline">기본 사용법</Link></li>
         </ul>
       </section>
     </div>

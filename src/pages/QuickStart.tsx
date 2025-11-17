@@ -138,20 +138,29 @@ export default function QuickStart() {
           메소드 수준까지 추적하려면 다음 설정을 추가합니다. (Try 기능 기본 사용에는 필요 없음)
         </p>
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`ouroboros.method-tracing.enabled=true
-ouroboros.method-tracing.allowed-packages=your.package
-management.tracing.sampling.probability=1.0`}</code></pre>
+ouroboros.method-tracing.allowed-packages=your.package`}</code></pre>
         <p className="text-gray-700 mt-3 text-sm">
-          상세 설정은 <a href="/guide/try-feature" className="text-primary hover:underline">Try 기능 가이드</a>와 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">OUROBOROS_TRY_SETUP.md</code>를 참고하세요.
+          상세 설정은 <Link to="/guide/try-feature" className="text-primary hover:underline">Try 기능 가이드</Link>와 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">OUROBOROS_TRY_SETUP.md</code>를 참고하세요.
         </p>
+
+        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">WebSocket 명세서 Try 기능 사용 시 주의사항</h3>
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-lg px-4 py-3 text-sm space-y-2">
+          <p>
+            <strong>중요:</strong> WebSocket 명세서의 Try 기능을 사용하려면 메시지 브로커의 <code className="bg-amber-100 px-1.5 py-0.5 rounded">/queue</code> prefix를 열어줘야 합니다.
+          </p>
+          <p>
+            메시지 브로커 설정에서 <code className="bg-amber-100 px-1.5 py-0.5 rounded">/queue</code> prefix에 대한 접근 권한을 허용하지 않으면 WebSocket Try 기능이 정상적으로 동작하지 않을 수 있습니다.
+          </p>
+        </div>
       </section>
 
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">다음 단계</h2>
         <ul className="list-disc list-inside space-y-2 text-gray-700">
-          <li><a href="/guide/basic-usage" className="text-primary hover:underline">기본 사용법</a> - API 명세 관리의 기본 워크플로우</li>
-          <li><a href="/guide/api-spec" className="text-primary hover:underline">API 명세서 작성</a> - 상세한 명세서 작성 방법</li>
-          <li><a href="/guide/mock-api" className="text-primary hover:underline">Mock API</a> - Mock 서버 사용법</li>
-          <li><a href="/guide/try-feature" className="text-primary hover:underline">Try 기능</a> - 성능 추적 및 분석</li>
+          <li><Link to="/guide/basic-usage" className="text-primary hover:underline">기본 사용법</Link> - API 명세 관리의 기본 워크플로우</li>
+          <li><Link to="/guide/api-spec" className="text-primary hover:underline">API 명세서 작성</Link> - 상세한 명세서 작성 방법</li>
+          <li><Link to="/guide/mock-api" className="text-primary hover:underline">Mock API</Link> - Mock 서버 사용법</li>
+          <li><Link to="/guide/try-feature" className="text-primary hover:underline">Try 기능</Link> - 성능 추적 및 분석</li>
         </ul>
       </section>
 

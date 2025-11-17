@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export default function RestApiDocs() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
@@ -149,9 +151,9 @@ export default function RestApiDocs() {
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">관련 문서</h2>
         <ul className="list-disc list-inside space-y-2 text-gray-700">
-          <li><a href="/guide/api-spec" className="text-primary hover:underline">API 명세서 작성 가이드</a></li>
-          <li><a href="/guide/schema" className="text-primary hover:underline">Schema 관리 가이드</a></li>
-          <li><a href="/guide/mock-api" className="text-primary hover:underline">Mock API 사용법</a></li>
+          <li><Link to="/guide/api-spec" className="text-primary hover:underline">API 명세서 작성 가이드</Link></li>
+          <li><Link to="/guide/schema" className="text-primary hover:underline">Schema 관리 가이드</Link></li>
+          <li><Link to="/guide/mock-api" className="text-primary hover:underline">Mock API 사용법</Link></li>
         </ul>
       </section>
 

@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export default function BasicUsage() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
@@ -23,16 +25,20 @@ export default function BasicUsage() {
           <li><strong>Schemas 탭</strong>: JSON 형태로 스키마를 작성하고 필수 필드를 지정할 수 있습니다.</li>
           <li><strong>APIs 탭</strong>: Path/Method 입력 후 Request Body, Response, Headers를 드래그&드롭 혹은 폼으로 설정합니다.</li>
           <li><strong>Import/Export</strong>: 우측 상단 “Import YAML”, “Export YAML” 버튼으로 OpenAPI 파일을 가져오거나 내보냅니다.</li>
-          <li><strong>Try 패널</strong>: API 상세 화면에서 파라미터를 입력한 뒤 “Send” 버튼으로 Mock 응답을 바로 확인합니다.</li>
+          <li><strong>Try 패널</strong>: API 상세 화면에서 파라미터를 입력한 뒤 "Send" 버튼으로 Mock 응답을 바로 확인합니다.
+            <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-lg px-3 py-2 text-xs mt-2 ml-4">
+              <strong>참고:</strong> WebSocket 명세서의 Try 기능을 사용하려면 메시지 브로커의 <code className="bg-amber-100 px-1 py-0.5 rounded">/queue</code> prefix를 열어줘야 합니다.
+            </div>
+          </li>
         </ul>
       </section>
 
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">다음 단계</h2>
         <ul className="list-disc list-inside space-y-2 text-gray-700">
-          <li><a href="/guide/api-spec" className="text-primary hover:underline">API 명세서 작성</a> – UI에서 엔드포인트를 작성하는 방법</li>
-          <li><a href="/guide/schema" className="text-primary hover:underline">Schema 관리</a> – 재사용 모델 등록</li>
-          <li><a href="/guide/mock-api" className="text-primary hover:underline">Mock API</a> – Try 패널로 테스트하기</li>
+          <li><Link to="/guide/api-spec" className="text-primary hover:underline">API 명세서 작성</Link> – UI에서 엔드포인트를 작성하는 방법</li>
+          <li><Link to="/guide/schema" className="text-primary hover:underline">Schema 관리</Link> – 재사용 모델 등록</li>
+          <li><Link to="/guide/mock-api" className="text-primary hover:underline">Mock API</Link> – Try 패널로 테스트하기</li>
         </ul>
       </section>
     </div>

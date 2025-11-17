@@ -13,6 +13,43 @@ export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
 
   useEffect(() => {
+    // 라우팅 완료 후 스크롤 처리
+    // HashRouter를 사용하므로 window.location.hash에서 anchor 추출
+    // 예: #/guide/try-feature#websocket -> websocket 추출
+    const fullHash = window.location.hash;
+    let anchorId: string | null = null;
+    
+    // hash에서 마지막 # 이후 부분을 anchor로 사용
+    // HashRouter는 #/path 형태를 사용하므로, #/path#anchor 형태로 구분
+    const hashParts = fullHash.split('#');
+    if (hashParts.length > 2) {
+      // 마지막 부분이 anchor (예: #/guide/try-feature#websocket -> websocket)
+      anchorId = hashParts[hashParts.length - 1];
+    } else if (hashParts.length === 2 && !hashParts[1].startsWith('/')) {
+      // #anchor 형태 (라우팅 경로가 아닌 경우)
+      anchorId = hashParts[1];
+    }
+    
+    if (anchorId) {
+      // anchor에 해당하는 요소 찾기
+      const element = document.getElementById(anchorId);
+      
+      if (element) {
+        // 요소가 존재하면 해당 위치로 스크롤
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100); // DOM 렌더링 대기
+      } else {
+        // 요소가 없으면 맨 위로 스크롤
+        window.scrollTo(0, 0);
+      }
+    } else {
+      // anchor가 없으면 맨 위로 스크롤
+      window.scrollTo(0, 0);
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
     const disposers: Array<() => void> = [];
     const preElements = Array.from(document.querySelectorAll<HTMLPreElement>('pre'));
 
@@ -37,7 +74,7 @@ export default function Layout({ children }: LayoutProps) {
           setTimeout(() => {
             button.textContent = original ?? '복사';
           }, 1500);
-        } catch (error) {
+        } catch {
           button.textContent = '실패';
           setTimeout(() => {
             button.textContent = '복사';
