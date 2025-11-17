@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export default function Developer() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
@@ -9,8 +11,8 @@ export default function Developer() {
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">바로가기</h2>
         <ul className="list-disc list-inside space-y-2 text-gray-700">
-          <li><a href="/developer/project-structure" className="text-primary hover:underline">프로젝트 구조</a> – 패키지 구성과 핵심 컴포넌트 설명</li>
-          <li><a href="/developer/contributing" className="text-primary hover:underline">기여 가이드</a> – 개발 환경 설정과 PR 플로우</li>
+          <li><Link to="/developer/project-structure" className="text-primary hover:underline">프로젝트 구조</Link> – 패키지 구성과 핵심 컴포넌트 설명</li>
+          <li><Link to="/developer/contributing" className="text-primary hover:underline">기여 가이드</Link> – 개발 환경 설정과 PR 플로우</li>
         </ul>
       </section>
 

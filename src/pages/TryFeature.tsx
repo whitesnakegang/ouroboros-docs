@@ -1,4 +1,4 @@
-
+import { Link } from 'react-router-dom';
 
 export default function TryFeature() {
   return (
@@ -48,12 +48,55 @@ export default function TryFeature() {
             <h3 className="text-xl font-semibold text-gray-900 mb-2">Method Tracing</h3>
             <p className="mb-3">내부 메소드 호출까지 추적하려면 아래 설정을 추가합니다.</p>
             <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm"><code>{`ouroboros.method-tracing.enabled=true
-ouroboros.method-tracing.allowed-packages=your.package
-management.tracing.sampling.probability=1.0`}</code></pre>
+ouroboros.method-tracing.allowed-packages=your.package`}</code></pre>
           </div>
           <div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">트레이스 저장 기간</h3>
-            <p className="mb-3">기본 저장소는 애플리케이션 메모리이므로 재시작 시 Try 기록이 초기화됩니다. 장기 보관이 필요하다면 별도 저장소 연동 기능이 추가될 예정입니다.</p>
+            <p className="mb-3">
+              기본 저장소는 애플리케이션 메모리이므로 재시작 시 Try 기록이 초기화됩니다. 
+              대부분의 개발 및 테스트 시나리오에서는 <strong>in-memory 저장소로 충분</strong>합니다.
+            </p>
+            <div className="bg-blue-50 border border-blue-200 text-blue-800 rounded-lg px-4 py-3 text-sm space-y-2 mb-3">
+              <p>
+                <strong>Tempo 연동 (선택 사항):</strong> 영구 저장이 필요하다면 <strong>Grafana Tempo</strong>를 연동할 수 있습니다.
+              </p>
+              <p>
+                Tempo를 사용하면 다음이 가능합니다:
+              </p>
+              <ul className="list-disc list-inside ml-2 space-y-1">
+                <li>영구 트레이스 저장 (애플리케이션 재시작 후에도 트레이스 유지)</li>
+                <li>여러 요청에 걸친 고급 트레이스 분석</li>
+                <li>여러 애플리케이션 인스턴스 간 트레이스 공유</li>
+                <li>장기간 트레이스 보관</li>
+              </ul>
+            </div>
+            <p className="mb-3 text-sm">
+              Tempo 연동을 활성화하려면 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">application.properties</code>에 다음 설정을 추가하세요:
+            </p>
+            <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm mb-3"><code>{`# Tempo 연동 활성화
+ouroboros.tempo.enabled=true
+ouroboros.tempo.base-url=http://localhost:3200
+
+# OpenTelemetry Exporter 설정
+management.tracing.enabled=true
+management.otlp.tracing.endpoint=http://localhost:4318/v1/traces`}</code></pre>
+            <p className="text-gray-700 text-sm">
+              상세한 Tempo 설정 방법은 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">OUROBOROS_TRY_SETUP.md</code> 문서의 <strong>Tempo 연동</strong> 섹션을 참고하세요.
+            </p>
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">WebSocket 명세서 Try 기능 설정</h3>
+            <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-lg px-4 py-3 text-sm space-y-2 mb-3">
+              <p>
+                <strong>중요:</strong> WebSocket 명세서의 Try 기능을 사용하려면 메시지 브로커의 <code className="bg-amber-100 px-1.5 py-0.5 rounded">/queue</code> prefix를 열어줘야 합니다.
+              </p>
+              <p>
+                메시지 브로커 설정에서 <code className="bg-amber-100 px-1.5 py-0.5 rounded">/queue</code> prefix에 대한 접근 권한을 허용하지 않으면 WebSocket Try 기능이 정상적으로 동작하지 않을 수 있습니다.
+              </p>
+            </div>
+            <p className="text-gray-700 text-sm">
+              REST API와 달리 WebSocket은 메시지 브로커를 통해 통신하므로, 브로커 설정에서 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/queue</code> prefix에 대한 접근을 허용해야 Try 기능이 정상 작동합니다.
+            </p>
           </div>
         </div>
       </section>
@@ -61,7 +104,7 @@ management.tracing.sampling.probability=1.0`}</code></pre>
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">관련 자료</h2>
         <ul className="list-disc list-inside space-y-2 text-gray-700">
-          <li><a href="/api/try" className="text-primary hover:underline">Try & 성능 추적 API</a> – REST API 상세 설명</li>
+          <li><Link to="/api/try" className="text-primary hover:underline">Try & 성능 추적 API</Link> – REST API 상세 설명</li>
           <li><a href="https://ouroboros.co.kr" className="text-primary hover:underline" target="_blank" rel="noreferrer">공식 문서</a> – 최신 가이드</li>
           <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">OUROBOROS_TRY_SETUP.md</code> – Try 기능 설정 세부 가이드</li>
         </ul>
