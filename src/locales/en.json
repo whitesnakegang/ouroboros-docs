@@ -1,0 +1,935 @@
+{
+  "common": {
+    "github": "GitHub",
+    "officialSite": "Official Site",
+    "quickStart": "Quick Start",
+    "guide": "Guide",
+    "developer": "Developer Guide",
+    "korean": "한국어",
+    "english": "English",
+    "copy": "Copy",
+    "copied": "Copied",
+    "failed": "Failed",
+    "copyCode": "Copy Code",
+    "copyFailed": "Copy Failed",
+    "chatbot": "Chatbot",
+    "chatbotOpen": "Open Chatbot",
+    "chatbotClose": "Close Chatbot",
+    "cause": "Cause",
+    "problem": "Problem",
+    "supportedVersion": "Supported Version",
+    "githubRepository": "GitHub Repository",
+    "contributingGuide": "Contributing Guide",
+    "codeOfConduct": "Code of Conduct",
+    "conventionalCommits": "Follows Conventional Commits style.",
+    "seeReference": "See reference.",
+    "note": "Note",
+    "project": "{project}"
+  },
+  "home": {
+    "title": "Ouroboros",
+    "subtitle": "OpenAPI 3.1.0-based REST API Specification Management & Mock Server Library",
+    "features": {
+      "title": "Key Features",
+      "apiSpec": {
+        "title": "API Specification Management",
+        "desc": "Create and manage REST API specifications compliant with OpenAPI 3.1.0 standard, and synchronize them with actual implementation."
+      },
+      "mockServer": {
+        "title": "Automatic Mock Server",
+        "desc": "Mock APIs are generated immediately upon specification creation, eliminating the need for frontend developers to wait for backend."
+      },
+      "validation": {
+        "title": "Implementation Validation",
+        "desc": "Automatically verify consistency between specifications and implementation using @ApiState annotation."
+      },
+      "try": {
+        "title": "Try Feature",
+        "desc": "Track API execution and automatically detect performance issues using OpenTelemetry-based performance tracking and analysis."
+      },
+      "websocket": {
+        "title": "WebSocket/STOMP API Management",
+        "desc": "Provides WebSocket/STOMP API specification management and code scanning features supporting AsyncAPI 3.0.0 standard."
+      }
+    },
+    "quickStart": {
+      "title": "Quick Start",
+      "warning": "Note: Ouroboros only supports Spring Boot 3.5.7 and below. It does not work with Spring Boot 4.0.0. See known issues for details.",
+      "step1": {
+        "title": "1. Add Dependencies"
+      },
+      "step2": {
+        "title": "2. Configuration (application.yml)",
+        "springwolfNote": "⚠️ Important: The springwolf.enabled=false setting is required even when using REST API only. Without this setting, the application may fail to boot properly."
+      },
+      "step3": {
+        "title": "3. Run Application"
+      },
+      "step4": {
+        "title": "4. Access Web UI",
+        "desc": "Open http://localhost:8080/ouroboros/ in your browser."
+      },
+      "moreGuide": "View detailed quick start guide →",
+      "homeConfigCode": "ouroboros:\n  enabled: true  # Default: true\n  server:\n    url: http://localhost:8080\n    description: Local Development Server\n\n# Springwolf Configuration (Required)\n# Set to false if using REST API only or if WebSocket code scanning is not needed\nspringwolf:\n  enabled: false  # Required when not using WebSocket code scanning"
+    }
+  },
+  "sidebar": {
+    "gettingStarted": "Getting Started",
+    "quickStart": "Quick Start",
+    "guide": "Guide",
+    "basicUsage": "Basic Usage",
+    "apiSpec": "API Specification",
+    "schema": "Schema Management",
+    "mockApi": "Mock API",
+    "openapiExtension": "OpenAPI Extensions",
+    "tryFeature": "Try Feature",
+    "implementationValidation": "Implementation Validation",
+    "knownIssues": "Known Issues",
+    "developerGuide": "Developer Guide",
+    "projectStructure": "Project Structure",
+    "contributing": "Contributing"
+  },
+  "guide": {
+    "title": "Guide",
+    "subtitle": "Ouroboros usage guide.",
+    "basicUsage": {
+      "title": "Basic Usage",
+      "desc": "Learn the basic workflow for API specification management."
+    },
+    "apiSpec": {
+      "title": "API Specification",
+      "desc": "Learn how to create and manage REST API specifications."
+    },
+    "schema": {
+      "title": "Schema Management",
+      "desc": "Learn how to manage reusable Schema components."
+    },
+    "mockApi": {
+      "title": "Mock API",
+      "desc": "Learn how to use the automatically generated Mock server."
+    },
+    "openapiExtension": {
+      "title": "OpenAPI Extensions",
+      "desc": "Learn how to use Ouroboros custom extension fields."
+    },
+    "tryFeature": {
+      "title": "Try Feature",
+      "desc": "Learn how to use API performance tracking and analysis features."
+    },
+    "implementationValidation": {
+      "title": "Implementation Validation",
+      "desc": "Learn how to validate consistency between specifications and actual implementation."
+    }
+  },
+  "basicUsage": {
+    "title": "Basic Usage",
+    "subtitle": "This guide explains the basic workflow for creating and using specifications in the Ouroboros web UI.",
+    "workflow": {
+      "title": "Complete Workflow",
+      "step1": {
+        "title": "Step 1: Define Reusable Schema",
+        "items": {
+          "1": "Navigate to the \"Schemas\" tab in the web UI",
+          "2": "Fill out the schema form:",
+          "2Name": "Name: e.g., User",
+          "2Type": "Type: object",
+          "2Props": "Add properties (e.g., id, name, email)",
+          "2Mock": "Set Mock expressions using DataFaker syntax (e.g., {{random.uuid}}, {{name.fullName}})",
+          "2Required": "Specify required fields",
+          "3": "Click the \"Save\" button"
+        }
+      },
+      "step2": {
+        "title": "Step 2: Create API Specification",
+        "items": {
+          "1": "Navigate to the \"APIs\" tab",
+          "2": "Click the \"New API\" button",
+          "3": "Fill out the API form:",
+          "3Path": "Path: e.g., /api/users",
+          "3Method": "Method: e.g., POST",
+          "3Summary": "Summary: e.g., Create user",
+          "3Request": "Request Body: Reference the previously created Schema",
+          "3Response": "Response (201): Reference Schema",
+          "3Progress": "Progress: mock",
+          "4": "Click the \"Save\" button - Mock API is immediately generated!"
+        }
+      },
+      "step3": {
+        "title": "Step 3: Mock API Testing",
+        "desc": "Mock API is immediately available at the specified path:"
+      },
+      "step4": {
+        "title": "Step 4: Implementation and Validation (Backend Developer)",
+        "desc": "Add the @ApiState annotation to the controller:",
+        "warning": "⚠️ Important: Only controller methods with the @ApiState annotation are included in code scanning. Methods without this annotation are not scanned and are not validated against the specification.",
+        "note": "When the application starts, Ouroboros automatically validates implementations against specifications for all methods with the @ApiState annotation."
+      },
+      "step5": {
+        "title": "Step 5: Update Status",
+        "items": {
+          "1": "Select the API in the web UI",
+          "2": "Change Progress from mock to completed",
+          "3": "Click the \"Save\" button"
+        }
+      }
+    },
+    "webUI": {
+      "title": "Web UI Overview",
+      "desc": "Ouroboros provides an intuitive web-based interface. All operations can be performed through the GUI without writing code.",
+      "desc2": "The interface consists of three main areas: sidebar (navigation), main content area (viewing and editing specifications), and action panel (testing and validation).",
+      "areas": {
+        "title": "Key Areas",
+        "items": {
+          "1": "Left Sidebar: Navigate all API endpoints, schemas, and WebSocket operations",
+          "2": "Main Content Area: View and edit API specifications, schemas, and messages",
+          "3": "Action Panel: API testing, validation results, and performance analysis"
+        }
+      },
+      "badges": {
+        "title": "Status Badges",
+        "desc": "The sidebar displays all API endpoints with status badges to see development status at a glance:",
+        "items": {
+          "completed": "🟢 Completed: API is fully implemented and tested",
+          "implementing": "🟡 Implementing: API is currently under development",
+          "mock": "🔴 Mock: API exists only as specification (not yet implemented)",
+          "bugfix": "🟠 Bugfix: API is being fixed for bugs"
+        }
+      },
+      "features": {
+        "title": "Key Features",
+        "items": {
+          "1": "Schemas Tab: Create schemas and specify required fields",
+          "2": "APIs Tab: Set Path, Method, then configure Request Body, Response, and Headers via forms",
+          "3": "Import/Export: Import or export OpenAPI files using the \"Import YAML\" and \"Export YAML\" buttons in the top right",
+          "4": "API Try Panel: Enter parameters in the \"API Try\" tab on the API detail screen and click \"RUN\" to immediately check Mock responses",
+          "5": "Authentication Setup: Click the \"Authentication\" or \"Auth\" button in the \"Try/Test\" tab to set authentication values, which will be automatically included in all test requests"
+        }
+      }
+    },
+    "nextSteps": {
+      "title": "Next Steps",
+      "items": {
+        "1": "API Specification – How to write endpoints in the UI",
+        "2": "Schema Management – Register reusable models",
+        "3": "Mock API – Testing with the Try panel"
+      }
+    }
+  },
+  "apiSpec": {
+    "title": "API Specification",
+    "subtitle": "This guide explains how to create and manage REST API specifications in the Ouroboros web UI.",
+    "newApi": {
+      "title": "Add New API",
+      "items": {
+        "1": "Select \"APIs\" in the left sidebar and click the \"New API\" button.",
+        "2": "Enter Path, Method, Summary, and Description.",
+        "3": "Add items in Parameters, Request Body, and Responses sections or link Schemas.",
+        "4": "Click the \"Save\" button in the top right to save the specification, and the Mock endpoint is immediately created."
+      }
+    },
+    "manage": {
+      "title": "Specification Management",
+      "desc": "API Detail Page provides comprehensive information for each API specification. All information including request/response schemas, parameters, and metadata is organized in tabs for easy navigation.",
+      "features": {
+        "title": "Key Features",
+        "items": {
+          "overview": "Overview Tab: View complete API specification including path, method, summary, description, and tags",
+          "request": "Request Tab: Configure request parameters, headers, query parameters, and request body schema",
+          "response": "Response Tab: Define response schemas for various status codes (200, 201, 400, 404, etc.)",
+          "try": "API Try Tab: Execute API tests and check responses",
+          "validation": "Validation Tab: Check validation status and mismatches between specification and implementation",
+          "code": "Code Snippets: Generate code examples in various languages such as cURL, JavaScript, Python",
+          "export": "Export: Export API documentation in Markdown or OpenAPI YAML format"
+        }
+      },
+      "quickActions": {
+        "title": "Quick Actions",
+        "items": {
+          "1": "Edit API details directly on the page",
+          "2": "Reference reusable schemas in request/response bodies",
+          "3": "Set development progress status and tags",
+          "4": "Check validation status and apply changes"
+        }
+      }
+    },
+    "importExport": {
+      "title": "Import / Export",
+      "desc": "You can import or export OpenAPI 3.1 YAML files using the \"Import YAML\" and \"Export YAML\" buttons in the top menu. When importing with existing specifications, the UI will automatically guide you through the merge results."
+    },
+    "editor": {
+      "title": "Specification Editor",
+      "desc": "Specification Editor allows you to create and edit API specifications through an intuitive form-based editor. The editor provides a step-by-step workflow for defining all aspects of an API.",
+      "sections": {
+        "title": "Editor Sections",
+        "basic": "Basic Information: Define path, HTTP method (GET, POST, PUT, DELETE, etc.), summary, and description",
+        "request": {
+          "title": "Request Configuration:",
+          "items": {
+            "1": "Add path parameters, query parameters, and headers",
+            "2": "Define request body schema (reference existing schema or create inline)",
+            "3": "Set content type (application/json, application/xml, etc.)"
+          }
+        },
+        "response": {
+          "title": "Response Configuration:",
+          "items": {
+            "1": "Add response definitions for each status code",
+            "2": "Define response headers and body schema",
+            "3": "Set response content type"
+          }
+        },
+        "metadata": "Metadata: Set development progress status (mock/completed), tags (none/implementing/bugfix), and validation status"
+      },
+      "features": {
+        "title": "Features",
+        "items": {
+          "1": "Reference reusable schemas using {ref: \"SchemaName\"}",
+          "2": "Auto-completion for schema names and field paths",
+          "3": "Real-time validation for OpenAPI 3.1.0 compliance",
+          "4": "Preview generated OpenAPI specification"
+        }
+      }
+    },
+    "websocket": {
+      "title": "WebSocket/STOMP API Specification",
+      "desc": "Ouroboros supports the AsyncAPI 3.0.0 standard to create and manage WebSocket/STOMP API specifications.",
+      "steps": {
+        "title": "WebSocket Specification Procedure",
+        "items": {
+          "1": "Create Schema: Create schemas for message payloads in \"WebSocket\" → \"Schemas\" tab",
+          "2": "Create Message: Define messages referencing schemas in \"WebSocket\" → \"Messages\" tab",
+          "3": "Create Operation: Link channel address and messages in \"WebSocket\" → \"receive\" or \"reply\" tab",
+          "4": "Enter channel address: Enter the full path including the application destination prefix (e.g., /app/chat/send)"
+        }
+      },
+      "important": {
+        "title": "⚠️ Important:",
+        "items": {
+          "1": "Channel address: When writing channel addresses in specifications, you must enter the full path including the application destination prefix.",
+          "2": "Annotations: Only methods with @MessageMapping and @SendTo annotations are scanned.",
+          "3": "Specification storage location: All WebSocket/STOMP specifications are stored in src/main/resources/ouroboros/websocket/ourowebsocket.yml file."
+        }
+      }
+    }
+  },
+  "tryFeature": {
+    "title": "Try Feature",
+    "subtitle": "This guide explains how to track API execution and analyze down to the method level without additional infrastructure.",
+    "overview": {
+      "title": "Overview",
+      "items": {
+        "1": "Default: Available immediately with in-memory storage without configuration",
+        "2": "Trigger: Only requests with X-Ouroboros-Try: on header are tracked",
+        "3": "Query: Query performance data using X-Ouroboros-Try-Id in response headers"
+      }
+    },
+    "webUI": {
+      "title": "Using in Web UI",
+      "items": {
+        "1": "Open the \"API Try\" tab on the API detail screen and enter parameters.",
+        "2": "Clicking the \"RUN\" button automatically adds headers and executes the request.",
+        "3": "Check execution time, status code, Mock data, etc. in the response panel.",
+        "4": "You can query recent Try history again in the \"TEST\" panel on the right."
+      }
+    },
+    "directRequest": {
+      "title": "Send Direct Request",
+      "desc": "When calling with tools (HTTPie, Postman, etc.), add headers manually.",
+      "note": "Copy the Try ID from the response header and check details via REST API such as /ouro/tries/{tryId}."
+    },
+    "methodTracing": {
+      "title": "Method Performance Tracking",
+      "desc": "When Method Tracing is enabled, you can check execution time for each method in detail."
+    },
+    "advanced": {
+      "title": "Advanced Configuration (Optional)",
+      "methodTracing": {
+        "title": "Method Tracing",
+        "desc": "To trace down to internal method calls, add the following configuration."
+      },
+      "traceStorage": {
+        "title": "Trace Storage Duration",
+        "desc": "The default storage is application memory, so Try records are reset on restart. For most development and test scenarios, in-memory storage is sufficient.",
+        "tempo": {
+          "title": "Tempo Integration (Optional):",
+          "desc": "If permanent storage is needed, you can integrate Grafana Tempo.",
+          "benefits": {
+            "title": "Using Tempo enables the following:",
+            "items": {
+              "1": "Permanent trace storage (traces persist after application restart)",
+              "2": "Advanced trace analysis across multiple requests",
+              "3": "Trace sharing across multiple application instances",
+              "4": "Long-term trace retention"
+            }
+          },
+          "setup": "To enable Tempo integration, add the following configuration to application.properties:",
+          "details": "For detailed Tempo setup methods, refer to the Tempo Integration section in the OUROBOROS_TRY_SETUP.md document."
+        }
+      },
+      "websocketTry": {
+        "title": "Using WebSocket Try Feature",
+        "important": "Important: To use Try feature with WebSocket, the server's message broker must be configured to use the /queue prefix.",
+        "desc": "You must enable the /queue prefix in Spring WebSocket message broker configuration:",
+        "note1": "Ouroboros SDK sends Try request metadata to the /queue/ouro/try topic.",
+        "note2": "Clients can subscribe to the /user/queue/ouro/try topic to receive Try results."
+      }
+    },
+    "resources": {
+      "title": "Related Resources",
+      "items": {
+        "1": "Try & Performance Tracking API – Detailed REST API documentation",
+        "2": "Official Documentation – Latest guides",
+        "3": "OUROBOROS_TRY_SETUP.md – Detailed Try feature setup guide"
+      }
+    },
+    "tempoConfigCode": "# Enable Tempo Integration\nouroboros.tempo.enabled=true\nouroboros.tempo.base-url=http://localhost:3200\n\n# OpenTelemetry Exporter Configuration\nmanagement.tracing.enabled=true\nmanagement.otlp.tracing.endpoint=http://localhost:4318/v1/traces",
+    "websocketConfigCode": "@Override\npublic void configureMessageBroker(MessageBrokerRegistry config) {\n    // Enable /queue prefix (required)\n    config.enableSimpleBroker(\"/queue\", \"/topic\");\n}"
+  },
+  "schema": {
+    "title": "Schema Management",
+    "subtitle": "This guide explains how to create and use reusable data models (Schemas) in the web UI.",
+    "create": {
+      "title": "Schema Creation and Usage",
+      "items": {
+        "1": "Select \"Schemas\" in the left sidebar.",
+        "2": "Click the \"New Schema\" button and enter name and description.",
+        "3": "Add fields in the Properties area and set type, required status, and Mock values.",
+        "4": "When you save, the Schema is registered and can be referenced immediately when creating APIs."
+      },
+      "workflowAlt": "Schema creation and usage workflow"
+    },
+    "manage": {
+      "title": "Schema Management",
+      "items": {
+        "1": "Selecting a Schema from the list allows you to edit details in the right panel.",
+        "2": "You can duplicate similar structures using \"Duplicate\" or delete using \"Delete\" when needed.",
+        "3": "Schema names are immediately displayed in the $ref selection list in APIs."
+      }
+    },
+    "mock": {
+      "title": "Mock Data",
+      "desc": "Each field can specify Mock expressions using DataFaker syntax in x-ouroboros-mock, which is used when checking Mock responses in the Try panel.",
+      "examples": {
+        "title": "Examples:",
+        "items": {
+          "1": "{{random.uuid}} - Generate UUID",
+          "2": "{{name.fullName}} - Generate full name",
+          "3": "{{internet.emailAddress}} - Generate email address"
+        },
+        "note": "Using DataFaker syntax allows you to automatically generate Mock data similar to real data."
+      }
+    },
+    "websocket": {
+      "title": "Schema and Message for WebSocket",
+      "desc": "You can define separate Schemas and Messages for WebSocket/STOMP API specification creation.",
+      "schemaTitle": "WebSocket Schema",
+      "schemaDesc": "Create schemas for WebSocket message payloads in \"WebSocket\" → \"Schemas\" tab. You can define fields and types the same way as REST API Schemas, and DataFaker syntax is also available.",
+      "messageTitle": "Message Creation",
+      "messageDesc": "Define Messages that reference previously created Schemas in \"WebSocket\" → \"Messages\" tab. Messages are used in WebSocket Operations.",
+      "note": "Note: WebSocket Schemas and Messages are managed independently from REST API Schemas, and WebSocket specifications are stored in the ourowebsocket.yml file.",
+      "notePart1": "Note: WebSocket Schemas and Messages are managed independently from REST API Schemas,",
+      "notePart2": "WebSocket specifications are stored in",
+      "notePart3": "file."
+    }
+  },
+  "mockApi": {
+    "title": "Mock API",
+    "subtitle": "This guide explains how to check and use Mock responses in the web UI.",
+    "test": {
+      "title": "Mock Testing",
+      "items": {
+        "1": "Select the \"API Try\" tab on the API detail screen.",
+        "2": "Enter required Path/Query/Header values.",
+        "3": "If there is a Request Body, modify the example JSON and click the \"RUN\" button.",
+        "4": "You can immediately check Mock response body and headers in the \"TEST\" panel at the bottom right."
+      },
+      "settingScreenAlt": "Testing setup screen",
+      "responseScreenAlt": "Test response screen"
+    },
+    "auth": {
+      "title": "Authentication Setup",
+      "desc": "You can configure authentication settings before testing APIs. Click the \"Authentication\" or \"Auth\" button to enter authentication information, which will be automatically included in all test requests.",
+      "workflowAlt": "Authentication setup workflow"
+    },
+    "response": {
+      "title": "Response Check",
+      "desc": "Testing Screen allows you to test APIs and check Mock and actual responses, and also provides method-level performance tracking.",
+      "viewTitle": "Response View",
+      "items": {
+        "mock": "Mock Response: Test with Mock data generated from specifications (useful for frontend development)",
+        "actual": "Actual Response: Test with actual backend implementation",
+        "compare": "Side-by-Side Comparison: Verify implementation accuracy by comparing Mock vs actual responses",
+        "details": "Response Details: Check status code, headers, formatted response body (JSON, XML, etc.)"
+      },
+      "featuresTitle": "Key Features",
+      "features": {
+        "1": "When x-ouroboros-mock values are specified in Schema, they are reflected in Try responses",
+        "2": "Code Snippet generation feature allows you to generate code examples in various languages such as cURL, JavaScript, Python",
+        "3": "Export feature allows you to export API documentation in Markdown or OpenAPI YAML format"
+      },
+      "feature1Part1": "When",
+      "feature1Part2": "values are specified in Schema, they are reflected in Try responses"
+    },
+    "websocket": {
+      "title": "WebSocket Mock Testing",
+      "desc": "WebSocket/STOMP APIs can also test Mock responses the same way as REST APIs.",
+      "items": {
+        "1": "Select the \"API Try\" tab on the WebSocket Operation detail screen.",
+        "2": "Enter message payload (Mock expressions defined in Schema are automatically filled).",
+        "3": "Clicking the \"RUN\" button sends the WebSocket message and allows you to check Mock responses."
+      },
+      "important": "⚠️ Important: To use WebSocket Try feature, the message broker's /queue prefix must be enabled."
+    }
+  },
+  "openApiExtension": {
+    "title": "OpenAPI Extensions",
+    "subtitle": "This document summarizes Ouroboros custom extension fields and automatic correction rules.",
+    "operation": {
+      "title": "Operation-level Extensions",
+      "items": {
+        "id": "x-ouroboros-id: API specification unique identifier (UUID)",
+        "progress": "x-ouroboros-progress: Development progress status (mock | completed)",
+        "tag": "x-ouroboros-tag: Development tag (none | implementing | bugfix)",
+        "diff": "x-ouroboros-diff: Difference between specification and implementation (none | request | response | endpoint | both)",
+        "diffItems": {
+          "none": "none: No difference",
+          "request": "request: Difference in request parameters, headers, or body schema",
+          "response": "response: Difference in response status code, headers, or body schema",
+          "endpoint": "endpoint: Path and method do not match between specification and implementation",
+          "both": "both: Both request and response differ"
+        }
+      },
+      "note": "When you modify the specification, x-ouroboros-diff is automatically reset to none."
+    },
+    "schema": {
+      "title": "Schema-level Extensions",
+      "items": {
+        "mock": "x-ouroboros-mock: DataFaker expression (e.g., {{name.fullName}})",
+        "orders": "x-ouroboros-orders: Field order array"
+      },
+      "note": "Ouroboros automatically adds missing Ouroboros extension fields and enhances specifications during validation."
+    }
+  },
+  "implementationValidation": {
+    "title": "Implementation Validation",
+    "subtitle": "This guide explains how to manage and check specification and implementation progress status in the web UI.",
+    "lombokWarning": "If your project uses Lombok, you must include annotationProcessor 'org.projectlombok:lombok' in the build configuration. Without this setting, @ApiState metadata will not be generated and automatic validation will not work.",
+    "validationScreenAlt": "Validation screen",
+    "websocketAnnotationNote": "Only methods with @MessageMapping and @SendTo annotations are scanned",
+    "progress": {
+      "title": "Progress Management",
+      "items": {
+        "1": "Progress values are automatically adjusted to \"mock\" or \"completed\" by the SDK comparing specification and implementation status.",
+        "2": "Tags are also automatically updated based on scan results to show current implementation status (implementing, bugfix, etc.).",
+        "3": "Changes are reflected in the list immediately after saving, so there is no need to manually manipulate progress."
+      }
+    },
+    "status": {
+      "title": "Status Check",
+      "desc": "You can see the progress status for each API at a glance in the list or detail screen, with badge colors displayed according to status.",
+      "items": {
+        "mock": "mock: Only Mock responses are provided",
+        "completed": "completed: Endpoints with actual implementation completed"
+      }
+    },
+    "validation": {
+      "title": "Automatic Validation",
+      "desc": "Specifications created by users are automatically compared with OpenAPI scan results from the running application. When you save changes, the SDK synchronizes specifications and implementations and displays mismatches.",
+      "typesTitle": "Validation Types",
+      "types": {
+        "request": "Request Validation: Compare request parameters, headers, body schema",
+        "response": "Response Validation: Compare response status codes, headers, body schema",
+        "endpoint": "Endpoint Validation: Check if path and method match between specification and implementation",
+        "both": "Both: Both request and response differ from specification"
+      },
+      "featuresTitle": "Key Features",
+      "features": {
+        "1": "Visual Diff Display: Accurately check differences between specification and implementation",
+        "2": "One-Click Sync: Apply changes from code to specification with one click",
+        "3": "Validation Status Badge: Display validation status for each endpoint (Valid/Invalid/Diff detected)",
+        "4": "Detailed Reports: Check comprehensive validation reports for all endpoints",
+        "5": "Filter by Status: Filter endpoints by validation status for quick review"
+      },
+      "workflowTitle": "Workflow",
+      "workflow": {
+        "1": "Check validation results after code scanning",
+        "2": "Review highlighted mismatch items in the interface",
+        "3": "Apply changes to synchronize code and specification",
+        "4": "Track validation status for each endpoint"
+      },
+      "lombokNote": "⚠️ Important: For projects using Lombok, annotationProcessor 'org.projectlombok:lombok' configuration must be present for normal operation."
+    },
+    "websocket": {
+      "title": "WebSocket/STOMP Validation",
+      "desc": "WebSocket/STOMP APIs can also validate specifications and implementations the same way as REST APIs. Automatic validation is performed when code scanning is enabled through Springwolf.",
+      "typesTitle": "WebSocket Validation Types",
+      "types": {
+        "channel": "Channel Validation: Check if channel address matches between specification and implementation",
+        "message": "Message Validation: Check if message payload schema matches between specification and implementation",
+        "operation": "Operation Validation: Check if receive/reply Operations match between specification and implementation"
+      },
+      "requirementsTitle": "⚠️ Requirements for WebSocket Validation:",
+      "requirements": {
+        "1": "Springwolf dependency addition and activation required",
+        "2": "Only methods with @MessageMapping and @SendTo annotations are scanned",
+        "3": "Channel addresses must be written as full paths including application destination prefix"
+      }
+    }
+  },
+  "contributing": {
+    "title": "Contributing Guide",
+    "subtitle": "This guide explains how to contribute to the Ouroboros project.",
+    "conventionalCommits": "Follows Conventional Commits style.",
+    "methods": {
+      "title": "How to Contribute",
+      "desc": "Ouroboros welcomes various forms of contributions:",
+      "items": {
+        "bug": "🐛 Bug Report: Report bugs you find",
+        "feature": "💡 Feature Proposal: Suggest new feature ideas",
+        "docs": "📝 Documentation: Fix typos and improve documentation",
+        "code": "💻 Code Contribution: Fix bugs and implement features",
+        "translation": "🌐 Translation: Translate documentation",
+        "test": "🧪 Testing: Write and improve test cases",
+        "ui": "🎨 UI/UX: Improve frontend design and usability"
+      }
+    },
+    "setup": {
+      "title": "Development Environment Setup",
+      "requirements": {
+        "title": "Requirements",
+        "backend": "Backend: Java 17 or higher, Gradle 8.14.3 or higher (with Wrapper), Spring Boot 3.5.7",
+        "frontend": "Frontend: Node.js 18 or higher, npm or yarn"
+      },
+      "backendTitle": "Backend Setup",
+      "frontendTitle": "Frontend Setup"
+    },
+    "branch": {
+      "title": "Branch Strategy",
+      "desc": "Uses Git Flow strategy.",
+      "table": {
+        "branch": "Branch",
+        "purpose": "Purpose",
+        "base": "Base Branch",
+        "rows": {
+          "main": "Production deployment branch",
+          "develop": "Development integration branch",
+          "feature": "New feature development",
+          "fix": "Bug fixes",
+          "hotfix": "Urgent production fixes",
+          "release": "Release preparation"
+        }
+      }
+    },
+    "commit": {
+      "title": "Commit Message Rules",
+      "desc": "Follows Conventional Commits style.",
+      "types": {
+        "title": "Types",
+        "feat": "feat: New feature",
+        "fix": "fix: Bug fix",
+        "docs": "docs: Documentation",
+        "style": "style: Code formatting (no logic changes)",
+        "refactor": "refactor: Refactoring",
+        "test": "test: Test code",
+        "chore": "chore: Build, package management, etc.",
+        "perf": "perf: Performance improvement",
+        "ci": "ci: CI configuration",
+        "build": "build: Build-related files"
+      },
+      "rules": {
+        "title": "Rules",
+        "subject": "Subject: Maximum 50 characters, first letter lowercase, no period",
+        "body": "Body: 72-character line breaks, explain what and why",
+        "footer": "Footer: Breaking changes, issue references",
+        "lang": "Language: English or Korean (maintain consistency)"
+      }
+    },
+    "codeStyle": {
+      "title": "Code Style Guide",
+      "java": {
+        "title": "Java (Backend)",
+        "items": {
+          "1": "Follow Google Java Style Guide",
+          "2": "Javadoc Required: All public classes, methods, fields",
+          "3": "Comment Language: English",
+          "4": "package-info.java: Required for each package"
+        }
+      },
+      "typescript": {
+        "title": "TypeScript/React (Frontend)",
+        "items": {
+          "1": "Follow ESLint rules",
+          "2": "Use Functional Components",
+          "3": "Enable TypeScript Strict Mode"
+        }
+      }
+    },
+    "pr": {
+      "title": "Pull Request Process",
+      "checklist": {
+        "title": "PR Checklist",
+        "items": {
+          "1": "Pull latest code from develop branch",
+          "2": "Follow branch naming rules",
+          "3": "Follow commit message rules",
+          "4": "Follow code style guide",
+          "5": "Write tests for new code",
+          "6": "All tests pass",
+          "7": "Write Javadoc/JSDoc",
+          "8": "Update documentation (if needed)",
+          "9": "No linter errors"
+        }
+      },
+      "review": {
+        "title": "Review Process",
+        "items": {
+          "1": "PR Creation: Create PR to develop branch",
+          "2": "Automated Checks: CI/CD automatically runs build and tests",
+          "3": "Code Review: At least 1 maintainer approval required",
+          "4": "Revisions: Apply review feedback",
+          "5": "Merge: Maintainer merges after approval"
+        }
+      }
+    },
+    "localTest": {
+      "title": "Local Testing",
+      "desc": "To test changes locally:"
+    },
+    "resources": {
+      "title": "Additional Resources",
+      "items": {
+        "github": "GitHub Repository – Source code and issues",
+        "contributing": "Contributing Guide – Full contributing guide (Korean)",
+        "codeOfConduct": "Code of Conduct – Community code of conduct (Korean)"
+      }
+    },
+    "backendSetupCode": "cd backend\n\n# Build\n./gradlew build\n\n# Run tests\n./gradlew test\n\n# Run application\n./gradlew bootRun\n\n# Publish to local Maven repository (for testing)\n./gradlew publishToMavenLocal",
+    "frontendSetupCode": "cd front\n\n# Install dependencies\nnpm install\n\n# Run dev server\nnpm run dev\n\n# Build\nnpm run build\n\n# Run lint\nnpm run lint",
+    "localTestCode": "# Build backend and publish to local Maven repository\ncd backend\n./gradlew publishToMavenLocal\n\n# Use in test project\ndependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.3-SNAPSHOT'\n}"
+  },
+  "projectStructure": {
+    "title": "Project Structure",
+    "subtitle": "This document explains the structure of the Ouroboros project.",
+    "overall": {
+      "title": "Overall Structure",
+      "desc": "Ouroboros consists of backend (Spring Boot library) and front (React web UI).",
+      "descPart1": "Ouroboros consists of",
+      "descPart2": "backend",
+      "descPart3": "(Spring Boot library) and",
+      "descPart4": "front",
+      "descPart5": "(React web UI)."
+    },
+    "backend": {
+      "title": "Backend Package Structure"
+    },
+    "frontend": {
+      "title": "Frontend Structure"
+    },
+    "components": {
+      "title": "Core Components",
+      "global": {
+        "title": "Global",
+        "items": {
+          "1": "OuroApiSpecManager: Single source of specification cache (central cache)",
+          "2": "OuroProtocolHandler: Protocol strategy pattern (REST, WebSocket support)",
+          "3": "SpecSyncPipeline: Specification synchronization pipeline"
+        }
+      },
+      "rest": {
+        "title": "REST",
+        "items": {
+          "1": "RestApiYamlParser: OpenAPI 3.1.0 YAML parsing",
+          "2": "RestApiSpecService: REST API specification CRUD service",
+          "3": "OuroborosMockFilter: Mock server filter",
+          "4": "ApiStateGlobalMethodFilter: @ApiState method filtering"
+        }
+      },
+      "websocket": {
+        "title": "WebSocket",
+        "items": {
+          "1": "AsyncApiYamlParser: AsyncAPI 3.0.0 YAML parsing",
+          "2": "WebSocketSpecService: WebSocket specification CRUD service",
+          "3": "OuroWebSocketHandler: WebSocket protocol handler"
+        }
+      }
+    },
+    "storage": {
+      "title": "Data Storage",
+      "desc": "All API specifications are stored in a single file at the following locations:",
+      "rest": "REST API Specifications:",
+      "websocket": "WebSocket/STOMP API Specifications:"
+    }
+  },
+  "developer": {
+    "title": "Developer Guide",
+    "subtitle": "Check project structure and contributing guide for developers in one place.",
+    "chatbot": {
+      "greeting": "Hello! How can I help you?",
+      "welcome": "Hello! Welcome to Ouroboros documentation.",
+      "noResponse": "No response received.",
+      "connectionError": "Sorry, unable to connect to server. Please try again later."
+    },
+    "quickLinks": {
+      "title": "Quick Links",
+      "items": {
+        "1": "Project Structure – Package composition and core component descriptions",
+        "2": "Contributing Guide – Development environment setup and PR flow"
+      }
+    },
+    "resources": {
+      "title": "Additional Resources",
+      "items": {
+        "github": "GitHub Repository – Issues and source code",
+        "contributing": "Contributing Guide – Full contributing guide (Korean)",
+        "codeOfConduct": "Code of Conduct – Community code of conduct (Korean)"
+      }
+    }
+  },
+  "knownIssues": {
+    "title": "Known Issues",
+    "subtitle": "This document summarizes known issues and solutions to be aware of when using Ouroboros.",
+    "swagger": {
+      "title": "Conflict with Swagger UI",
+      "problem": "Problem: If Swagger UI (springdoc-openapi) is installed in your project, it may conflict with Ouroboros.",
+      "cause": "Cause: Conflicts occur when both Swagger UI and Ouroboros try to process OpenAPI schemas, causing path conflicts or empty configuration conflicts. Particularly, compatibility issues occur when springdoc-openapi-starter-webmvc-ui version is below 2.8.13 (e.g., 2.2.0).",
+      "solutionText": "Upgrade springdoc-openapi-starter-webmvc-ui to version 2.8.13 or higher.",
+      "symptoms": "Symptoms:",
+      "symptomItems": {
+        "1": "Errors occur when starting the application",
+        "2": "OpenAPI schema parsing errors",
+        "3": "Cannot access web UI"
+      },
+      "cause": "Cause: Conflicts occur when both Swagger UI and Ouroboros try to process OpenAPI schemas, causing path conflicts or empty configuration conflicts. Particularly, compatibility issues occur when springdoc-openapi-starter-webmvc-ui version is below 2.8.13 (e.g., 2.2.0).",
+      "solution": {
+        "title": "Solution",
+        "desc": "Upgrade springdoc-openapi-starter-webmvc-ui to version 2.8.13 or higher."
+      },
+      "note": "Note: Ouroboros provides its own web UI, so there is no need to use it together with Swagger UI. You can manage API specifications and use Mock server in Ouroboros web UI."
+    },
+    "springBoot": {
+      "title": "Spring Boot 4.0.0 Not Supported",
+      "problem": "Problem: Ouroboros currently does not work with Spring Boot 4.0.0.",
+      "supported": "Supported Versions: Ouroboros only supports Spring Boot 3.5.7 or lower versions.",
+      "cause": "Cause: Package paths changed in Spring Boot 4.0.0, causing compatibility issues in parts where Ouroboros references existing paths.",
+      "solution": {
+        "title": "Solution",
+        "desc": "Downgrade Spring Boot version to 3.5.7 or lower, or wait until Spring Boot 4.0.0 support is added."
+      }
+    },
+    "bugReport": {
+      "title": "Bug Report",
+      "desc": "If you discover other bugs or have improvements, please report them on GitHub Issues.",
+      "button": "Open GitHub Issues"
+    }
+  },
+  "quickStart": {
+    "title": "Quick Start",
+    "subtitle": "This guide covers how to add Ouroboros to your project and get basic features working.",
+    "prerequisites": {
+      "title": "Prerequisites",
+      "items": {
+        "java": "Java 17 or higher",
+        "springBoot": "Spring Boot 3.x",
+        "buildTool": "Gradle or Maven"
+      },
+      "lombokNote": "If your project uses Lombok, the annotationProcessor 'org.projectlombok:lombok' configuration is required. Without it, @ApiState scanning will not work and automatic spec-implementation validation will not function.",
+      "swaggerNote": "If using Swagger UI (springdoc-openapi) together, springdoc-openapi-starter-webmvc-ui version must be 2.8.13 or higher. Lower versions like 2.2.0 may cause conflicts. See known issues for details.",
+      "swaggerNoteEnd": "See reference.",
+      "methodTracingNoteEnd": "and",
+      "methodTracingNoteEnd2": "See reference."
+    },
+    "restWorkflowAlt": "REST API workflow",
+    "websocketWorkflowAlt": "WebSocket workflow",
+    "step1": {
+      "title": "Step 1: Installation",
+      "basicDeps": "Basic Dependencies",
+      "basicDepsDesc": "Adding only the basic dependencies allows you to use both REST API and WebSocket features.",
+      "note1": "The library internally includes spring-boot-starter-actuator and spring-boot-starter-aop.",
+      "note2": "Mock server and REST API controllers are registered via auto-configuration, so they can be used without additional setup.",
+      "note3": "If using Lombok, you must add annotationProcessor 'org.projectlombok:lombok' for @ApiState-based automatic scanning to work properly."
+    },
+    "step2": {
+      "title": "Step 2: Configuration",
+      "configDesc": "You can add the following configuration to application.yml or application.properties:",
+      "restConfig": "REST API Configuration",
+      "disableNote": "If disabled, all controllers, filters, and auto-configuration will not be registered. (e.g., ouroboros.enabled=false)",
+      "springwolfImportant": "⚠️ Important: The springwolf.enabled=false setting is required even when using REST API only. Without this setting, the application may fail to boot properly.",
+      "websocketConfig": "WebSocket Configuration (Optional)",
+      "websocketDesc": "Configuration for WebSocket/STOMP API code scanning feature. WebSocket spec writing is available with just the base dependency.",
+      "websocketImportant": "⚠️ Important:",
+      "websocketItem1": "For spec writing only: Set springwolf.enabled=false without adding Springwolf dependencies.",
+      "websocketItem2": "For code scanning: Add Springwolf dependencies and enable Springwolf.",
+      "websocketItem3": "Channel address: When writing channel addresses in specs, you must enter the full path including the application destination prefix. (e.g., /app/chat/send)",
+      "websocketItem4": "Annotations: Only methods with @MessageMapping and @SendTo annotations are scanned.",
+      "option1": "Option 1: Spec Writing Only (Springwolf Disabled)",
+      "option2": "Option 2: Code Scanning and Spec Comparison (Springwolf Enabled)",
+      "restConfigCode": "ouroboros:\n  enabled: true  # Default: true\n  server:\n    url: http://localhost:8080\n    description: Local Development Server\n\n  # Method Tracing Configuration (Optional)\n  # Only configure when internal method tracing is needed for Try feature\n  method-tracing:\n    enabled: true\n    allowed-packages: your.package.name  # Specify package paths to trace\n\n# Springwolf Configuration (Required)\n# Set to false if using REST API only or if WebSocket code scanning is not needed\nspringwolf:\n  enabled: false  # Required when not using WebSocket code scanning",
+      "option1Code": "springwolf:\n  enabled: false  # Disable Springwolf (spec writing only)",
+      "option2Code": "springwolf:\n  enabled: true\n  docket:\n    info:\n      title: WebSocket API\n      version: 1.0.0\n      description: WebSocket API Description\n    servers:\n      websocket:\n        host: localhost:8080\n        protocol: ws\n        description: WebSocket Server\n    base-package: com.yourpackage  # Package path to scan for @MessageMapping"
+    },
+    "step3": {
+      "title": "Step 3: Run Application",
+      "ideNote": "Or run the Spring Boot application from your IDE."
+    },
+    "step4": {
+      "title": "Step 4: Access Web UI",
+      "desc": "Open the following address in your browser:",
+      "note": "You can create and manage API specifications from the web UI."
+    },
+    "step5": {
+      "title": "Step 5: Create Your First API Specification",
+      "restTitle": "REST API Specification",
+      "restDesc": "Create REST API specifications in the web UI:",
+      "restSteps": {
+        "1": "Enter path, HTTP method, summary, etc.",
+        "2": "Define request/response schemas",
+        "3": "Save"
+      },
+      "restNote": "Once saved, Mock API is automatically generated and ready for testing.",
+      "websocketTitle": "WebSocket/STOMP API Specification (Optional)",
+      "websocketDesc": "You can create WebSocket/STOMP API specifications. AsyncAPI 3.0.0 standard is supported.",
+      "websocketSteps": {
+        "1": "Create Schema: Create schemas for message payloads in \"WebSocket\" → \"Schemas\" tab",
+        "2": "Create Message: Define messages referencing schemas in \"WebSocket\" → \"Messages\" tab",
+        "3": "Create Operation: Link channel address and messages in \"WebSocket\" → \"receive\" or \"reply\" tab",
+        "4": "Enter channel address: Include full path (e.g., /app/chat/send)"
+      },
+      "websocketNote": "Note: If you only need WebSocket spec writing, you don't need to add Springwolf dependencies. Configure Springwolf only when you need code scanning and spec comparison features."
+    },
+    "step6": {
+      "title": "Step 6: Mock API Testing",
+      "desc": "If an endpoint is not implemented according to the specification or if @ApiState's progress is not completed, requests to that endpoint will automatically return Mock responses."
+    },
+    "step7": {
+      "title": "Step 7: Using Try Feature",
+      "desc": "The Try feature tracks and records API request execution times. It is enabled by default with no additional configuration required, using in-memory storage to view results immediately.",
+      "webUiTitle": "Check in Web UI",
+      "webUiSteps": {
+        "1": "Select \"API Try\" tab on API detail screen",
+        "2": "Enter request parameters and click \"RUN\"",
+        "3": "Check execution history in result area and \"TEST\" panel"
+      },
+      "methodTracingTitle": "Optional: Method Tracing",
+      "methodTracingDesc": "To trace down to method level, add the following configuration. (Not required for basic Try feature usage)",
+      "methodTracingNote": "For detailed settings, refer to Try Feature Guide and OUROBOROS_TRY_SETUP.md.",
+      "websocketTryTitle": "WebSocket Spec Try Feature Notes",
+      "websocketTryImportant": "Important: To use Try feature with WebSocket specs, the message broker's /queue prefix must be enabled.",
+      "websocketTryDesc": "If access to /queue prefix is not allowed in message broker configuration, WebSocket Try feature may not work properly."
+    },
+    "nextSteps": {
+      "title": "Next Steps",
+      "basicUsage": "Basic Usage - Basic workflow for API specification management",
+      "apiSpec": "API Specification - Detailed guide on writing specifications",
+      "mockApi": "Mock API - How to use Mock server",
+      "tryFeature": "Try Feature - Performance tracking and analysis"
+    },
+    "specLocation": {
+      "title": "Note: Specification Storage Location",
+      "restTitle": "REST API Specifications",
+      "restDesc": "All REST specifications are stored in a single file: src/main/resources/ouroboros/rest/ourorest.yml relative to the application root.",
+      "websocketTitle": "WebSocket/STOMP API Specifications",
+      "websocketDesc": "All WebSocket/STOMP specifications are stored in a single file: src/main/resources/ouroboros/websocket/ourowebsocket.yml relative to the application root."
+    }
+  }
+}
+

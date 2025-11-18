@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { createRoot } from "react-dom/client";
+import { useTranslation } from "react-i18next";
 import Chatbot from "react-chatbot-kit";
 
 import config from "../configs/chatbotConfig";
@@ -12,6 +13,7 @@ import "./Chatbot.css";
 export default function ChatbotComponent() {
   const [isOpen, setIsOpen] = useState(false);
   const chatbotRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   type MessagePart = { type: 'text' | 'code'; content: string; language?: string };
 
@@ -195,9 +197,9 @@ export default function ChatbotComponent() {
       <button 
         className="custom-chatbot-button"
         onClick={handleToggle}
-        aria-label={isOpen ? "챗봇 닫기" : "챗봇 열기"}
+        aria-label={isOpen ? t('common.chatbotClose') : t('common.chatbotOpen')}
       >
-        <img src="/chatbot-icon.png" alt="챗봇" />
+        <img src="/chatbot-icon.png" alt={t('common.chatbot')} />
       </button>
       <div className="chatbot-wrapper">
         <Chatbot

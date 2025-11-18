@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './CodeBlock.css';
 
 interface CodeBlockProps {
@@ -8,6 +9,7 @@ interface CodeBlockProps {
 
 export default function CodeBlock({ code, language }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
+  const { t } = useTranslation();
 
   const handleCopy = async () => {
     try {
@@ -15,7 +17,7 @@ export default function CodeBlock({ code, language }: CodeBlockProps) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('복사 실패:', err);
+      console.error(t('common.copyFailed'), err);
     }
   };
 
@@ -26,8 +28,8 @@ export default function CodeBlock({ code, language }: CodeBlockProps) {
         <button
           className="code-block-copy-button"
           onClick={handleCopy}
-          aria-label="코드 복사"
-          title="코드 복사"
+          aria-label={t('common.copyCode')}
+          title={t('common.copyCode')}
         >
           {copied ? (
             <svg
