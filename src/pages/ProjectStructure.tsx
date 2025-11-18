@@ -112,9 +112,7 @@ export default function ProjectStructure() {
           <li><strong>REST API 명세:</strong> <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">{`{프로젝트}/src/main/resources/ouroboros/rest/ourorest.yml`}</code></li>
           <li><strong>WebSocket/STOMP API 명세:</strong> <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">{`{프로젝트}/src/main/resources/ouroboros/websocket/ourowebsocket.yml`}</code></li>
         </ul>
-        <p className="text-gray-700 text-sm">
-          라이브러리는 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">ReentrantReadWriteLock</code>을 사용해 해당 파일들을 안전하게 읽고 씁니다.
-        </p>
+       
       </section>
     </div>
   );
