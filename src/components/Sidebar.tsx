@@ -30,16 +30,6 @@ const menuItems: MenuItem[] = [
     ],
   },
   {
-    title: 'API 문서',
-    path: '/api',
-    children: [
-      { title: 'REST API 개요', path: '/api' },
-      { title: 'Specification 관리', path: '/api/specification' },
-      { title: 'Schema 관리', path: '/api/schema' },
-      { title: 'Try & 성능 추적', path: '/api/try' },
-    ],
-  },
-  {
     title: '개발자 가이드',
     path: '/developer',
     children: [
@@ -84,7 +74,7 @@ function SidebarItem({ item, level = 0 }: SidebarItemProps) {
 
 export default function Sidebar() {
   return (
-    <aside className="w-[280px] min-h-[calc(100vh-60px)] bg-gray-50 border-r border-gray-200 overflow-y-auto">
+    <aside className="w-[280px] h-[calc(100vh-60px)] bg-gray-50 border-r border-gray-200 overflow-y-auto sticky top-[60px]">
       <nav className="py-4">
         {menuItems.map((item) => (
           <SidebarItem key={item.path} item={item} />

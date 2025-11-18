@@ -1,6 +1,16 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 export default function TryFeature() {
+  const [gifKey, setGifKey] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGifKey(prev => prev + 1);
+    }, 20000);
+
+    return () => clearInterval(interval);
+  }, []);
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
       <h1 className="text-4xl font-bold text-gray-900 mb-4">Try 기능</h1>
@@ -19,11 +29,19 @@ export default function TryFeature() {
 
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">웹 UI에서 사용하기</h2>
+        <div className="mb-4">
+          <img 
+            key={gifKey}
+            src={`/images/gif/method-test-results.gif?t=${gifKey}`}
+            alt="메소드 테스트 결과" 
+            className="max-w-full rounded-lg border border-gray-200 shadow-lg"
+          />
+        </div>
         <ol className="list-decimal list-inside space-y-3 text-gray-700">
-          <li>API 상세 화면의 “Try” 탭을 열고 파라미터를 입력합니다.</li>
-          <li>“Send” 버튼을 누르면 헤더가 자동으로 추가되어 요청이 실행됩니다.</li>
+          <li>API 상세 화면의 "API Try" 탭을 열고 파라미터를 입력합니다.</li>
+          <li>"RUN" 버튼을 누르면 헤더가 자동으로 추가되어 요청이 실행됩니다.</li>
           <li>응답 패널에서 실행 시간, 상태 코드, Mock 데이터 등을 확인합니다.</li>
-          <li>우측 “History” 버튼에서 최근 Try 이력을 다시 조회할 수 있습니다.</li>
+          <li>우측 "TEST" 패널에서 최근 Try 이력을 다시 조회할 수 있습니다.</li>
         </ol>
       </section>
 
@@ -39,6 +57,25 @@ export default function TryFeature() {
         <p className="text-gray-700 mt-3 text-sm">
           응답 헤더의 Try ID를 복사해 `/ouro/tries/{'{'}tryId{'}'}` 등 REST API로 세부 정보를 확인할 수 있습니다.
         </p>
+      </section>
+
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">메소드 성능 추적</h2>
+        <p className="text-gray-700 mb-4">
+          Method Tracing이 활성화되면 메소드별 실행 시간을 상세히 확인할 수 있습니다.
+        </p>
+        <div className="mb-4">
+          <img 
+            src="/images/scrennshots/method-tracing-simple.png" 
+            alt="메소드 추적 간단 보기" 
+            className="max-w-full rounded-lg border border-gray-200 shadow-lg mb-4"
+          />
+          <img 
+            src="/images/scrennshots/method-tracing-detail.png" 
+            alt="메소드 추적 상세 보기" 
+            className="max-w-full rounded-lg border border-gray-200 shadow-lg"
+          />
+        </div>
       </section>
 
       <section className="mb-12">
@@ -85,17 +122,25 @@ management.otlp.tracing.endpoint=http://localhost:4318/v1/traces`}</code></pre>
             </p>
           </div>
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">WebSocket 명세서 Try 기능 설정</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">WebSocket Try 기능 사용</h3>
             <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-lg px-4 py-3 text-sm space-y-2 mb-3">
               <p>
-                <strong>중요:</strong> WebSocket 명세서의 Try 기능을 사용하려면 메시지 브로커의 <code className="bg-amber-100 px-1.5 py-0.5 rounded">/queue</code> prefix를 열어줘야 합니다.
-              </p>
-              <p>
-                메시지 브로커 설정에서 <code className="bg-amber-100 px-1.5 py-0.5 rounded">/queue</code> prefix에 대한 접근 권한을 허용하지 않으면 WebSocket Try 기능이 정상적으로 동작하지 않을 수 있습니다.
+                <strong>중요:</strong> WebSocket의 Try 기능을 사용하려면 서버의 메시지 브로커가 <code className="bg-amber-100 px-1.5 py-0.5 rounded">/queue</code> prefix를 사용하도록 설정되어 있어야 합니다.
               </p>
             </div>
+            <p className="text-gray-700 mb-3">
+              Spring WebSocket 메시지 브로커 설정에서 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/queue</code> prefix를 활성화해야 합니다:
+            </p>
+            <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm mb-3"><code>{`@Override
+public void configureMessageBroker(MessageBrokerRegistry config) {
+    // Enable /queue prefix (required)
+    config.enableSimpleBroker("/queue", "/topic");
+}`}</code></pre>
+            <p className="text-gray-700 text-sm mb-3">
+              Ouroboros SDK는 Try 요청 메타데이터를 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/queue/ouro/try</code> 토픽으로 전송합니다.
+            </p>
             <p className="text-gray-700 text-sm">
-              REST API와 달리 WebSocket은 메시지 브로커를 통해 통신하므로, 브로커 설정에서 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/queue</code> prefix에 대한 접근을 허용해야 Try 기능이 정상 작동합니다.
+              클라이언트는 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/user/queue/ouro/try</code> 토픽을 구독하여 Try 결과를 받을 수 있습니다.
             </p>
           </div>
         </div>

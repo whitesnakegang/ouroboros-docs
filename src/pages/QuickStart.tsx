@@ -1,6 +1,24 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 export default function QuickStart() {
+  const [restGifKey, setRestGifKey] = useState(0);
+  const [wsGifKey, setWsGifKey] = useState(0);
+
+  useEffect(() => {
+    const interval1 = setInterval(() => {
+      setRestGifKey(prev => prev + 1);
+    }, 10000);
+
+    const interval2 = setInterval(() => {
+      setWsGifKey(prev => prev + 1);
+    }, 10000);
+
+    return () => {
+      clearInterval(interval1);
+      clearInterval(interval2);
+    };
+  }, []);
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
       <h1 className="text-4xl font-bold text-gray-900 mb-4">Quick Start</h1>
@@ -27,39 +45,104 @@ export default function QuickStart() {
 
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">1단계: 설치</h2>
-        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">Gradle</h3>
+        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">기본 의존성</h3>
+        <p className="text-gray-700 mb-3">
+          기본 의존성만 추가하면 REST API와 WebSocket 기능 모두 사용할 수 있습니다.
+        </p>
+        <h4 className="text-lg font-semibold text-gray-900 mt-4 mb-2">Gradle</h4>
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`dependencies {
-    implementation 'io.github.whitesnakegang:ouroboros:1.0.1'
+    implementation 'io.github.whitesnakegang:ouroboros:1.0.2'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 }`}</code></pre>
 
-        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">Maven</h3>
+        <h4 className="text-lg font-semibold text-gray-900 mt-4 mb-2">Maven</h4>
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`<dependency>
     <groupId>io.github.whitesnakegang</groupId>
     <artifactId>ouroboros</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>`}</code></pre>
-        <p className="text-gray-700 mt-3">
-          라이브러리는 내부적으로 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">spring-boot-starter-actuator</code>와
-          <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">spring-boot-starter-aop</code>를 함께 제공합니다.
-          <span className="block mt-2">Mock 서버와 REST API 컨트롤러는 자동 구성으로 등록되므로 별도 설정 없이 사용할 수 있습니다.</span>
-          <span className="block mt-2 text-sm text-gray-600">Lombok을 사용한다면 반드시 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">annotationProcessor 'org.projectlombok:lombok'</code>를 추가해야 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@ApiState</code> 기반 자동 스캔이 정상 동작합니다.</span>
-        </p>
+
+        <div className="bg-blue-50 border border-blue-200 text-blue-800 rounded-lg px-4 py-3 text-sm mt-4 space-y-2">
+          <p>
+            <strong>참고:</strong> 라이브러리는 내부적으로 <code className="bg-blue-100 px-1.5 py-0.5 rounded">spring-boot-starter-actuator</code>와
+            <code className="bg-blue-100 px-1.5 py-0.5 rounded">spring-boot-starter-aop</code>를 함께 제공합니다.
+          </p>
+          <p>
+            Mock 서버와 REST API 컨트롤러는 자동 구성으로 등록되므로 별도 설정 없이 사용할 수 있습니다.
+          </p>
+          <p>
+            Lombok을 사용한다면 반드시 <code className="bg-blue-100 px-1.5 py-0.5 rounded">annotationProcessor 'org.projectlombok:lombok'</code>를 추가해야 
+            <code className="bg-blue-100 px-1.5 py-0.5 rounded">@ApiState</code> 기반 자동 스캔이 정상 동작합니다.
+          </p>
+        </div>
       </section>
 
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">2단계: 설정 (선택사항)</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">2단계: 설정</h2>
         <p className="text-gray-700 mb-3">
           <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">application.yml</code> 또는 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">application.properties</code>에 다음 설정을 추가할 수 있습니다:
         </p>
+
+        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">REST API 설정</h3>
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`ouroboros:
   enabled: true  # 기본값: true
   server:
     url: http://localhost:8080
-    description: Local Development Server`}</code></pre>
+    description: Local Development Server
+
+  # Method Tracing 설정 (선택사항)
+  # Try 기능에서 내부 메소드 추적이 필요할 때만 설정
+  method-tracing:
+    enabled: true
+    allowed-packages: your.package.name  # 추적할 패키지 경로 지정
+
+# Springwolf 설정 (필수)
+# REST API만 사용하거나 WebSocket 코드 스캔이 필요 없는 경우 false로 설정해야 정상 부팅됩니다
+springwolf:
+  enabled: false  # WebSocket 코드 스캔 미사용 시 필수`}</code></pre>
         <p className="text-gray-700 mt-3 text-sm">
           설정을 비활성화하면 모든 컨트롤러, 필터, 자동 구성이 등록되지 않습니다. (예: <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">ouroboros.enabled=false</code>)
         </p>
+        <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg px-4 py-3 text-sm mt-3">
+          <p>
+            <strong>⚠️ 중요:</strong> <code className="bg-red-100 px-1.5 py-0.5 rounded">springwolf.enabled=false</code> 설정은 REST API만 사용하는 경우에도 필수입니다. 
+            이 설정이 없으면 애플리케이션이 정상적으로 부팅되지 않을 수 있습니다.
+          </p>
+        </div>
+
+        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">WebSocket 설정 (선택사항)</h3>
+        <p className="text-gray-700 mb-3">
+          WebSocket/STOMP API 코드 스캔 기능을 사용할 때의 설정입니다. WebSocket 명세 작성 기능은 기본 의존성만으로 사용 가능합니다.
+        </p>
+        
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-lg px-4 py-3 text-sm mb-3">
+          <p className="font-semibold mb-2">⚠️ 중요 사항:</p>
+          <ul className="list-disc list-inside space-y-1">
+            <li><strong>명세 작성만 필요한 경우:</strong> Springwolf 의존성을 추가하지 않고 <code className="bg-amber-100 px-1 py-0.5 rounded">springwolf.enabled=false</code>로 설정하면 됩니다.</li>
+            <li><strong>코드 스캔이 필요한 경우:</strong> Springwolf 의존성을 추가하고 Springwolf를 활성화해야 합니다.</li>
+            <li><strong>채널 주소:</strong> 명세에 채널 주소를 작성할 때는 애플리케이션 destination prefix를 포함한 전체 경로를 입력해야 합니다. (예: <code className="bg-amber-100 px-1 py-0.5 rounded">/app/chat/send</code>)</li>
+            <li><strong>어노테이션:</strong> <code className="bg-amber-100 px-1 py-0.5 rounded">@MessageMapping</code>과 <code className="bg-amber-100 px-1 py-0.5 rounded">@SendTo</code> 어노테이션이 있는 메소드만 스캔됩니다.</li>
+          </ul>
+        </div>
+
+        <h4 className="text-lg font-semibold text-gray-900 mt-4 mb-2">옵션 1: 명세 작성만 (Springwolf 비활성화)</h4>
+        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`springwolf:
+  enabled: false  # Springwolf 비활성화 (명세 작성만 사용)`}</code></pre>
+
+        <h4 className="text-lg font-semibold text-gray-900 mt-4 mb-2">옵션 2: 코드 스캔 및 명세 비교 (Springwolf 활성화)</h4>
+        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`springwolf:
+  enabled: true
+  docket:
+    info:
+      title: WebSocket API
+      version: 1.0.0
+      description: WebSocket API Description
+    servers:
+      websocket:
+        host: localhost:8080
+        protocol: ws
+        description: WebSocket Server
+    base-package: com.yourpackage  # @MessageMapping 스캔할 패키지 경로`}</code></pre>
       </section>
 
       <section className="mb-12">
@@ -83,11 +166,20 @@ export default function QuickStart() {
 
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">5단계: 첫 번째 API 명세서 작성</h2>
+        
+        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">REST API 명세 작성</h3>
         <p className="text-gray-700 mb-3">
-          웹 UI에서:
+          웹 UI에서 REST API 명세를 작성합니다:
         </p>
+        <div className="mb-4">
+          <img 
+            key={restGifKey}
+            src={`/images/gif/rest-work-flow.gif?t=${restGifKey}`}
+            alt="REST API 워크플로우" 
+            className="max-w-full rounded-lg border border-gray-200 shadow-lg"
+          />
+        </div>
         <ol className="list-decimal list-inside space-y-2 text-gray-700 mb-4">
-          <li>"New API" 버튼 클릭</li>
           <li>경로, HTTP 메서드, 요약 등 입력</li>
           <li>요청/응답 스키마 정의</li>
           <li>저장</li>
@@ -95,18 +187,39 @@ export default function QuickStart() {
         <p className="text-gray-700 mt-3">
           저장하면 자동으로 Mock API가 생성되어 바로 테스트할 수 있습니다.
         </p>
+
+        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">WebSocket/STOMP API 명세 작성 (선택사항)</h3>
+        <p className="text-gray-700 mb-3">
+          WebSocket/STOMP API 명세를 작성할 수 있습니다. AsyncAPI 3.0.0 표준을 지원합니다.
+        </p>
+        <div className="mb-4">
+          <img 
+            key={wsGifKey}
+            src={`/images/gif/websocket-workflow.gif?t=${wsGifKey}`}
+            alt="WebSocket 워크플로우" 
+            className="max-w-full rounded-lg border border-gray-200 shadow-lg"
+          />
+        </div>
+        <ol className="list-decimal list-inside space-y-2 text-gray-700 mb-4">
+          <li><strong>Schema 생성:</strong> "WebSocket" → "Schemas" 탭에서 메시지 페이로드용 스키마 생성</li>
+          <li><strong>Message 생성:</strong> "WebSocket" → "Messages" 탭에서 스키마를 참조하는 메시지 정의</li>
+          <li><strong>Operation 생성:</strong> "WebSocket" → "receive" 또는 "reply" 탭에서 채널 주소와 메시지 연결</li>
+          <li><strong>채널 주소 입력:</strong> 전체 경로 포함 (예: <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/app/chat/send</code>)</li>
+        </ol>
+        <div className="bg-blue-50 border border-blue-200 text-blue-800 rounded-lg px-4 py-3 text-sm mt-3">
+          <p>
+            <strong>참고:</strong> WebSocket 명세 작성만 필요하다면 Springwolf 의존성을 추가하지 않아도 됩니다.
+            코드 스캔 및 명세 비교 기능이 필요할 때만 Springwolf를 설정하세요.
+          </p>
+        </div>
       </section>
 
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">6단계: Mock API 테스트</h2>
         <p className="text-gray-700 mb-3">
-          명세서의 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-progress</code>가 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">mock</code>인 경우,
-          해당 엔드포인트로 요청하면 자동으로 Mock 응답이 반환됩니다.
+          명세서의 내용대로 엔드포인트가 구현되지 않았거나 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@ApiState</code>의 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">progress</code>가 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">completed</code>가 아닌 경우, 해당 엔드포인트로 요청하면 자동으로 Mock 응답이 반환됩니다.
         </p>
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`curl http://localhost:8080/api/users`}</code></pre>
-        <p className="text-gray-700 mt-3 text-sm">
-          Mock 엔드포인트 판정은 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-progress</code> 값이 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">mock</code>인 경우에만 이루어집니다.
-        </p>
       </section>
 
       <section className="mb-12">
@@ -115,22 +228,12 @@ export default function QuickStart() {
           Try 기능은 API 요청의 실행 시간을 추적하고 기록합니다. <strong>별도 설정 없이 기본으로 활성화</strong>되어 있으며, 메모리 기반 저장소를 사용해 즉시 결과를 확인할 수 있습니다.
         </p>
 
-        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">기본 사용</h3>
-        <ul className="list-disc list-inside space-y-2 text-gray-700 mb-4">
-          <li>웹 UI의 “Try” 탭에서 실행하면 헤더가 자동으로 추가됩니다.</li>
-          <li>직접 호출 시 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">X-Ouroboros-Try: on</code> 헤더를 붙이세요.</li>
-        </ul>
-        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`curl -X GET "http://localhost:8080/api/your-endpoint" \
-  -H "X-Ouroboros-Try: on"`}</code></pre>
-        <p className="text-gray-700 mt-3 text-sm">
-          응답 헤더의 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">X-Ouroboros-Try-Id</code> 값을 사용해 조회 API에서 상세 정보를 확인할 수 있습니다.
-        </p>
 
         <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">웹 UI에서 확인</h3>
         <ol className="list-decimal list-inside space-y-2 text-gray-700 mb-4">
-          <li>API 상세 화면에서 “Try” 탭 선택</li>
-          <li>요청 파라미터 입력 후 “Send” 클릭</li>
-          <li>결과 영역과 “History” 패널에서 실행 이력 확인</li>
+          <li>API 상세 화면에서 “API Try” 탭 선택</li>
+          <li>요청 파라미터 입력 후 “RUN” 클릭</li>
+          <li>결과 영역과 “TEST” 패널에서 실행 이력 확인</li>
         </ol>
 
         <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">선택 사항: Method Tracing</h3>
@@ -166,11 +269,17 @@ ouroboros.method-tracing.allowed-packages=your.package`}</code></pre>
 
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">참고: 명세 저장 위치</h2>
+        
+        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">REST API 명세</h3>
         <p className="text-gray-700 mb-3">
           모든 REST 명세는 애플리케이션 루트 기준 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/main/resources/ouroboros/rest/ourorest.yml</code> 파일 하나에 저장됩니다.
-          라이브러리는 <span className="text-primary font-medium">ReentrantReadWriteLock</span>을 사용해 해당 파일을 안전하게 읽고 쓰며,
-          저장 시 자동으로 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-*</code> 확장 필드를 채워 넣습니다.
         </p>
+
+        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">WebSocket/STOMP API 명세</h3>
+        <p className="text-gray-700 mb-3">
+          모든 WebSocket/STOMP 명세는 애플리케이션 루트 기준 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/main/resources/ouroboros/websocket/ourowebsocket.yml</code> 파일 하나에 저장됩니다.
+        </p>
+
       </section>
     </div>
   );

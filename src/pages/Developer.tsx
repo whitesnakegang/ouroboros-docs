@@ -19,12 +19,14 @@ export default function Developer() {
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">추가 자료</h2>
         <ul className="list-disc list-inside space-y-2 text-gray-700">
-          <li><a href="https://ouroboros.co.kr" className="text-primary hover:underline" target="_blank" rel="noreferrer">공식 문서</a> – 최신 릴리스 노트와 API 가이드</li>
           <li><a href="https://github.com/whitesnakegang/ouroboros" className="text-primary hover:underline" target="_blank" rel="noreferrer">GitHub 저장소</a> – 이슈 및 소스 코드</li>
+          <li><a href="https://github.com/whitesnakegang/ouroboros/blob/develop/docs/ko/CONTRIBUTING.md" className="text-primary hover:underline" target="_blank" rel="noreferrer">기여 가이드</a> – 전체 기여 가이드 (한국어)</li>
+          <li><a href="https://github.com/whitesnakegang/ouroboros/blob/develop/docs/ko/CODE_OF_CONDUCT.md" className="text-primary hover:underline" target="_blank" rel="noreferrer">행동 강령</a> – 커뮤니티 행동 강령 (한국어)</li>
         </ul>
       </section>
     </div>
   );
 }
+
 
 

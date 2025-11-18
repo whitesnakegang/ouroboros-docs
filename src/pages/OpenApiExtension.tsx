@@ -9,23 +9,32 @@ export default function OpenApiExtension() {
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Operation-level 확장</h2>
         <ul className="list-disc list-inside space-y-2 text-gray-700 mb-4">
-          <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-id</code>: 고유 식별자 (UUID)</li>
-          <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-progress</code>: 진행 상태 (<code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">mock</code> / <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">completed</code>)</li>
-          <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-tag</code>: 개발 태그 (none, implementing, bugfix)</li>
-          <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-diff</code>: 명세-구현 차이 (none, request, response, endpoint, both)</li>
-          <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-isvalid</code>: 검증 상태 플래그 (웹 UI에서 사용)</li>
+          <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-id</code>: API 명세 고유 식별자 (UUID)</li>
+          <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-progress</code>: 개발 진행 상태 (<code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">mock</code> | <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">completed</code>)</li>
+          <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-tag</code>: 개발 태그 (<code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">none</code> | <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">implementing</code> | <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">bugfix</code>)</li>
+          <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-diff</code>: 명세와 구현의 차이 (<code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">none</code> | <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">request</code> | <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">response</code> | <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">endpoint</code> | <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">both</code>)
+            <ul className="list-disc list-inside ml-4 mt-2 space-y-1 text-sm text-gray-600">
+              <li><code className="bg-gray-100 px-1 py-0.5 rounded">none</code>: 차이가 없음</li>
+              <li><code className="bg-gray-100 px-1 py-0.5 rounded">request</code>: 요청 파라미터, 헤더, 본문 스키마에 차이가 있음</li>
+              <li><code className="bg-gray-100 px-1 py-0.5 rounded">response</code>: 응답 상태 코드, 헤더, 본문 스키마에 차이가 있음</li>
+              <li><code className="bg-gray-100 px-1 py-0.5 rounded">endpoint</code>: 경로 및 메서드가 명세와 구현 간 일치하지 않음</li>
+              <li><code className="bg-gray-100 px-1 py-0.5 rounded">both</code>: 요청과 응답 모두 차이가 있음</li>
+            </ul>
+          </li>
         </ul>
-        <p className="text-sm text-gray-600">초기 생성 시 모든 값은 자동으로 채워지며, 명세를 수정하면 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">diff</code>가 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">none</code>으로 재설정됩니다.</p>
+        <p className="text-sm text-gray-600">
+          명세를 수정하면 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-diff</code>가 자동으로 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">none</code>으로 재설정됩니다.
+        </p>
       </section>
 
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Schema-level 확장</h2>
         <ul className="list-disc list-inside space-y-2 text-gray-700 mb-4">
-          <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-mock</code>: Mock 데이터 생성 표현식 (DataFaker 문법)</li>
-          <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-orders</code>: 필드 순서 정의 (JSON 응답 키 순서)</li>
+          <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-mock</code>: DataFaker 표현식 (예: <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">{'{{name.fullName}}'}</code>)</li>
+          <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-ouroboros-orders</code>: 필드 순서 배열</li>
         </ul>
-        <p className="text-sm text-gray-600">
-          <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">SchemaValidator</code>가 누락된 항목을 자동으로 채우며, <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">minItems &gt; maxItems</code>와 같은 오류를 보정합니다.
+        <p className="text-sm text-gray-600 mb-4">
+          Ouroboros는 검증 중에 누락된 Ouroboros 확장 필드를 자동으로 추가하고 명세를 보강합니다.
         </p>
       </section>
     </div>

@@ -14,6 +14,13 @@ export default function Home() {
         <p className="text-xl text-gray-600 mb-8">
           OpenAPI 3.1.0 기반 REST API 명세 관리 및 Mock 서버 라이브러리
         </p>
+        <div className="mb-8">
+          <img 
+            src="/images/scrennshots/complete-gui.png" 
+            alt="Ouroboros 전체 UI" 
+            className="max-w-full rounded-lg border border-gray-200 shadow-lg"
+          />
+        </div>
         <div className="flex gap-4 justify-center">
           <Link
             to="/quick-start"
@@ -59,6 +66,12 @@ export default function Home() {
               OpenTelemetry 기반 성능 추적 및 분석으로 API 실행을 추적하고 성능 이슈를 자동으로 감지합니다.
             </p>
           </div>
+          <div className="border border-gray-200 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">WebSocket/STOMP API 관리</h3>
+            <p className="text-gray-600">
+              AsyncAPI 3.0.0 표준을 지원하는 WebSocket/STOMP API 명세 관리 및 코드 스캔 기능을 제공합니다.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -72,14 +85,32 @@ export default function Home() {
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-3">1. 의존성 추가</h3>
           <pre className="bg-gray-900 text-gray-100 rounded p-4 overflow-x-auto text-sm mb-4"><code>{`dependencies {
-    implementation 'io.github.whitesnakegang:ouroboros:1.0.1'
+    implementation 'io.github.whitesnakegang:ouroboros:1.0.2'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 }`}</code></pre>
           
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">2. 애플리케이션 실행</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-3">2. 설정 (application.yml)</h3>
+          <pre className="bg-gray-900 text-gray-100 rounded p-4 overflow-x-auto text-sm mb-4"><code>{`ouroboros:
+  enabled: true  # 기본값: true
+  server:
+    url: http://localhost:8080
+    description: Local Development Server
+
+# Springwolf 설정 (필수)
+# REST API만 사용하거나 WebSocket 코드 스캔이 필요 없는 경우 false로 설정해야 정상 부팅됩니다
+springwolf:
+  enabled: false  # WebSocket 코드 스캔 미사용 시 필수`}</code></pre>
+          <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg px-4 py-3 text-sm mb-4">
+            <p>
+              <strong>⚠️ 중요:</strong> <code className="bg-red-100 px-1.5 py-0.5 rounded">springwolf.enabled=false</code> 설정은 REST API만 사용하는 경우에도 필수입니다. 
+              이 설정이 없으면 애플리케이션이 정상적으로 부팅되지 않을 수 있습니다.
+            </p>
+          </div>
+          
+          <h3 className="text-lg font-semibold text-gray-900 mb-3">3. 애플리케이션 실행</h3>
           <pre className="bg-gray-900 text-gray-100 rounded p-4 overflow-x-auto text-sm mb-4"><code>{`./gradlew bootRun`}</code></pre>
           
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">3. 웹 UI 접속</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-3">4. 웹 UI 접속</h3>
           <p className="text-gray-700 mb-4">
             브라우저에서 <code className="bg-gray-200 px-1.5 py-0.5 rounded text-sm">http://localhost:8080/ouroboros/</code> 으로 접속하세요.
           </p>
