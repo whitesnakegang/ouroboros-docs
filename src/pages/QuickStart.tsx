@@ -51,9 +51,14 @@ export default function QuickStart() {
         <p className="text-gray-700 mb-3">
           {t('quickStart.step1.basicDepsDesc')}
         </p>
+        <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg px-4 py-3 text-sm mb-4">
+          <p>
+            {t('quickStart.step1.versionWarning')}
+          </p>
+        </div>
         <h4 className="text-lg font-semibold text-gray-900 mt-4 mb-2">Gradle</h4>
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`dependencies {
-    implementation 'io.github.whitesnakegang:ouroboros:1.0.2'
+    implementation 'io.github.whitesnakegang:ouroboros:1.0.3'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 }`}</code></pre>
 
@@ -61,7 +66,7 @@ export default function QuickStart() {
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`<dependency>
     <groupId>io.github.whitesnakegang</groupId>
     <artifactId>ouroboros</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 </dependency>`}</code></pre>
 
         <div className="bg-blue-50 border border-blue-200 text-blue-800 rounded-lg px-4 py-3 text-sm mt-4 space-y-2">

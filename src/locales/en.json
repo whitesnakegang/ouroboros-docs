@@ -56,7 +56,8 @@
       "title": "Quick Start",
       "warning": "Note: Ouroboros only supports Spring Boot 3.5.7 and below. It does not work with Spring Boot 4.0.0. See known issues for details.",
       "step1": {
-        "title": "1. Add Dependencies"
+        "title": "1. Add Dependencies",
+        "versionWarning": "⚠️ Do not use version 1.0.2 as it causes errors. Please use version 1.0.3."
       },
       "step2": {
         "title": "2. Configuration (application.yml)",
@@ -844,6 +845,7 @@
       "title": "Step 1: Installation",
       "basicDeps": "Basic Dependencies",
       "basicDepsDesc": "Adding only the basic dependencies allows you to use both REST API and WebSocket features.",
+      "versionWarning": "⚠️ Do not use version 1.0.2 as it causes errors. Please use version 1.0.3.",
       "note1": "The library internally includes spring-boot-starter-actuator and spring-boot-starter-aop.",
       "note2": "Mock server and REST API controllers are registered via auto-configuration, so they can be used without additional setup.",
       "note3": "If using Lombok, you must add annotationProcessor 'org.projectlombok:lombok' for @ApiState-based automatic scanning to work properly."

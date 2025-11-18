@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import logo from '../assets/logo.svg';
 
 export default function Home() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
@@ -87,8 +87,13 @@ export default function Home() {
         </div>
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-3">{t('home.quickStart.step1.title')}</h3>
+          <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg px-4 py-3 text-sm mb-4">
+            <p>
+              {t('home.quickStart.step1.versionWarning')}
+            </p>
+          </div>
           <pre className="bg-gray-900 text-gray-100 rounded p-4 overflow-x-auto text-sm mb-4"><code>{`dependencies {
-    implementation 'io.github.whitesnakegang:ouroboros:1.0.2'
+    implementation 'io.github.whitesnakegang:ouroboros:1.0.3'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 }`}</code></pre>
           
