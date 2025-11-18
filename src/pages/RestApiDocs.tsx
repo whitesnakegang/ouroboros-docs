@@ -185,6 +185,11 @@ export default function RestApiDocs() {
                 <td className="px-4 py-3 font-mono">/ouro/tries/{'{'}tryId{'}'}/trace</td>
                 <td className="px-4 py-3">트레이스 트리 (부모/자식 스팬 구조)</td>
               </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-primary">DELETE</td>
+                <td className="px-4 py-3 font-mono">/ouro/tries/{'{'}tryId{'}'}/trace</td>
+                <td className="px-4 py-3">trace 데이터 삭제 (저장소 자원 관리용, trace 없어도 200 반환)</td>
+              </tr>
             </tbody>
           </table>
         </div>
