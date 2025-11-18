@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function TryFeature() {
+  const { t } = useTranslation();
   const [gifKey, setGifKey] = useState(0);
 
   useEffect(() => {
@@ -13,22 +15,22 @@ export default function TryFeature() {
   }, []);
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
-      <h1 className="text-4xl font-bold text-gray-900 mb-4">Try 기능</h1>
+      <h1 className="text-4xl font-bold text-gray-900 mb-4">{t('tryFeature.title')}</h1>
       <p className="text-xl text-gray-600 mb-12">
-        별도 인프라 없이도 API 실행을 추적하고, 필요에 따라 메소드 단위까지 분석하는 방법을 정리했습니다.
+        {t('tryFeature.subtitle')}
       </p>
 
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">동작 개요</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('tryFeature.overview.title')}</h2>
         <ul className="list-disc list-inside space-y-2 text-gray-700">
-          <li><strong>기본값</strong>: 설정 없이 in-memory 저장소로 즉시 사용 가능</li>
-          <li><strong>트리거</strong>: <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">X-Ouroboros-Try: on</code> 헤더가 포함된 요청만 추적</li>
-          <li><strong>조회</strong>: 응답 헤더의 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">X-Ouroboros-Try-Id</code>로 성능 데이터를 조회</li>
+          <li><strong>{t('tryFeature.overview.items.1')}</strong></li>
+          <li><strong>{t('tryFeature.overview.items.2')}</strong></li>
+          <li><strong>{t('tryFeature.overview.items.3')}</strong></li>
         </ul>
       </section>
 
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">웹 UI에서 사용하기</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('tryFeature.webUI.title')}</h2>
         <div className="mb-4">
           <img 
             key={gifKey}
@@ -38,31 +40,31 @@ export default function TryFeature() {
           />
         </div>
         <ol className="list-decimal list-inside space-y-3 text-gray-700">
-          <li>API 상세 화면의 "API Try" 탭을 열고 파라미터를 입력합니다.</li>
-          <li>"RUN" 버튼을 누르면 헤더가 자동으로 추가되어 요청이 실행됩니다.</li>
-          <li>응답 패널에서 실행 시간, 상태 코드, Mock 데이터 등을 확인합니다.</li>
-          <li>우측 "TEST" 패널에서 최근 Try 이력을 다시 조회할 수 있습니다.</li>
+          <li>{t('tryFeature.webUI.items.1')}</li>
+          <li>{t('tryFeature.webUI.items.2')}</li>
+          <li>{t('tryFeature.webUI.items.3')}</li>
+          <li>{t('tryFeature.webUI.items.4')}</li>
         </ol>
       </section>
 
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">직접 요청 보내기</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('tryFeature.directRequest.title')}</h2>
         <p className="text-gray-700 mb-3">
-          도구(HTTPie, Postman 등)로 호출할 때는 헤더를 수동으로 추가합니다.
+          {t('tryFeature.directRequest.desc')}
         </p>
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm"><code>{`curl -X POST "http://localhost:8080/api/orders" \
   -H "Content-Type: application/json" \
   -H "X-Ouroboros-Try: on" \
   -d '{"amount": 1000}'`}</code></pre>
         <p className="text-gray-700 mt-3 text-sm">
-          응답 헤더의 Try ID를 복사해 `/ouro/tries/{'{'}tryId{'}'}` 등 REST API로 세부 정보를 확인할 수 있습니다.
+          {t('tryFeature.directRequest.note')}
         </p>
       </section>
 
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">메소드 성능 추적</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('tryFeature.methodTracing.title')}</h2>
         <p className="text-gray-700 mb-4">
-          Method Tracing이 활성화되면 메소드별 실행 시간을 상세히 확인할 수 있습니다.
+          {t('tryFeature.methodTracing.desc')}
         </p>
         <div className="mb-4">
           <img 
@@ -79,79 +81,68 @@ export default function TryFeature() {
       </section>
 
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">고급 설정 (선택)</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('tryFeature.advanced.title')}</h2>
         <div className="space-y-6 text-gray-700">
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Method Tracing</h3>
-            <p className="mb-3">내부 메소드 호출까지 추적하려면 아래 설정을 추가합니다.</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('tryFeature.advanced.methodTracing.title')}</h3>
+            <p className="mb-3">{t('tryFeature.advanced.methodTracing.desc')}</p>
             <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm"><code>{`ouroboros.method-tracing.enabled=true
 ouroboros.method-tracing.allowed-packages=your.package`}</code></pre>
           </div>
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">트레이스 저장 기간</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('tryFeature.advanced.traceStorage.title')}</h3>
             <p className="mb-3">
-              기본 저장소는 애플리케이션 메모리이므로 재시작 시 Try 기록이 초기화됩니다. 
-              대부분의 개발 및 테스트 시나리오에서는 <strong>in-memory 저장소로 충분</strong>합니다.
+              {t('tryFeature.advanced.traceStorage.desc')}
             </p>
             <div className="bg-blue-50 border border-blue-200 text-blue-800 rounded-lg px-4 py-3 text-sm space-y-2 mb-3">
               <p>
-                <strong>Tempo 연동 (선택 사항):</strong> 영구 저장이 필요하다면 <strong>Grafana Tempo</strong>를 연동할 수 있습니다.
+                <strong>{t('tryFeature.advanced.traceStorage.tempo.title')}</strong> {t('tryFeature.advanced.traceStorage.tempo.desc')}
               </p>
               <p>
-                Tempo를 사용하면 다음이 가능합니다:
+                {t('tryFeature.advanced.traceStorage.tempo.benefits.title')}
               </p>
               <ul className="list-disc list-inside ml-2 space-y-1">
-                <li>영구 트레이스 저장 (애플리케이션 재시작 후에도 트레이스 유지)</li>
-                <li>여러 요청에 걸친 고급 트레이스 분석</li>
-                <li>여러 애플리케이션 인스턴스 간 트레이스 공유</li>
-                <li>장기간 트레이스 보관</li>
+                <li>{t('tryFeature.advanced.traceStorage.tempo.benefits.items.1')}</li>
+                <li>{t('tryFeature.advanced.traceStorage.tempo.benefits.items.2')}</li>
+                <li>{t('tryFeature.advanced.traceStorage.tempo.benefits.items.3')}</li>
+                <li>{t('tryFeature.advanced.traceStorage.tempo.benefits.items.4')}</li>
               </ul>
             </div>
             <p className="mb-3 text-sm">
-              Tempo 연동을 활성화하려면 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">application.properties</code>에 다음 설정을 추가하세요:
+              {t('tryFeature.advanced.traceStorage.tempo.setup')} <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">application.properties</code>
             </p>
-            <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm mb-3"><code>{`# Tempo 연동 활성화
-ouroboros.tempo.enabled=true
-ouroboros.tempo.base-url=http://localhost:3200
-
-# OpenTelemetry Exporter 설정
-management.tracing.enabled=true
-management.otlp.tracing.endpoint=http://localhost:4318/v1/traces`}</code></pre>
+            <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm mb-3"><code>{t('tryFeature.tempoConfigCode')}</code></pre>
             <p className="text-gray-700 text-sm">
-              상세한 Tempo 설정 방법은 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">OUROBOROS_TRY_SETUP.md</code> 문서의 <strong>Tempo 연동</strong> 섹션을 참고하세요.
+              {t('tryFeature.advanced.traceStorage.tempo.details')} <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">OUROBOROS_TRY_SETUP.md</code>
             </p>
           </div>
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">WebSocket Try 기능 사용</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('tryFeature.advanced.websocketTry.title')}</h3>
             <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-lg px-4 py-3 text-sm space-y-2 mb-3">
               <p>
-                <strong>중요:</strong> WebSocket의 Try 기능을 사용하려면 서버의 메시지 브로커가 <code className="bg-amber-100 px-1.5 py-0.5 rounded">/queue</code> prefix를 사용하도록 설정되어 있어야 합니다.
+                <strong>{t('tryFeature.advanced.websocketTry.important')}</strong>
               </p>
             </div>
             <p className="text-gray-700 mb-3">
-              Spring WebSocket 메시지 브로커 설정에서 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/queue</code> prefix를 활성화해야 합니다:
+              {t('tryFeature.advanced.websocketTry.desc')} <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/queue</code>
             </p>
-            <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm mb-3"><code>{`@Override
-public void configureMessageBroker(MessageBrokerRegistry config) {
-    // Enable /queue prefix (required)
-    config.enableSimpleBroker("/queue", "/topic");
-}`}</code></pre>
+            <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm mb-3"><code>{t('tryFeature.websocketConfigCode')}</code></pre>
             <p className="text-gray-700 text-sm mb-3">
-              Ouroboros SDK는 Try 요청 메타데이터를 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/queue/ouro/try</code> 토픽으로 전송합니다.
+              {t('tryFeature.advanced.websocketTry.note1')} <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/queue/ouro/try</code>
             </p>
             <p className="text-gray-700 text-sm">
-              클라이언트는 <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/user/queue/ouro/try</code> 토픽을 구독하여 Try 결과를 받을 수 있습니다.
+              {t('tryFeature.advanced.websocketTry.note2')} <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/user/queue/ouro/try</code>
             </p>
           </div>
         </div>
       </section>
 
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">관련 자료</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('tryFeature.resources.title')}</h2>
         <ul className="list-disc list-inside space-y-2 text-gray-700">
-          <li><Link to="/api/try" className="text-primary hover:underline">Try & 성능 추적 API</Link> – REST API 상세 설명</li>
-          <li><a href="https://ouroboros.co.kr" className="text-primary hover:underline" target="_blank" rel="noreferrer">공식 문서</a> – 최신 가이드</li>
-          <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">OUROBOROS_TRY_SETUP.md</code> – Try 기능 설정 세부 가이드</li>
+          <li><Link to="/api/try" className="text-primary hover:underline">{t('tryFeature.resources.items.1')}</Link></li>
+          <li><a href="https://ouroboros.co.kr" className="text-primary hover:underline" target="_blank" rel="noreferrer">{t('tryFeature.resources.items.2')}</a></li>
+          <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">OUROBOROS_TRY_SETUP.md</code> – {t('tryFeature.resources.items.3')}</li>
         </ul>
       </section>
     </div>

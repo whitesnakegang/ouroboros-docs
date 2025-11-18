@@ -1,15 +1,19 @@
+import { useTranslation } from 'react-i18next';
+
 export default function ProjectStructure() {
+  const { t } = useTranslation();
+
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
-      <h1 className="text-4xl font-bold text-gray-900 mb-4">프로젝트 구조</h1>
+      <h1 className="text-4xl font-bold text-gray-900 mb-4">{t('projectStructure.title')}</h1>
       <p className="text-xl text-gray-600 mb-12">
-        Ouroboros 프로젝트의 구조를 설명합니다.
+        {t('projectStructure.subtitle')}
       </p>
 
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">전체 구조</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('projectStructure.overall.title')}</h2>
         <p className="text-gray-700 mb-3">
-          Ouroboros는 <strong>backend</strong> (Spring Boot 라이브러리)와 <strong>front</strong> (React 웹 UI)로 구성되어 있습니다.
+          {t('projectStructure.overall.descPart1')} <strong>{t('projectStructure.overall.descPart2')}</strong> {t('projectStructure.overall.descPart3')} <strong>{t('projectStructure.overall.descPart4')}</strong> {t('projectStructure.overall.descPart5')}
         </p>
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm"><code>{`ouroboros/
 ├── backend/           [Spring Boot Library]
@@ -24,7 +28,7 @@ export default function ProjectStructure() {
       </section>
 
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">백엔드 패키지 구조</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('projectStructure.backend.title')}</h2>
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm"><code>{`kr.co.ouroboros/
 ├── core/
 │   ├── global/
@@ -66,7 +70,7 @@ export default function ProjectStructure() {
       </section>
 
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">프론트엔드 구조</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('projectStructure.frontend.title')}</h2>
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm"><code>{`front/
 ├── src/
 │   ├── app/                     [App 컴포넌트]
@@ -81,36 +85,36 @@ export default function ProjectStructure() {
       </section>
 
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">핵심 컴포넌트</h2>
-        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">Global</h3>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('projectStructure.components.title')}</h2>
+        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">{t('projectStructure.components.global.title')}</h3>
         <ul className="list-disc list-inside space-y-2 text-gray-700 mb-4">
-          <li><strong>OuroApiSpecManager</strong>: 명세서 캐시의 단일 소스 (중앙 캐시)</li>
-          <li><strong>OuroProtocolHandler</strong>: 프로토콜 전략 패턴 (REST, WebSocket 지원)</li>
-          <li><strong>SpecSyncPipeline</strong>: 명세서 동기화 파이프라인</li>
+          <li><strong>{t('projectStructure.components.global.items.1')}</strong></li>
+          <li><strong>{t('projectStructure.components.global.items.2')}</strong></li>
+          <li><strong>{t('projectStructure.components.global.items.3')}</strong></li>
         </ul>
-        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">REST</h3>
+        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">{t('projectStructure.components.rest.title')}</h3>
         <ul className="list-disc list-inside space-y-2 text-gray-700 mb-4">
-          <li><strong>RestApiYamlParser</strong>: OpenAPI 3.1.0 YAML 파싱</li>
-          <li><strong>RestApiSpecService</strong>: REST API 명세 CRUD 서비스</li>
-          <li><strong>OuroborosMockFilter</strong>: Mock 서버 필터</li>
-          <li><strong>ApiStateGlobalMethodFilter</strong>: @ApiState 메소드 필터링</li>
+          <li><strong>{t('projectStructure.components.rest.items.1')}</strong></li>
+          <li><strong>{t('projectStructure.components.rest.items.2')}</strong></li>
+          <li><strong>{t('projectStructure.components.rest.items.3')}</strong></li>
+          <li><strong>{t('projectStructure.components.rest.items.4')}</strong></li>
         </ul>
-        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">WebSocket</h3>
+        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">{t('projectStructure.components.websocket.title')}</h3>
         <ul className="list-disc list-inside space-y-2 text-gray-700 mb-4">
-          <li><strong>AsyncApiYamlParser</strong>: AsyncAPI 3.0.0 YAML 파싱</li>
-          <li><strong>WebSocketSpecService</strong>: WebSocket 명세 CRUD 서비스</li>
-          <li><strong>OuroWebSocketHandler</strong>: WebSocket 프로토콜 핸들러</li>
+          <li><strong>{t('projectStructure.components.websocket.items.1')}</strong></li>
+          <li><strong>{t('projectStructure.components.websocket.items.2')}</strong></li>
+          <li><strong>{t('projectStructure.components.websocket.items.3')}</strong></li>
         </ul>
       </section>
 
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">데이터 저장</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('projectStructure.storage.title')}</h2>
         <p className="text-gray-700 mb-3">
-          모든 API 명세서는 다음 위치에 단일 파일로 저장됩니다:
+          {t('projectStructure.storage.desc')}
         </p>
         <ul className="list-disc list-inside space-y-2 text-gray-700 mb-4">
-          <li><strong>REST API 명세:</strong> <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">{`{프로젝트}/src/main/resources/ouroboros/rest/ourorest.yml`}</code></li>
-          <li><strong>WebSocket/STOMP API 명세:</strong> <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">{`{프로젝트}/src/main/resources/ouroboros/websocket/ourowebsocket.yml`}</code></li>
+          <li><strong>{t('projectStructure.storage.rest')}</strong> <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">{t('common.project')}/src/main/resources/ouroboros/rest/ourorest.yml</code></li>
+          <li><strong>{t('projectStructure.storage.websocket')}</strong> <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">{t('common.project')}/src/main/resources/ouroboros/websocket/ourowebsocket.yml</code></li>
         </ul>
        
       </section>

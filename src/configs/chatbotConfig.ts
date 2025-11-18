@@ -1,8 +1,9 @@
 import { createChatBotMessage } from "react-chatbot-kit";
+import i18n from "../i18n";
 
 const config = {
   initialMessages: [
-    createChatBotMessage("안녕하세요! 무엇을 도와드릴까요?", {}),
+    createChatBotMessage(i18n.t('developer.chatbot.greeting'), {}),
   ],
   botName: "Ouroboros Assistant",
   botAvatarSrc: "/chatbot-msg.png",

@@ -1,40 +1,41 @@
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface MenuItem {
-  title: string;
+  titleKey: string;
   path: string;
   children?: MenuItem[];
 }
 
 const menuItems: MenuItem[] = [
   {
-    title: '시작하기',
+    titleKey: 'sidebar.gettingStarted',
     path: '/',
   },
   {
-    title: 'Quick Start',
+    titleKey: 'sidebar.quickStart',
     path: '/quick-start',
   },
   {
-    title: '가이드',
+    titleKey: 'sidebar.guide',
     path: '/guide',
     children: [
-      { title: '기본 사용법', path: '/guide/basic-usage' },
-      { title: 'API 명세서 작성', path: '/guide/api-spec' },
-      { title: 'Schema 관리', path: '/guide/schema' },
-      { title: 'Mock API', path: '/guide/mock-api' },
-      { title: 'OpenAPI 확장', path: '/guide/openapi-extension' },
-      { title: 'Try 기능', path: '/guide/try-feature' },
-      { title: '구현 검증', path: '/guide/implementation-validation' },
-      { title: '알려진 버그', path: '/guide/known-issues' },
+      { titleKey: 'sidebar.basicUsage', path: '/guide/basic-usage' },
+      { titleKey: 'sidebar.apiSpec', path: '/guide/api-spec' },
+      { titleKey: 'sidebar.schema', path: '/guide/schema' },
+      { titleKey: 'sidebar.mockApi', path: '/guide/mock-api' },
+      { titleKey: 'sidebar.openapiExtension', path: '/guide/openapi-extension' },
+      { titleKey: 'sidebar.tryFeature', path: '/guide/try-feature' },
+      { titleKey: 'sidebar.implementationValidation', path: '/guide/implementation-validation' },
+      { titleKey: 'sidebar.knownIssues', path: '/guide/known-issues' },
     ],
   },
   {
-    title: '개발자 가이드',
+    titleKey: 'sidebar.developerGuide',
     path: '/developer',
     children: [
-      { title: '프로젝트 구조', path: '/developer/project-structure' },
-      { title: '컨트리뷰션', path: '/developer/contributing' },
+      { titleKey: 'sidebar.projectStructure', path: '/developer/project-structure' },
+      { titleKey: 'sidebar.contributing', path: '/developer/contributing' },
     ],
   },
 ];
@@ -46,6 +47,7 @@ interface SidebarItemProps {
 
 function SidebarItem({ item, level = 0 }: SidebarItemProps) {
   const location = useLocation();
+  const { t } = useTranslation();
   const isActive = location.pathname === item.path;
   const hasChildren = item.children && item.children.length > 0;
 
@@ -59,7 +61,7 @@ function SidebarItem({ item, level = 0 }: SidebarItemProps) {
             : 'text-gray-700 hover:bg-gray-100 hover:text-primary'
         }`}
       >
-        {item.title}
+        {t(item.titleKey)}
       </Link>
       {hasChildren && (
         <div className="mt-1">

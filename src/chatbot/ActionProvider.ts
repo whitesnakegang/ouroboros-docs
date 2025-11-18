@@ -1,3 +1,5 @@
+import i18n from '../i18n';
+
 class ActionProvider {
   createChatBotMessage: (message: string, widget?: any) => any;
   setState: (updater: (prevState: any) => any) => void;
@@ -27,7 +29,7 @@ class ActionProvider {
       }
 
       const data = await response.json();
-      const botMessage = this.createChatBotMessage(data.response || "응답을 받지 못했습니다.", {});
+      const botMessage = this.createChatBotMessage(data.response || i18n.t('developer.chatbot.noResponse'), {});
       
       this.setState((prev: any) => ({
         ...prev,
@@ -36,7 +38,7 @@ class ActionProvider {
     } catch (error) {
       console.error("API 요청 실패:", error);
       const errorMessage = this.createChatBotMessage(
-        "죄송합니다. 서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.",
+        i18n.t('developer.chatbot.connectionError'),
         {}
       );
       this.setState((prev: any) => ({
@@ -47,7 +49,7 @@ class ActionProvider {
   }
 
   greet() {
-    const message = this.createChatBotMessage("안녕하세요! Ouroboros 문서에 오신 것을 환영합니다.", {});
+    const message = this.createChatBotMessage(i18n.t('developer.chatbot.welcome'), {});
     this.setState((prev: any) => ({
       ...prev,
       messages: [...prev.messages, message],

@@ -1,5 +1,6 @@
 import { type ReactNode, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import ChatbotComponent from './Chatbot';
@@ -11,6 +12,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     // 라우팅 완료 후 스크롤 처리
@@ -63,21 +65,21 @@ export default function Layout({ children }: LayoutProps) {
       button.type = 'button';
       button.dataset.copy = 'true';
       button.className = 'copy-btn';
-      button.textContent = '복사';
+      button.textContent = t('common.copy');
 
       const handleClick = async () => {
         const text = code?.textContent ?? pre.textContent ?? '';
         try {
           await navigator.clipboard.writeText(text.trimEnd());
           const original = button.textContent;
-          button.textContent = '복사됨';
+          button.textContent = t('common.copied');
           setTimeout(() => {
-            button.textContent = original ?? '복사';
+            button.textContent = original ?? t('common.copy');
           }, 1500);
         } catch {
-          button.textContent = '실패';
+          button.textContent = t('common.failed');
           setTimeout(() => {
-            button.textContent = '복사';
+            button.textContent = t('common.copy');
           }, 1500);
         }
       };
@@ -98,7 +100,7 @@ export default function Layout({ children }: LayoutProps) {
     return () => {
       disposers.forEach((dispose) => dispose());
     };
-  }, [location.pathname]);
+  }, [location.pathname, t]);
 
   return (
     <div className="min-h-screen bg-white">
