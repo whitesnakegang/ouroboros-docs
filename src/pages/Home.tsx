@@ -93,7 +93,7 @@ export default function Home() {
             </p>
           </div>
           <pre className="bg-gray-900 text-gray-100 rounded p-4 overflow-x-auto text-sm mb-4"><code>{`dependencies {
-    implementation 'io.github.whitesnakegang:ouroboros:1.0.3'
+    implementation 'io.github.whitesnakegang:ouroboros:1.0.4'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 }`}</code></pre>
           

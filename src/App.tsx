@@ -9,6 +9,7 @@ import Schema from './pages/Schema';
 import MockApi from './pages/MockApi';
 import OpenApiExtension from './pages/OpenApiExtension';
 import TryFeature from './pages/TryFeature';
+import TryFeatureExtension from './pages/TryFeatureExtension';
 import ImplementationValidation from './pages/ImplementationValidation';
 import ProjectStructure from './pages/ProjectStructure';
 import Contributing from './pages/Contributing';
@@ -29,6 +30,7 @@ function App() {
           <Route path="/guide/mock-api" element={<MockApi />} />
           <Route path="/guide/openapi-extension" element={<OpenApiExtension />} />
           <Route path="/guide/try-feature" element={<TryFeature />} />
+          <Route path="/guide/try-feature-extension" element={<TryFeatureExtension />} />
           <Route path="/guide/implementation-validation" element={<ImplementationValidation />} />
           <Route path="/guide/known-issues" element={<KnownIssues />} />
           <Route path="/developer/project-structure" element={<ProjectStructure />} />

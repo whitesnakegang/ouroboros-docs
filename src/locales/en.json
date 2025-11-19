@@ -57,7 +57,7 @@
       "warning": "Note: Ouroboros only supports Spring Boot 3.5.7 and below. It does not work with Spring Boot 4.0.0. See known issues for details.",
       "step1": {
         "title": "1. Add Dependencies",
-        "versionWarning": "⚠️ Do not use version 1.0.2 as it causes errors. Please use version 1.0.3."
+        "versionWarning": "⚠️ Do not use version 1.0.2 as it causes errors. Please use version 1.0.4."
       },
       "step2": {
         "title": "2. Configuration (application.yml)",
@@ -84,6 +84,7 @@
     "mockApi": "Mock API",
     "openapiExtension": "OpenAPI Extensions",
     "tryFeature": "Try Feature",
+    "tryFeatureExtension": "Try Feature Extension",
     "implementationValidation": "Implementation Validation",
     "knownIssues": "Known Issues",
     "developerGuide": "Developer Guide",
@@ -385,6 +386,82 @@
     },
     "tempoConfigCode": "# Enable Tempo Integration\nouroboros.tempo.enabled=true\nouroboros.tempo.base-url=http://localhost:3200\n\n# OpenTelemetry Exporter Configuration\nmanagement.tracing.enabled=true\nmanagement.otlp.tracing.endpoint=http://localhost:4318/v1/traces",
     "websocketConfigCode": "@Override\npublic void configureMessageBroker(MessageBrokerRegistry config) {\n    // Enable /queue prefix (required)\n    config.enableSimpleBroker(\"/queue\", \"/topic\");\n}"
+  },
+  "tryFeatureExtension": {
+    "title": "Try Feature Extension",
+    "subtitle": "Guide for setting up persistent trace storage and advanced analysis features using Grafana Tempo",
+    "tempo": {
+      "title": "Tempo Integration (Optional)",
+      "whenToUse": {
+        "title": "💡 When to Use Tempo",
+        "desc": "Use Tempo if you need:",
+        "items": {
+          "1": "Persistent trace storage (traces persist after application restart)",
+          "2": "Advanced trace analysis features",
+          "3": "Trace sharing across multiple application instances"
+        },
+        "note": "For most use cases, in-memory storage is sufficient and no additional configuration is required."
+      },
+      "desc": "If persistent storage or advanced analysis is needed, you can optionally configure Grafana Tempo.",
+      "appConfig": {
+        "title": "Enable Tempo in Application Configuration",
+        "code": "# Enable Tempo Integration (Ouroboros SDK uses TraceQL)\n# If not set or set to false, in-memory storage is used by default\nouroboros.tempo.enabled=true\nouroboros.tempo.base-url=http://${TEMPO_HOST:localhost}:${TEMPO_UI_PORT:3200}",
+        "note": "If not set or set to false, in-memory storage is used by default."
+      },
+      "otelConfig": {
+        "title": "OpenTelemetry Exporter Configuration",
+        "note": "Note: This configuration is only required when using Tempo integration (ouroboros.tempo.enabled=true).",
+        "code": "# OpenTelemetry Exporter (App -> Tempo)\n# Using HTTP protocol (port 4318)\nmanagement.tracing.enabled=true\nmanagement.otlp.tracing.endpoint=http://${TEMPO_HOST:localhost}:${TEMPO_HTTP_PORT:4318}/v1/traces",
+        "envNote": "Note: ${TEMPO_HOST:localhost} and ${TEMPO_HTTP_PORT:4318} reference environment variables set in the .env file."
+      },
+      "serverConfig": {
+        "title": "Tempo Server Configuration",
+        "structure": {
+          "title": "Configuration File Structure",
+          "code": ".\n├─ docker-compose.yml      # Tempo container configuration\n├─ tempo.yaml              # Tempo configuration file\n├─ .env                    # Docker ↔ App sync variables (required)\n├─ tempo-data/             # Local trace data storage folder (auto-generated)\n└─ src/main/resources/application.properties  # Spring Boot app configuration"
+        },
+        "envFile": {
+          "title": "Create .env File",
+          "desc": "Create a .env file in the project root (where docker-compose.yml is located).",
+          "code": "# ====== Docker ↔ App Sync Variables ======\n# Tempo server address (Docker container name or localhost)\nTEMPO_HOST=localhost\n\n# Tempo ports (Docker Compose ↔ Spring Boot sync)\nTEMPO_HTTP_PORT=4318  # OTLP HTTP (trace data transmission)\nTEMPO_UI_PORT=3200    # Tempo UI / Query API",
+          "note": "These variables are required for port/host synchronization between Docker Compose and Spring Boot.",
+          "noteItems": {
+            "1": "When running locally → TEMPO_HOST=localhost",
+            "2": "When running inside Docker network → TEMPO_HOST=tempo"
+          }
+        },
+        "dockerCompose": {
+          "title": "Docker Compose Configuration",
+          "desc": "Create a docker-compose.yml file in the project root.",
+          "code": "services:\n  tempo:\n    image: grafana/tempo:2.6.1\n    container_name: tempo\n    ports:\n      - \"${TEMPO_HTTP_PORT:-4318}:4318\"  # OTLP HTTP (trace data reception)\n      - \"${TEMPO_UI_PORT:-3200}:3200\"    # Tempo UI / Query API\n    command: [\"-config.file=/etc/tempo/tempo.yaml\"]\n    volumes:\n      - ./tempo.yaml:/etc/tempo/tempo.yaml:ro\n      - ./tempo-data:/var/tempo\n    restart: unless-stopped\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-qO-\", \"http://localhost:3200/ready\"]\n      interval: 10s\n      timeout: 3s\n      retries: 10\n    networks:\n      - tempo-net\n\nnetworks:\n  tempo-net:\n    driver: bridge",
+          "note": "Note: Only HTTP protocol is used, so gRPC port (4317) is not required."
+        },
+        "tempoYaml": {
+          "title": "Tempo Configuration File",
+          "desc": "Create a tempo.yaml file in the project root:",
+          "code": "server:\n  http_listen_port: 3200\n\nstorage:\n  trace:\n    backend: local\n    local:\n      path: /var/tempo/traces\n\ndistributor:\n  receivers:\n    otlp:\n      protocols:\n        http:\n          endpoint: 0.0.0.0:4318",
+          "note": "Note: Only HTTP protocol is used, so gRPC protocol configuration has been removed."
+        },
+        "run": {
+          "title": "Run Tempo",
+          "code": "# Start Tempo container\ndocker compose up -d\n\n# Verify execution\ndocker ps\ndocker logs tempo -f"
+        },
+        "gitignore": {
+          "title": "Gitignore Configuration (for Tempo)",
+          "desc": "Add the following items to your project's .gitignore file:",
+          "code": "# ===== Ouroboros SDK Try Feature Related =====\n# Tempo data directory\ntempo-data/\n\n# Environment variable files\n.env\n.env.local\n.env.*.local\n\n# Docker Compose override\ndocker-compose.override.yml",
+          "warning": {
+            "title": "Important:",
+            "items": {
+              "1": "tempo.yaml: This file is a project configuration file and should be included in Git.",
+              "2": "docker-compose.yml: This is a Docker Compose configuration file and should be included in Git.",
+              "3": "tempo-data/: The Tempo data directory should not be included in Git.",
+              "4": ".env: Environment variable files should not be included in Git."
+            }
+          }
+        }
+      }
+    }
   },
   "schema": {
     "title": "Schema Management",
@@ -706,7 +783,7 @@
     },
     "backendSetupCode": "cd backend\n\n# Build\n./gradlew build\n\n# Run tests\n./gradlew test\n\n# Run application\n./gradlew bootRun\n\n# Publish to local Maven repository (for testing)\n./gradlew publishToMavenLocal",
     "frontendSetupCode": "cd front\n\n# Install dependencies\nnpm install\n\n# Run dev server\nnpm run dev\n\n# Build\nnpm run build\n\n# Run lint\nnpm run lint",
-    "localTestCode": "# Build backend and publish to local Maven repository\ncd backend\n./gradlew publishToMavenLocal\n\n# Use in test project\ndependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.3-SNAPSHOT'\n}"
+    "localTestCode": "# Build backend and publish to local Maven repository\ncd backend\n./gradlew publishToMavenLocal\n\n# Use in test project\ndependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.4-SNAPSHOT'\n}"
   },
   "projectStructure": {
     "title": "Project Structure",
@@ -845,7 +922,7 @@
       "title": "Step 1: Installation",
       "basicDeps": "Basic Dependencies",
       "basicDepsDesc": "Adding only the basic dependencies allows you to use both REST API and WebSocket features.",
-      "versionWarning": "⚠️ Do not use version 1.0.2 as it causes errors. Please use version 1.0.3.",
+      "versionWarning": "⚠️ Do not use version 1.0.2 as it causes errors. Please use version 1.0.4.",
       "note1": "The library internally includes spring-boot-starter-actuator and spring-boot-starter-aop.",
       "note2": "Mock server and REST API controllers are registered via auto-configuration, so they can be used without additional setup.",
       "note3": "If using Lombok, you must add annotationProcessor 'org.projectlombok:lombok' for @ApiState-based automatic scanning to work properly."

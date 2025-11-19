@@ -57,7 +57,7 @@
       "warning": "주의: Ouroboros는 Spring Boot 3.5.7 이하 버전만 지원합니다. Spring Boot 4.0.0에서는 작동하지 않습니다. 자세한 내용은 알려진 버그를 참고하세요.",
       "step1": {
         "title": "1. 의존성 추가",
-        "versionWarning": "⚠️ 1.0.2 버전은 에러가 발생하므로 사용하지 마세요. 반드시 1.0.3 버전을 사용해주세요."
+        "versionWarning": "⚠️ 1.0.2 버전은 에러가 발생하므로 사용하지 마세요. 반드시 1.0.4 버전을 사용해주세요."
       },
       "step2": {
         "title": "2. 설정 (application.yml)",
@@ -84,6 +84,7 @@
     "mockApi": "Mock API",
     "openapiExtension": "OpenAPI 확장",
     "tryFeature": "Try 기능",
+    "tryFeatureExtension": "Try 기능 확장",
     "implementationValidation": "구현 검증",
     "knownIssues": "알려진 버그",
     "developerGuide": "개발자 가이드",
@@ -385,6 +386,82 @@
     },
     "tempoConfigCode": "# Tempo 연동 활성화\nouroboros.tempo.enabled=true\nouroboros.tempo.base-url=http://localhost:3200\n\n# OpenTelemetry Exporter 설정\nmanagement.tracing.enabled=true\nmanagement.otlp.tracing.endpoint=http://localhost:4318/v1/traces",
     "websocketConfigCode": "@Override\npublic void configureMessageBroker(MessageBrokerRegistry config) {\n    // Enable /queue prefix (required)\n    config.enableSimpleBroker(\"/queue\", \"/topic\");\n}"
+  },
+  "tryFeatureExtension": {
+    "title": "Try 기능 확장",
+    "subtitle": "Grafana Tempo를 사용한 영구 트레이스 저장 및 고급 분석 기능 설정 가이드",
+    "tempo": {
+      "title": "Tempo 연동 (선택 사항)",
+      "whenToUse": {
+        "title": "💡 Tempo를 사용해야 하는 경우",
+        "desc": "다음이 필요하면 Tempo를 사용하세요:",
+        "items": {
+          "1": "영구 트레이스 저장 (애플리케이션 재시작 후에도 트레이스 유지)",
+          "2": "고급 트레이스 분석 기능",
+          "3": "여러 애플리케이션 인스턴스 간 트레이스 공유"
+        },
+        "note": "대부분의 사용 사례에서는 in-memory 저장소로 충분하며 별도 설정이 필요 없습니다."
+      },
+      "desc": "영구 저장이나 고급 분석이 필요하면 Grafana Tempo를 선택적으로 설정할 수 있습니다.",
+      "appConfig": {
+        "title": "애플리케이션 설정에서 Tempo 활성화",
+        "code": "# Tempo 연동 활성화 (Ouroboros SDK에서 TraceQL 사용)\n# 설정하지 않거나 false로 설정하면 기본적으로 in-memory 저장소를 사용합니다\nouroboros.tempo.enabled=true\nouroboros.tempo.base-url=http://${TEMPO_HOST:localhost}:${TEMPO_UI_PORT:3200}",
+        "note": "설정하지 않거나 false로 설정하면 기본적으로 in-memory 저장소를 사용합니다."
+      },
+      "otelConfig": {
+        "title": "OpenTelemetry Exporter 설정",
+        "note": "참고: 이 설정은 Tempo 연동을 사용할 때(ouroboros.tempo.enabled=true)만 필요합니다.",
+        "code": "# OpenTelemetry Exporter (App -> Tempo)\n# HTTP 방식 사용 (포트 4318)\nmanagement.tracing.enabled=true\nmanagement.otlp.tracing.endpoint=http://${TEMPO_HOST:localhost}:${TEMPO_HTTP_PORT:4318}/v1/traces",
+        "envNote": "참고: ${TEMPO_HOST:localhost}와 ${TEMPO_HTTP_PORT:4318}은 .env 파일에서 설정한 환경 변수를 참조합니다."
+      },
+      "serverConfig": {
+        "title": "Tempo 서버 설정",
+        "structure": {
+          "title": "구성 파일 구조",
+          "code": ".\n├─ docker-compose.yml      # Tempo 컨테이너 설정\n├─ tempo.yaml              # Tempo 설정 파일\n├─ .env                    # Docker ↔ App 동기화 변수 (필수)\n├─ tempo-data/             # 로컬 트레이스 데이터 저장 폴더 (자동 생성)\n└─ src/main/resources/application.properties  # Spring Boot 앱 설정"
+        },
+        "envFile": {
+          "title": ".env 파일 생성",
+          "desc": "프로젝트 루트(즉, docker-compose.yml이 있는 위치)에 .env 파일을 생성합니다.",
+          "code": "# ====== Docker ↔ App 동기화 변수 ======\n# Tempo 서버 주소 (Docker 컨테이너명 또는 localhost)\nTEMPO_HOST=localhost\n\n# Tempo 포트 (Docker Compose ↔ Spring Boot 동기화)\nTEMPO_HTTP_PORT=4318  # OTLP HTTP (트레이스 데이터 전송)\nTEMPO_UI_PORT=3200    # Tempo UI / Query API",
+          "note": "이 변수들은 Docker Compose와 Spring Boot 간의 포트/호스트 동기화를 위해 필수입니다.",
+          "noteItems": {
+            "1": "로컬 실행 시 → TEMPO_HOST=localhost",
+            "2": "Docker 네트워크 내부 실행 시 → TEMPO_HOST=tempo"
+          }
+        },
+        "dockerCompose": {
+          "title": "Docker Compose 설정",
+          "desc": "프로젝트 루트에 docker-compose.yml 파일을 생성합니다.",
+          "code": "services:\n  tempo:\n    image: grafana/tempo:2.6.1\n    container_name: tempo\n    ports:\n      - \"${TEMPO_HTTP_PORT:-4318}:4318\"  # OTLP HTTP (트레이스 데이터 수신)\n      - \"${TEMPO_UI_PORT:-3200}:3200\"    # Tempo UI / Query API\n    command: [\"-config.file=/etc/tempo/tempo.yaml\"]\n    volumes:\n      - ./tempo.yaml:/etc/tempo/tempo.yaml:ro\n      - ./tempo-data:/var/tempo\n    restart: unless-stopped\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-qO-\", \"http://localhost:3200/ready\"]\n      interval: 10s\n      timeout: 3s\n      retries: 10\n    networks:\n      - tempo-net\n\nnetworks:\n  tempo-net:\n    driver: bridge",
+          "note": "참고: HTTP 프로토콜만 사용하므로 gRPC 포트(4317)는 필요하지 않습니다."
+        },
+        "tempoYaml": {
+          "title": "Tempo 설정 파일",
+          "desc": "프로젝트 루트에 tempo.yaml 파일을 생성합니다:",
+          "code": "server:\n  http_listen_port: 3200\n\nstorage:\n  trace:\n    backend: local\n    local:\n      path: /var/tempo/traces\n\ndistributor:\n  receivers:\n    otlp:\n      protocols:\n        http:\n          endpoint: 0.0.0.0:4318",
+          "note": "참고: HTTP 프로토콜만 사용하므로 gRPC 프로토콜 설정은 제거했습니다."
+        },
+        "run": {
+          "title": "Tempo 실행",
+          "code": "# Tempo 컨테이너 실행\ndocker compose up -d\n\n# 실행 확인\ndocker ps\ndocker logs tempo -f"
+        },
+        "gitignore": {
+          "title": "Gitignore 설정 (Tempo용)",
+          "desc": "프로젝트의 .gitignore 파일에 다음 항목들을 추가합니다:",
+          "code": "# ===== Ouroboros SDK Try 기능 관련 =====\n# Tempo 데이터 디렉토리\ntempo-data/\n\n# 환경 변수 파일\n.env\n.env.local\n.env.*.local\n\n# Docker Compose 오버라이드\ndocker-compose.override.yml",
+          "warning": {
+            "title": "주의사항:",
+            "items": {
+              "1": "tempo.yaml: 이 파일은 프로젝트 설정 파일이므로 Git에 포함해야 합니다.",
+              "2": "docker-compose.yml: Docker Compose 설정 파일이므로 Git에 포함해야 합니다.",
+              "3": "tempo-data/: Tempo 데이터 디렉토리는 Git에 포함하지 않아야 합니다.",
+              "4": ".env: 환경 변수 파일은 Git에 포함하지 않아야 합니다."
+            }
+          }
+        }
+      }
+    }
   },
   "schema": {
     "title": "Schema 관리",
@@ -706,7 +783,7 @@
     },
     "backendSetupCode": "cd backend\n\n# 빌드\n./gradlew build\n\n# 테스트 실행\n./gradlew test\n\n# 애플리케이션 실행\n./gradlew bootRun\n\n# 로컬 Maven 저장소에 퍼블리시 (테스트용)\n./gradlew publishToMavenLocal",
     "frontendSetupCode": "cd front\n\n# 의존성 설치\nnpm install\n\n# 개발 서버 실행\nnpm run dev\n\n# 빌드\nnpm run build\n\n# 린트 확인\nnpm run lint",
-    "localTestCode": "# 백엔드 빌드 및 로컬 Maven 저장소에 퍼블리시\ncd backend\n./gradlew publishToMavenLocal\n\n# 테스트 프로젝트에서 사용\ndependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.3-SNAPSHOT'\n}"
+    "localTestCode": "# 백엔드 빌드 및 로컬 Maven 저장소에 퍼블리시\ncd backend\n./gradlew publishToMavenLocal\n\n# 테스트 프로젝트에서 사용\ndependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.4-SNAPSHOT'\n}"
   },
   "projectStructure": {
     "title": "프로젝트 구조",
@@ -845,7 +922,7 @@
       "title": "1단계: 설치",
       "basicDeps": "기본 의존성",
       "basicDepsDesc": "기본 의존성만 추가하면 REST API와 WebSocket 기능 모두 사용할 수 있습니다.",
-      "versionWarning": "⚠️ 1.0.2 버전은 에러가 발생하므로 사용하지 마세요. 반드시 1.0.3 버전을 사용해주세요.",
+      "versionWarning": "⚠️ 1.0.2 버전은 에러가 발생하므로 사용하지 마세요. 반드시 1.0.4 버전을 사용해주세요.",
       "note1": "참고: 라이브러리는 내부적으로 spring-boot-starter-actuator와 spring-boot-starter-aop를 함께 제공합니다.",
       "note2": "Mock 서버와 REST API 컨트롤러는 자동 구성으로 등록되므로 별도 설정 없이 사용할 수 있습니다.",
       "note3": "Lombok을 사용한다면 반드시 annotationProcessor 'org.projectlombok:lombok'를 추가해야 @ApiState 기반 자동 스캔이 정상 동작합니다."

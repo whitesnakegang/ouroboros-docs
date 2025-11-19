@@ -26,6 +26,7 @@ const menuItems: MenuItem[] = [
       { titleKey: 'sidebar.mockApi', path: '/guide/mock-api' },
       { titleKey: 'sidebar.openapiExtension', path: '/guide/openapi-extension' },
       { titleKey: 'sidebar.tryFeature', path: '/guide/try-feature' },
+      { titleKey: 'sidebar.tryFeatureExtension', path: '/guide/try-feature-extension' },
       { titleKey: 'sidebar.implementationValidation', path: '/guide/implementation-validation' },
       { titleKey: 'sidebar.knownIssues', path: '/guide/known-issues' },
     ],
