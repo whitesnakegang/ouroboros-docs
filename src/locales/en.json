@@ -57,7 +57,7 @@
       "warning": "Note: Ouroboros only supports Spring Boot 3.5.7 and below. It does not work with Spring Boot 4.0.0. See known issues for details.",
       "step1": {
         "title": "1. Add Dependencies",
-        "versionWarning": "⚠️ Do not use version 1.0.2 as it causes errors. Please use version 1.0.4."
+        "versionWarning": "⚠️ Do not use version 1.0.2 as it causes errors. Please use version 1.0.5."
       },
       "step2": {
         "title": "2. Configuration (application.yml)",
@@ -783,7 +783,7 @@
     },
     "backendSetupCode": "cd backend\n\n# Build\n./gradlew build\n\n# Run tests\n./gradlew test\n\n# Run application\n./gradlew bootRun\n\n# Publish to local Maven repository (for testing)\n./gradlew publishToMavenLocal",
     "frontendSetupCode": "cd front\n\n# Install dependencies\nnpm install\n\n# Run dev server\nnpm run dev\n\n# Build\nnpm run build\n\n# Run lint\nnpm run lint",
-    "localTestCode": "# Build backend and publish to local Maven repository\ncd backend\n./gradlew publishToMavenLocal\n\n# Use in test project\ndependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.4-SNAPSHOT'\n}"
+    "localTestCode": "# Build backend and publish to local Maven repository\ncd backend\n./gradlew publishToMavenLocal\n\n# Use in test project\ndependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.5-SNAPSHOT'\n}"
   },
   "projectStructure": {
     "title": "Project Structure",
@@ -922,7 +922,7 @@
       "title": "Step 1: Installation",
       "basicDeps": "Basic Dependencies",
       "basicDepsDesc": "Adding only the basic dependencies allows you to use both REST API and WebSocket features.",
-      "versionWarning": "⚠️ Do not use version 1.0.2 as it causes errors. Please use version 1.0.4.",
+      "versionWarning": "⚠️ Do not use version 1.0.2 as it causes errors. Please use version 1.0.5.",
       "note1": "The library internally includes spring-boot-starter-actuator and spring-boot-starter-aop.",
       "note2": "Mock server and REST API controllers are registered via auto-configuration, so they can be used without additional setup.",
       "note3": "If using Lombok, you must add annotationProcessor 'org.projectlombok:lombok' for @ApiState-based automatic scanning to work properly."
