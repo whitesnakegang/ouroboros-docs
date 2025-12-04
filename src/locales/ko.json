@@ -985,7 +985,11 @@
         "items": {
           "1": "OuroApiSpecManager: 명세서 캐시의 단일 소스 (중앙 캐시)",
           "2": "OuroProtocolHandler: 프로토콜 전략 패턴 (REST, WebSocket 지원)",
-          "3": "SpecSyncPipeline: 명세서 동기화 파이프라인"
+          "3": "SpecSyncPipeline: 명세서 동기화 파이프라인",
+          "4": "TryService: Try 비즈니스 로직 및 트레이스 조회",
+          "5": "MethodTracingConfig: Spring AOP 메서드 트레이싱 (기본값)",
+          "6": "AspectJMethodTracingConfig: AspectJ Post-Compile Weaving 메서드 트레이싱",
+          "7": "TraceStorageConfig: In-Memory 또는 Tempo 저장소 자동 구성"
         }
       },
       "rest": {
@@ -994,7 +998,8 @@
           "1": "RestApiYamlParser: OpenAPI 3.1.0 YAML 파싱",
           "2": "RestApiSpecService: REST API 명세 CRUD 서비스",
           "3": "OuroborosMockFilter: Mock 서버 필터",
-          "4": "ApiStateGlobalMethodFilter: @ApiState 메소드 필터링"
+          "4": "ApiStateGlobalMethodFilter: @ApiState 메소드 필터링",
+          "5": "RestTryIdentifier: REST 요청 Try 식별"
         }
       },
       "websocket": {
@@ -1002,15 +1007,25 @@
         "items": {
           "1": "AsyncApiYamlParser: AsyncAPI 3.0.0 YAML 파싱",
           "2": "WebSocketSpecService: WebSocket 명세 CRUD 서비스",
-          "3": "OuroWebSocketHandler: WebSocket 프로토콜 핸들러"
+          "3": "OuroWebSocketHandler: WebSocket 프로토콜 핸들러",
+          "4": "WebSocketTryIdentifier: WebSocket 메시지 Try 식별",
+          "5": "WebSocketMessageTracer: WebSocket 메시지 추적"
         }
       }
     },
     "storage": {
       "title": "데이터 저장",
-      "desc": "모든 API 명세서는 다음 위치에 단일 파일로 저장됩니다:",
-      "rest": "REST API 명세:",
-      "websocket": "WebSocket/STOMP API 명세:"
+      "apiSpec": {
+        "title": "API 명세 저장",
+        "desc": "모든 API 명세서는 다음 위치에 단일 파일로 저장됩니다:",
+        "rest": "REST API 명세:",
+        "websocket": "WebSocket/STOMP API 명세:"
+      },
+      "tryData": {
+        "title": "Try 데이터 저장",
+        "inMemory": "In-Memory (기본값): 메모리 저장",
+        "tempo": "Tempo:"
+      }
     }
   },
   "developer": {

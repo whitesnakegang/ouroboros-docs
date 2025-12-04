@@ -987,7 +987,11 @@
         "items": {
           "1": "OuroApiSpecManager: Single source of specification cache (central cache)",
           "2": "OuroProtocolHandler: Protocol strategy pattern (REST, WebSocket support)",
-          "3": "SpecSyncPipeline: Specification synchronization pipeline"
+          "3": "SpecSyncPipeline: Specification synchronization pipeline",
+          "4": "TryService: Try business logic and trace queries",
+          "5": "MethodTracingConfig: Spring AOP method tracing (default)",
+          "6": "AspectJMethodTracingConfig: AspectJ Post-Compile Weaving method tracing",
+          "7": "TraceStorageConfig: In-Memory or Tempo storage auto-configuration"
         }
       },
       "rest": {
@@ -996,7 +1000,8 @@
           "1": "RestApiYamlParser: OpenAPI 3.1.0 YAML parsing",
           "2": "RestApiSpecService: REST API specification CRUD service",
           "3": "OuroborosMockFilter: Mock server filter",
-          "4": "ApiStateGlobalMethodFilter: @ApiState method filtering"
+          "4": "ApiStateGlobalMethodFilter: @ApiState method filtering",
+          "5": "RestTryIdentifier: REST request Try identification"
         }
       },
       "websocket": {
@@ -1004,15 +1009,25 @@
         "items": {
           "1": "AsyncApiYamlParser: AsyncAPI 3.0.0 YAML parsing",
           "2": "WebSocketSpecService: WebSocket specification CRUD service",
-          "3": "OuroWebSocketHandler: WebSocket protocol handler"
+          "3": "OuroWebSocketHandler: WebSocket protocol handler",
+          "4": "WebSocketTryIdentifier: WebSocket message Try identification",
+          "5": "WebSocketMessageTracer: WebSocket message tracing"
         }
       }
     },
     "storage": {
       "title": "Data Storage",
-      "desc": "All API specifications are stored in a single file at the following locations:",
-      "rest": "REST API Specifications:",
-      "websocket": "WebSocket/STOMP API Specifications:"
+      "apiSpec": {
+        "title": "API Specification Storage",
+        "desc": "All API specifications are stored in a single file at the following locations:",
+        "rest": "REST API Specifications:",
+        "websocket": "WebSocket/STOMP API Specifications:"
+      },
+      "tryData": {
+        "title": "Try Data Storage",
+        "inMemory": "In-Memory (default): Memory storage",
+        "tempo": "Tempo:"
+      }
     }
   },
   "developer": {
