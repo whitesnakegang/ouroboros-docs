@@ -104,7 +104,7 @@ management.tracing.enabled=true
 management.otlp.tracing.endpoint=http://localhost:4318/v1/traces
 ```
 
-상세한 Tempo 설정 방법은 `OUROBOROS_TRY_SETUP.md` 문서의 Tempo 연동 섹션을 참고하세요.
+상세한 Tempo 설정 방법은 `TRY_SETUP.md` 문서의 Tempo 연동 섹션을 참고하세요.
 
 ### WebSocket Try 기능 사용
 
@@ -128,7 +128,7 @@ public void configureMessageBroker(MessageBrokerRegistry config) {
 
 - [Try & 성능 추적 API](https://github.com/whitesnakegang/ouroboros/blob/main/docs/api/try-api.md) – REST API 상세 설명
 - [공식 문서](https://github.com/whitesnakegang/ouroboros) – 최신 가이드
-- `OUROBOROS_TRY_SETUP.md` – Try 기능 설정 세부 가이드
+- `TRY_SETUP.md` – Try 기능 설정 세부 가이드
 
 ## 다음 단계
 

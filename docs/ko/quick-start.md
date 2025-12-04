@@ -183,7 +183,7 @@ ouroboros.method-tracing.enabled=true
 ouroboros.method-tracing.allowed-packages=your.package
 ```
 
-상세 설정은 [Try 기능](./guide/try-feature.md) 가이드와 `OUROBOROS_TRY_SETUP.md`를 참고하세요.
+상세 설정은 [Try 기능](./guide/try-feature.md) 가이드와 `TRY_SETUP.md`를 참고하세요.
 
 ### WebSocket 명세서 Try 기능 사용 시 주의사항
 
