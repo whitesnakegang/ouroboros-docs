@@ -27,11 +27,11 @@ AsyncAPI 3.0.0 표준을 지원하는 WebSocket/STOMP API 명세 관리 및 코�
 
 ### 1. 의존성 추가
 
-> ⚠️ **1.0.2 버전은 에러가 발생하므로 사용하지 마세요. 반드시 1.0.5 버전을 사용해주세요.**
+> ⚠️ **1.0.2 버전은 에러가 발생하므로 사용하지 마세요. 반드시 1.0.6 버전을 사용해주세요.**
 
 ```gradle
 dependencies {
-    implementation 'io.github.whitesnakegang:ouroboros:1.0.5'
+    implementation 'io.github.whitesnakegang:ouroboros:1.0.6'
 }
 ```
 

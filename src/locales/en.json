@@ -495,7 +495,7 @@
         "step1": {
           "title": "1. Configure build.gradle",
           "pluginsCode": "plugins {\n    id 'java'\n    id 'org.springframework.boot' version '3.5.6'\n    id 'io.spring.dependency-management' version '1.1.7'\n\n    // Add AspectJ plugin\n    id 'io.freefair.aspectj.post-compile-weaving' version '8.11'\n}",
-          "depsCode": "dependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.1.0'\n\n    // AspectJ configuration (just add 2 lines!)\n    aspect 'io.github.whitesnakegang:ouroboros:1.1.0'\n    aspect 'org.aspectj:aspectjweaver:1.9.22'\n\n    // ... other dependencies\n}"
+          "depsCode": "dependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.6'\n\n    // AspectJ configuration (just add 2 lines!)\n    aspect 'io.github.whitesnakegang:ouroboros:1.0.6'\n    aspect 'org.aspectj:aspectjweaver:1.9.22'\n\n    // ... other dependencies\n}"
         },
         "step2": {
           "title": "2. Configure application.properties",
@@ -513,7 +513,7 @@
       },
       "maven": {
         "title": "Maven Users",
-        "code": "<dependencies>\n    <dependency>\n        <groupId>io.github.whitesnakegang</groupId>\n        <artifactId>ouroboros</artifactId>\n        <version>1.1.0</version>\n    </dependency>\n</dependencies>\n\n<build>\n    <plugins>\n        <plugin>\n            <groupId>dev.aspectj</groupId>\n            <artifactId>aspectj-maven-plugin</artifactId>\n            <version>1.14</version>\n            <configuration>\n                <complianceLevel>17</complianceLevel>\n                <aspectLibraries>\n                    <aspectLibrary>\n                        <groupId>io.github.whitesnakegang</groupId>\n                        <artifactId>ouroboros</artifactId>\n                    </aspectLibrary>\n                </aspectLibraries>\n            </configuration>\n            <executions>\n                <execution>\n                    <goals>\n                        <goal>compile</goal>\n                    </goals>\n                </execution>\n            </executions>\n        </plugin>\n    </plugins>\n</build>"
+        "code": "<dependencies>\n    <dependency>\n        <groupId>io.github.whitesnakegang</groupId>\n        <artifactId>ouroboros</artifactId>\n        <version>1.0.6</version>\n    </dependency>\n</dependencies>\n\n<build>\n    <plugins>\n        <plugin>\n            <groupId>dev.aspectj</groupId>\n            <artifactId>aspectj-maven-plugin</artifactId>\n            <version>1.14</version>\n            <configuration>\n                <complianceLevel>17</complianceLevel>\n                <aspectLibraries>\n                    <aspectLibrary>\n                        <groupId>io.github.whitesnakegang</groupId>\n                        <artifactId>ouroboros</artifactId>\n                    </aspectLibrary>\n                </aspectLibraries>\n            </configuration>\n            <executions>\n                <execution>\n                    <goals>\n                        <goal>compile</goal>\n                    </goals>\n                </execution>\n            </executions>\n        </plugin>\n    </plugins>\n</build>"
       },
       "troubleshooting": {
         "title": "Troubleshooting",
@@ -524,7 +524,7 @@
           "step1": "Check plugin in build.gradle:",
           "step1Code": "id 'io.freefair.aspectj.post-compile-weaving' version '8.11'",
           "step2": "Check aspect configuration:",
-          "step2Code": "aspect 'io.github.whitesnakegang:ouroboros:1.1.0'\naspect 'org.aspectj:aspectjweaver:1.9.22'",
+          "step2Code": "aspect 'io.github.whitesnakegang:ouroboros:1.0.6'\naspect 'org.aspectj:aspectjweaver:1.9.22'",
           "step3": "Run clean build:",
           "step3Code": "./gradlew clean build"
         },
@@ -960,7 +960,7 @@
     },
     "backendSetupCode": "cd backend\n\n# Build\n./gradlew build\n\n# Run tests\n./gradlew test\n\n# Run application\n./gradlew bootRun\n\n# Publish to local Maven repository (for testing)\n./gradlew publishToMavenLocal",
     "frontendSetupCode": "cd front\n\n# Install dependencies\nnpm install\n\n# Run dev server\nnpm run dev\n\n# Build\nnpm run build\n\n# Run lint\nnpm run lint",
-    "localTestCode": "# Build backend and publish to local Maven repository\ncd backend\n./gradlew publishToMavenLocal\n\n# Use in test project\ndependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.5-SNAPSHOT'\n}"
+    "localTestCode": "# Build backend and publish to local Maven repository\ncd backend\n./gradlew publishToMavenLocal\n\n# Use in test project\ndependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.6-SNAPSHOT'\n}"
   },
   "projectStructure": {
     "title": "Project Structure",

@@ -423,7 +423,7 @@
         "step1": {
           "title": "1. build.gradle 설정",
           "pluginsCode": "plugins {\n    // AspectJ plugin 추가\n    id 'io.freefair.aspectj.post-compile-weaving' version '8.11'\n\n    // ... 나머지 plugins\n}",
-          "depsCode": "dependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.1.0'\n\n    // AspectJ 설정 (2줄만 추가하면 됩니다!)\n    aspect 'io.github.whitesnakegang:ouroboros:1.1.0'\n    aspect 'org.aspectj:aspectjweaver:1.9.22'\n\n    // ... 나머지 dependencies\n}"
+          "depsCode": "dependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.6'\n\n    // AspectJ 설정 (2줄만 추가하면 됩니다!)\n    aspect 'io.github.whitesnakegang:ouroboros:1.0.6'\n    aspect 'org.aspectj:aspectjweaver:1.9.22'\n\n    // ... 나머지 dependencies\n}"
         },
         "step2": {
           "title": "2. application.properties 설정",
@@ -441,7 +441,7 @@
       },
       "maven": {
         "title": "Maven 사용자",
-        "code": "<dependencies>\n    <dependency>\n        <groupId>io.github.whitesnakegang</groupId>\n        <artifactId>ouroboros</artifactId>\n        <version>1.1.0</version>\n    </dependency>\n</dependencies>\n\n<build>\n    <plugins>\n        <plugin>\n            <groupId>dev.aspectj</groupId>\n            <artifactId>aspectj-maven-plugin</artifactId>\n            <version>1.14</version>\n            <configuration>\n                <complianceLevel>17</complianceLevel>\n                <aspectLibraries>\n                    <aspectLibrary>\n                        <groupId>io.github.whitesnakegang</groupId>\n                        <artifactId>ouroboros</artifactId>\n                    </aspectLibrary>\n                </aspectLibraries>\n            </configuration>\n            <executions>\n                <execution>\n                    <goals>\n                        <goal>compile</goal>\n                    </goals>\n                </execution>\n            </executions>\n        </plugin>\n    </plugins>\n</build>"
+        "code": "<dependencies>\n    <dependency>\n        <groupId>io.github.whitesnakegang</groupId>\n        <artifactId>ouroboros</artifactId>\n        <version>1.0.6</version>\n    </dependency>\n</dependencies>\n\n<build>\n    <plugins>\n        <plugin>\n            <groupId>dev.aspectj</groupId>\n            <artifactId>aspectj-maven-plugin</artifactId>\n            <version>1.14</version>\n            <configuration>\n                <complianceLevel>17</complianceLevel>\n                <aspectLibraries>\n                    <aspectLibrary>\n                        <groupId>io.github.whitesnakegang</groupId>\n                        <artifactId>ouroboros</artifactId>\n                    </aspectLibrary>\n                </aspectLibraries>\n            </configuration>\n            <executions>\n                <execution>\n                    <goals>\n                        <goal>compile</goal>\n                    </goals>\n                </execution>\n            </executions>\n        </plugin>\n    </plugins>\n</build>"
       },
       "troubleshooting": {
         "title": "문제 해결",
@@ -452,7 +452,7 @@
           "step1": "build.gradle에 plugin 추가 확인:",
           "step1Code": "id 'io.freefair.aspectj.post-compile-weaving' version '8.11'",
           "step2": "aspect 설정 확인:",
-          "step2Code": "aspect 'io.github.whitesnakegang:ouroboros:1.1.0'\naspect 'org.aspectj:aspectjweaver:1.9.22'",
+          "step2Code": "aspect 'io.github.whitesnakegang:ouroboros:1.0.6'\naspect 'org.aspectj:aspectjweaver:1.9.22'",
           "step3": "Clean build 실행:",
           "step3Code": "./gradlew clean build"
         },
@@ -958,7 +958,7 @@
     },
     "backendSetupCode": "cd backend\n\n# 빌드\n./gradlew build\n\n# 테스트 실행\n./gradlew test\n\n# 애플리케이션 실행\n./gradlew bootRun\n\n# 로컬 Maven 저장소에 퍼블리시 (테스트용)\n./gradlew publishToMavenLocal",
     "frontendSetupCode": "cd front\n\n# 의존성 설치\nnpm install\n\n# 개발 서버 실행\nnpm run dev\n\n# 빌드\nnpm run build\n\n# 린트 확인\nnpm run lint",
-    "localTestCode": "# 백엔드 빌드 및 로컬 Maven 저장소에 퍼블리시\ncd backend\n./gradlew publishToMavenLocal\n\n# 테스트 프로젝트에서 사용\ndependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.5-SNAPSHOT'\n}"
+    "localTestCode": "# 백엔드 빌드 및 로컬 Maven 저장소에 퍼블리시\ncd backend\n./gradlew publishToMavenLocal\n\n# 테스트 프로젝트에서 사용\ndependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.6-SNAPSHOT'\n}"
   },
   "projectStructure": {
     "title": "프로젝트 구조",

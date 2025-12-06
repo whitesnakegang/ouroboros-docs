@@ -26,13 +26,13 @@ Ouroboros를 프로젝트에 추가하고 기본 기능을 동작시키는 절�
 
 기본 의존성만 추가하면 REST API와 WebSocket 기능 모두 사용할 수 있습니다.
 
-> ⚠️ **1.0.2 버전은 에러가 발생하므로 사용하지 마세요. 반드시 1.0.5 버전을 사용해주세요.**
+> ⚠️ **1.0.2 버전은 에러가 발생하므로 사용하지 마세요. 반드시 1.0.6 버전을 사용해주세요.**
 
 #### Gradle
 
 ```gradle
 dependencies {
-    implementation 'io.github.whitesnakegang:ouroboros:1.0.5'
+    implementation 'io.github.whitesnakegang:ouroboros:1.0.6'
 }
 ```
 

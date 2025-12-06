@@ -252,7 +252,7 @@ cd backend
 
 # 테스트 프로젝트에서 사용
 dependencies {
-    implementation 'io.github.whitesnakegang:ouroboros:1.0.5-SNAPSHOT'
+    implementation 'io.github.whitesnakegang:ouroboros:1.0.6-SNAPSHOT'
 }
 ```
 

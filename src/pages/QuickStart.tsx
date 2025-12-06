@@ -58,7 +58,7 @@ export default function QuickStart() {
         </div>
         <h4 className="text-lg font-semibold text-gray-900 mt-4 mb-2">Gradle</h4>
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`dependencies {
-    implementation 'io.github.whitesnakegang:ouroboros:1.0.5'
+    implementation 'io.github.whitesnakegang:ouroboros:1.0.6'
 }`}</code></pre>
 
         <h4 className="text-lg font-semibold text-gray-900 mt-4 mb-2">Maven</h4>
