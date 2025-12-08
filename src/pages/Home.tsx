@@ -93,7 +93,7 @@ export default function Home() {
             </p>
           </div>
           <pre className="bg-gray-900 text-gray-100 rounded p-4 overflow-x-auto text-sm mb-4"><code>{`dependencies {
-    implementation 'io.github.whitesnakegang:ouroboros:1.0.5'
+    implementation 'io.github.whitesnakegang:ouroboros:1.0.6'
 }`}</code></pre>
           
           <h3 className="text-lg font-semibold text-gray-900 mb-3">{t('home.quickStart.step2.title')}</h3>

@@ -10,7 +10,100 @@ export default function TryFeatureExtension() {
         {t('tryFeatureExtension.subtitle')}
       </p>
 
-      <section className="mb-12">
+      <section id="aspectj" className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('tryFeatureExtension.aspectj.title')}</h2>
+        <p className="text-gray-700 mb-6">
+          {t('tryFeatureExtension.aspectj.subtitle')}
+        </p>
+
+        <h3 className="text-xl font-semibold text-gray-900 mb-3">{t('tryFeatureExtension.aspectj.why.title')}</h3>
+
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-lg px-4 py-3 mb-4">
+          <p className="font-semibold mb-2">{t('tryFeatureExtension.aspectj.why.springAop.title')}</p>
+          <ul className="list-disc list-inside ml-2 space-y-1">
+            <li>{t('tryFeatureExtension.aspectj.why.springAop.items.1')}</li>
+            <li>{t('tryFeatureExtension.aspectj.why.springAop.items.2')}</li>
+            <li>{t('tryFeatureExtension.aspectj.why.springAop.items.3')}</li>
+            <li>{t('tryFeatureExtension.aspectj.why.springAop.items.4')}</li>
+          </ul>
+        </div>
+
+        <div className="bg-green-50 border border-green-200 text-green-800 rounded-lg px-4 py-3 mb-6">
+          <p className="font-semibold mb-2">{t('tryFeatureExtension.aspectj.why.aspectj.title')}</p>
+          <ul className="list-disc list-inside ml-2 space-y-1">
+            <li>{t('tryFeatureExtension.aspectj.why.aspectj.items.1')}</li>
+            <li>{t('tryFeatureExtension.aspectj.why.aspectj.items.2')}</li>
+          </ul>
+        </div>
+
+        <h3 className="text-xl font-semibold text-gray-900 mb-3">{t('tryFeatureExtension.aspectj.quickStart.title')}</h3>
+
+        <h4 className="text-lg font-semibold text-gray-900 mt-4 mb-2">{t('tryFeatureExtension.aspectj.quickStart.step1.title')}</h4>
+        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm mb-4"><code>{t('tryFeatureExtension.aspectj.quickStart.step1.pluginsCode')}</code></pre>
+        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm mb-4"><code>{t('tryFeatureExtension.aspectj.quickStart.step1.depsCode')}</code></pre>
+
+        <h4 className="text-lg font-semibold text-gray-900 mt-4 mb-2">{t('tryFeatureExtension.aspectj.quickStart.step2.title')}</h4>
+        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm mb-4"><code>{t('tryFeatureExtension.aspectj.quickStart.step2.code')}</code></pre>
+
+        <h4 className="text-lg font-semibold text-gray-900 mt-4 mb-2">{t('tryFeatureExtension.aspectj.quickStart.step3.title')}</h4>
+        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm mb-6"><code>{t('tryFeatureExtension.aspectj.quickStart.step3.code')}</code></pre>
+
+        <h3 className="text-xl font-semibold text-gray-900 mb-3">{t('tryFeatureExtension.aspectj.verification.title')}</h3>
+        <p className="text-gray-700 mb-3">
+          {t('tryFeatureExtension.aspectj.verification.desc')}
+        </p>
+        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm mb-6"><code>{t('tryFeatureExtension.aspectj.verification.logCode')}</code></pre>
+
+        <h3 className="text-xl font-semibold text-gray-900 mb-3">{t('tryFeatureExtension.aspectj.maven.title')}</h3>
+        <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm mb-6"><code>{t('tryFeatureExtension.aspectj.maven.code')}</code></pre>
+
+        <h3 className="text-xl font-semibold text-gray-900 mb-3">{t('tryFeatureExtension.aspectj.comparison.title')}</h3>
+        <div className="overflow-x-auto mb-6">
+          <table className="min-w-full border border-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="border border-gray-200 px-4 py-2">{t('tryFeatureExtension.aspectj.comparison.table.feature')}</th>
+                <th className="border border-gray-200 px-4 py-2">{t('tryFeatureExtension.aspectj.comparison.table.springAop')}</th>
+                <th className="border border-gray-200 px-4 py-2">{t('tryFeatureExtension.aspectj.comparison.table.aspectj')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="border border-gray-200 px-4 py-2">{t('tryFeatureExtension.aspectj.comparison.table.selfInvocation')}</td>
+                <td className="border border-gray-200 px-4 py-2 text-center">❌ {t('tryFeatureExtension.aspectj.comparison.table.impossible')}</td>
+                <td className="border border-gray-200 px-4 py-2 text-center">✅ {t('tryFeatureExtension.aspectj.comparison.table.possible')}</td>
+              </tr>
+              <tr>
+                <td className="border border-gray-200 px-4 py-2">{t('tryFeatureExtension.aspectj.comparison.table.privateMethod')}</td>
+                <td className="border border-gray-200 px-4 py-2 text-center">❌ {t('tryFeatureExtension.aspectj.comparison.table.impossible')}</td>
+                <td className="border border-gray-200 px-4 py-2 text-center">✅ {t('tryFeatureExtension.aspectj.comparison.table.possible')}</td>
+              </tr>
+              <tr>
+                <td className="border border-gray-200 px-4 py-2">{t('tryFeatureExtension.aspectj.comparison.table.staticMethod')}</td>
+                <td className="border border-gray-200 px-4 py-2 text-center">❌ {t('tryFeatureExtension.aspectj.comparison.table.impossible')}</td>
+                <td className="border border-gray-200 px-4 py-2 text-center">✅ {t('tryFeatureExtension.aspectj.comparison.table.possible')}</td>
+              </tr>
+              <tr>
+                <td className="border border-gray-200 px-4 py-2">{t('tryFeatureExtension.aspectj.comparison.table.configComplexity')}</td>
+                <td className="border border-gray-200 px-4 py-2 text-center">{t('tryFeatureExtension.aspectj.comparison.table.simple')}</td>
+                <td className="border border-gray-200 px-4 py-2 text-center">{t('tryFeatureExtension.aspectj.comparison.table.slightlyComplex')}</td>
+              </tr>
+              <tr>
+                <td className="border border-gray-200 px-4 py-2">{t('tryFeatureExtension.aspectj.comparison.table.buildTime')}</td>
+                <td className="border border-gray-200 px-4 py-2 text-center">{t('tryFeatureExtension.aspectj.comparison.table.fast')}</td>
+                <td className="border border-gray-200 px-4 py-2 text-center">{t('tryFeatureExtension.aspectj.comparison.table.slightlySlow')}</td>
+              </tr>
+              <tr>
+                <td className="border border-gray-200 px-4 py-2">{t('tryFeatureExtension.aspectj.comparison.table.runtimePerformance')}</td>
+                <td className="border border-gray-200 px-4 py-2 text-center">{t('tryFeatureExtension.aspectj.comparison.table.proxyOverhead')}</td>
+                <td className="border border-gray-200 px-4 py-2 text-center">{t('tryFeatureExtension.aspectj.comparison.table.almostNoOverhead')}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tempo" className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('tryFeatureExtension.tempo.title')}</h2>
         
         <div className="bg-blue-50 border border-blue-200 text-blue-800 rounded-lg px-4 py-3 mb-6">

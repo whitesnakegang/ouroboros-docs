@@ -347,7 +347,12 @@
       "title": "고급 설정 (선택)",
       "methodTracing": {
         "title": "Method Tracing",
-        "desc": "내부 메소드 호출까지 추적하려면 아래 설정을 추가합니다."
+        "desc": "내부 메소드 호출까지 추적하려면 아래 설정을 추가합니다.",
+        "aspectjNote": {
+          "title": "💡 Spring AOP의 제약사항",
+          "desc": "기본 Spring AOP는 Self-invocation, Private 메서드, Final Class, Static 메서드를 트레이싱할 수 없습니다. 이러한 제약 없이 모든 메서드를 트레이싱하려면 AspectJ 모드를 사용하세요.",
+          "link": "AspectJ 설정 가이드 보기 →"
+        }
       },
       "traceStorage": {
         "title": "트레이스 저장 기간",
@@ -365,7 +370,8 @@
             }
           },
           "setup": "Tempo 연동을 활성화하려면 application.properties에 다음 설정을 추가하세요:",
-          "details": "상세한 Tempo 설정 방법은 OUROBOROS_TRY_SETUP.md 문서의 Tempo 연동 섹션을 참고하세요."
+          "details": "상세한 Tempo 설정 방법은 TRY_SETUP.md 문서의 Tempo 연동 섹션을 참고하세요.",
+          "detailsLink": "Tempo 상세 설정 가이드 보기 →"
         }
       },
       "websocketTry": {
@@ -381,7 +387,7 @@
       "items": {
         "1": "Try & 성능 추적 API – REST API 상세 설명",
         "2": "공식 문서 – 최신 가이드",
-        "3": "OUROBOROS_TRY_SETUP.md – Try 기능 설정 세부 가이드"
+        "3": "TRY_SETUP.md – Try 기능 설정 세부 가이드"
       }
     },
     "tempoConfigCode": "# Tempo 연동 활성화\nouroboros.tempo.enabled=true\nouroboros.tempo.base-url=http://localhost:3200\n\n# OpenTelemetry Exporter 설정\nmanagement.tracing.enabled=true\nmanagement.otlp.tracing.endpoint=http://localhost:4318/v1/traces",
@@ -389,7 +395,176 @@
   },
   "tryFeatureExtension": {
     "title": "Try 기능 확장",
-    "subtitle": "Grafana Tempo를 사용한 영구 트레이스 저장 및 고급 분석 기능 설정 가이드",
+    "subtitle": "AspectJ 메서드 트레이싱과 Grafana Tempo를 사용한 영구 트레이스 저장 및 고급 분석 기능 설정 가이드",
+    "aspectj": {
+      "title": "AspectJ 메서드 트레이싱",
+      "subtitle": "Spring AOP의 제약 없이 모든 메서드를 트레이싱할 수 있습니다.",
+      "why": {
+        "title": "왜 AspectJ 모드를 사용하나요?",
+        "springAop": {
+          "title": "Spring AOP (기본 모드)는 다음을 트레이싱할 수 없습니다:",
+          "items": {
+            "1": "Self-invocation (같은 클래스 내부 메서드 호출)",
+            "2": "Private 메서드",
+            "3": "Final Class의 메서드",
+            "4": "Static 메서드"
+          }
+        },
+        "aspectj": {
+          "title": "AspectJ 모드를 사용하면:",
+          "items": {
+            "1": "모든 메서드 트레이싱 가능",
+            "2": "Compile-time weaving으로 런타임 오버헤드 감소"
+          }
+        }
+      },
+      "quickStart": {
+        "title": "빠른 시작 (Gradle)",
+        "step1": {
+          "title": "1. build.gradle 설정",
+          "pluginsCode": "plugins {\n    // AspectJ plugin 추가\n    id 'io.freefair.aspectj.post-compile-weaving' version '8.11'\n\n    // ... 나머지 plugins\n}",
+          "depsCode": "dependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.6'\n\n    // AspectJ 설정 (2줄만 추가하면 됩니다!)\n    aspect 'io.github.whitesnakegang:ouroboros:1.0.6'\n    aspect 'org.aspectj:aspectjweaver:1.9.22'\n\n    // ... 나머지 dependencies\n}"
+        },
+        "step2": {
+          "title": "2. application.properties 설정",
+          "code": "ouroboros.method-tracing.enabled=true\nouroboros.method-tracing.allowed-packages=com.example.service, com.example.repository\n\n# AspectJ 모드 활성화\nouroboros.method-tracing.mode=ASPECTJ  # mode 설정 추가"
+        },
+        "step3": {
+          "title": "3. 빌드 및 실행",
+          "code": "./gradlew clean build\n./gradlew bootRun"
+        }
+      },
+      "verification": {
+        "title": "동작 확인",
+        "desc": "애플리케이션 시작 시 다음 로그가 보이면 성공입니다:",
+        "logCode": "AspectJ Compile-Time Weaving Mode Enabled for Method Tracing\n\nMode: ASPECTJ (Compile-Time Weaving)\nSuccessfully retrieved AspectJ singleton instance via aspectOf()"
+      },
+      "maven": {
+        "title": "Maven 사용자",
+        "code": "<dependencies>\n    <dependency>\n        <groupId>io.github.whitesnakegang</groupId>\n        <artifactId>ouroboros</artifactId>\n        <version>1.0.6</version>\n    </dependency>\n</dependencies>\n\n<build>\n    <plugins>\n        <plugin>\n            <groupId>dev.aspectj</groupId>\n            <artifactId>aspectj-maven-plugin</artifactId>\n            <version>1.14</version>\n            <configuration>\n                <complianceLevel>17</complianceLevel>\n                <aspectLibraries>\n                    <aspectLibrary>\n                        <groupId>io.github.whitesnakegang</groupId>\n                        <artifactId>ouroboros</artifactId>\n                    </aspectLibrary>\n                </aspectLibraries>\n            </configuration>\n            <executions>\n                <execution>\n                    <goals>\n                        <goal>compile</goal>\n                    </goals>\n                </execution>\n            </executions>\n        </plugin>\n    </plugins>\n</build>"
+      },
+      "troubleshooting": {
+        "title": "문제 해결",
+        "aspectOfError": {
+          "title": "\"aspectOf() method not found\" 경고",
+          "cause": "원인: AspectJ weaving 설정 누락",
+          "solution": "해결:",
+          "step1": "build.gradle에 plugin 추가 확인:",
+          "step1Code": "id 'io.freefair.aspectj.post-compile-weaving' version '8.11'",
+          "step2": "aspect 설정 확인:",
+          "step2Code": "aspect 'io.github.whitesnakegang:ouroboros:1.0.6'\naspect 'org.aspectj:aspectjweaver:1.9.22'",
+          "step3": "Clean build 실행:",
+          "step3Code": "./gradlew clean build"
+        },
+        "noTracing": {
+          "title": "메서드가 트레이싱되지 않음",
+          "step1": "Try 요청 헤더 확인:",
+          "step1Code": "curl -H \"X-Ouroboros-Try: true\" http://localhost:8080/api/test",
+          "step2": "패키지 설정 확인:",
+          "step2Code": "# 패키지명이 정확한지 확인\nouroboros.method-tracing.allowed-packages[0]=com.example",
+          "step3": "Debug 로깅 활성화:",
+          "step3Code": "logging.level.kr.co.ouroboros=DEBUG"
+        }
+      },
+      "testing": {
+        "title": "테스트 방법",
+        "step1": "Try 요청 보내기",
+        "step1Code": "curl -H \"X-Ouroboros-Try: true\" http://localhost:8080/api/test\n\n# 응답 헤더에서 tryId 확인:\n# X-Ouroboros-Try-Id: 550e8400-e29b-41d4-a716-446655440000",
+        "step2": "트레이스 조회",
+        "step2Code": "curl http://localhost:8080/ouro/tries/550e8400-e29b-41d4-a716-446655440000"
+      },
+      "examples": {
+        "title": "AspectJ 모드 트레이싱 결과 예시",
+        "selfInvocation": {
+          "title": "테스트 코드 예시: Self-Invocation과 Private 메서드",
+          "desc": "다음은 AspectJ 모드에서 Self-invocation과 Private 메서드를 테스트하는 실제 코드입니다:",
+          "code": "@RestController\n@RequestMapping(\"/api/aop-test\")\npublic class AopTestController {\n\n    private final AopTestService aopTestService;\n\n    @GetMapping(\"/self-invocation\")\n    public ResponseEntity<String> testSelfInvocation() {\n        aopTestService.externalCall();\n        // Self-invocation: 같은 클래스 내부 메서드 직접 호출\n        aopTestService.callInternalPublicMethod();\n        aopTestService.callPrivateMethod();\n        return ResponseEntity.ok(\"Self-invocation test completed\");\n    }\n}\n\n@Service\npublic class AopTestService {\n\n    // 외부에서 호출되는 메서드\n    public void externalCall() {\n        System.out.println(\"External call\");\n    }\n\n    // Self-invocation으로 호출되는 public 메서드\n    public void callInternalPublicMethod() {\n        internalPublicMethod();\n    }\n\n    public void internalPublicMethod() {\n        System.out.println(\"Internal public method\");\n    }\n\n    // Private 메서드 호출\n    public void callPrivateMethod() {\n        privateMethod();\n    }\n\n    // Private 메서드\n    private void privateMethod() {\n        System.out.println(\"Private method\");\n    }\n}",
+          "springAopImage": "/images/scrennshots/proxy-self-invocation.png",
+          "springAopCaption": "Spring AOP 모드에서는 Self-invocation, private 메서드가 트레이스에서 누락됨",
+          "springAopResult": {
+            "desc": "위 이미지에서 확인할 수 있듯이:",
+            "items": {
+              "1": "✅ AopTestController.testSelfInvocation (컨트롤러 메서드)",
+              "2": "✅ AopTestService.externalCall (외부 호출)",
+              "3": "✅ AopTestService.callInternalPublicMethod (Self-invocation)",
+              "4": "❌ AopTestService.internalPublicMethod (내부 public 메서드 - 트레이스 누락)",
+              "5": "✅ AopTestService.callPrivateMethod (Private 메서드 호출)",
+              "6": "❌ AopTestService.privateMethod (Private 메서드 - 트레이스 누락)"
+            },
+            "note": "Spring AOP 모드에서는 Self-invocation, private 메서드를 트레이싱할 수 없습니다."
+          },
+          "aspectjImage": "/images/scrennshots/aspectj-self-invocation.png",
+          "aspectjCaption": "AspectJ 모드에서 Self-invocation과 Private 메서드가 모두 트레이싱되는 예시",
+          "aspectjResult": {
+            "desc": "위 이미지에서 확인할 수 있듯이:",
+            "items": {
+              "1": "✅ AopTestController.testSelfInvocation (컨트롤러 메서드)",
+              "2": "✅ AopTestService.externalCall (외부 호출)",
+              "3": "✅ AopTestService.callInternalPublicMethod (Self-invocation)",
+              "4": "✅ AopTestService.internalPublicMethod (내부 public 메서드)",
+              "5": "✅ AopTestService.callPrivateMethod (Private 메서드 호출)",
+              "6": "✅ AopTestService.privateMethod (Private 메서드)"
+            },
+            "note": "AspectJ 모드를 사용하면 Self-invocation, private 메서드를 트레이싱할 수 있습니다!"
+          }
+        },
+        "cglibLimitations": {
+          "title": "테스트 코드 예시: Final class, Static 메서드",
+          "desc": "다음은 Spring AOP 모드의 Final class, Static 메서드 제약사항을 테스트하는 실제 코드입니다:",
+          "code": "@RestController\n@RequestMapping(\"/api/aop-test\")\npublic class AopTestController {\n\n    private FinalClassService finalClassService;\n    private final StaticMethodService staticMethodService;\n\n\n    @GetMapping(\"/cglib-limitations\")\n    public ResponseEntity<String> testCglibLimitations() {\n        finalClassService.finalClassMethod();\n        staticMethodService.instanceMethod();\n        return ResponseEntity.ok(\"CGLIB limitations test completed\");\n    }\n}\n\n@Service\npublic final class FinalClassService {\n\n    public void finalClassMethod() {\n        System.out.println(\"Final class method called\");\n    }\n}\n\n@Service\npublic class StaticMethodService {\n\n    // 인스턴스 메서드 (트레이싱 가능)\n    public void instanceMethod() {\n        System.out.println(\"Instance method called\");\n\n        // Static 메서드 호출 (Spring AOP에서는 트레이싱 불가)\n        staticMethod();\n    }\n\n    // Static 메서드 (Spring AOP에서는 트레이싱 불가!)\n    public static void staticMethod() {\n        System.out.println(\"Static method called\");\n    }\n}",
+          "springAopImage": "/images/scrennshots/proxy-cglib-limitations.png",
+          "springAopCaption": "Spring AOP 모드에서는 Final class, Static 메서드가 트레이스에서 누락됨",
+          "springAopResult": {
+            "desc": "위 이미지에서 확인할 수 있듯이:",
+            "items": {
+              "1": "✅ AopTestController.testCglibLimitations (컨트롤러 메서드)",
+              "2": "✅ StaticMethodService.instanceMethod (인스턴스 메서드)",
+              "3": "❌ FinalClassService.finalClassMethod (Final 메서드 - proxy 생성 실패 (상속 실패 Error로 서버 종료))",
+              "4": "❌ StaticMethodService.staticMethod (Static 메서드 - 트레이스 누락)"
+            },
+            "note": "Spring AOP 모드에서는 Final class, Static 메서드를 트레이싱할 수 없습니다."
+          },
+          "aspectjImage": "/images/scrennshots/aspectj-cglib-limitations.png",
+          "aspectjCaption": "AspectJ 모드에서 Final과 Static 메서드가 모두 트레이싱 되는 예시",
+          "aspectjResult": {
+            "desc": "위 이미지에서 확인할 수 있듯이:",
+            "items": {
+              "1": "✅ AopTestController.testCglibLimitations (컨트롤러 메서드)",
+              "2": "✅ StaticMethodService.instanceMethod (인스턴스 메서드)",
+              "3": "✅ FinalClassService.finalClassMethod (Final 메서드)",
+              "4": "✅ StaticMethodService.staticMethod (Static 메서드)"
+            },
+            "note": "AspectJ 모드를 사용하면 Self-invocation, Private, Final class, Static 메서드를 모두 트레이싱할 수 있습니다!"
+          }
+        }
+      },
+      "comparison": {
+        "title": "비교: Spring AOP vs AspectJ",
+        "table": {
+          "feature": "기능",
+          "springAop": "Spring AOP",
+          "aspectj": "AspectJ",
+          "selfInvocation": "Self-invocation",
+          "privateMethod": "Private 메서드",
+          "staticMethod": "Static 메서드",
+          "configComplexity": "설정 복잡도",
+          "buildTime": "빌드 시간",
+          "runtimePerformance": "런타임 성능",
+          "impossible": "불가",
+          "possible": "가능",
+          "simple": "간단",
+          "slightlyComplex": "약간 복잡",
+          "fast": "빠름",
+          "slightlySlow": "약간 느림",
+          "proxyOverhead": "Proxy 오버헤드",
+          "almostNoOverhead": "오버헤드 거의 없음"
+        }
+      },
+      "moreInfo": {
+        "ouroboros": "Ouroboros GitHub",
+        "aspectj": "AspectJ 공식 문서"
+      }
+    },
     "tempo": {
       "title": "Tempo 연동 (선택 사항)",
       "whenToUse": {
@@ -783,7 +958,7 @@
     },
     "backendSetupCode": "cd backend\n\n# 빌드\n./gradlew build\n\n# 테스트 실행\n./gradlew test\n\n# 애플리케이션 실행\n./gradlew bootRun\n\n# 로컬 Maven 저장소에 퍼블리시 (테스트용)\n./gradlew publishToMavenLocal",
     "frontendSetupCode": "cd front\n\n# 의존성 설치\nnpm install\n\n# 개발 서버 실행\nnpm run dev\n\n# 빌드\nnpm run build\n\n# 린트 확인\nnpm run lint",
-    "localTestCode": "# 백엔드 빌드 및 로컬 Maven 저장소에 퍼블리시\ncd backend\n./gradlew publishToMavenLocal\n\n# 테스트 프로젝트에서 사용\ndependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.5-SNAPSHOT'\n}"
+    "localTestCode": "# 백엔드 빌드 및 로컬 Maven 저장소에 퍼블리시\ncd backend\n./gradlew publishToMavenLocal\n\n# 테스트 프로젝트에서 사용\ndependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.6-SNAPSHOT'\n}"
   },
   "projectStructure": {
     "title": "프로젝트 구조",
@@ -810,7 +985,11 @@
         "items": {
           "1": "OuroApiSpecManager: 명세서 캐시의 단일 소스 (중앙 캐시)",
           "2": "OuroProtocolHandler: 프로토콜 전략 패턴 (REST, WebSocket 지원)",
-          "3": "SpecSyncPipeline: 명세서 동기화 파이프라인"
+          "3": "SpecSyncPipeline: 명세서 동기화 파이프라인",
+          "4": "TryService: Try 비즈니스 로직 및 트레이스 조회",
+          "5": "MethodTracingConfig: Spring AOP 메서드 트레이싱 (기본값)",
+          "6": "AspectJMethodTracingConfig: AspectJ Post-Compile Weaving 메서드 트레이싱",
+          "7": "TraceStorageConfig: In-Memory 또는 Tempo 저장소 자동 구성"
         }
       },
       "rest": {
@@ -819,7 +998,8 @@
           "1": "RestApiYamlParser: OpenAPI 3.1.0 YAML 파싱",
           "2": "RestApiSpecService: REST API 명세 CRUD 서비스",
           "3": "OuroborosMockFilter: Mock 서버 필터",
-          "4": "ApiStateGlobalMethodFilter: @ApiState 메소드 필터링"
+          "4": "ApiStateGlobalMethodFilter: @ApiState 메소드 필터링",
+          "5": "RestTryIdentifier: REST 요청 Try 식별"
         }
       },
       "websocket": {
@@ -827,15 +1007,25 @@
         "items": {
           "1": "AsyncApiYamlParser: AsyncAPI 3.0.0 YAML 파싱",
           "2": "WebSocketSpecService: WebSocket 명세 CRUD 서비스",
-          "3": "OuroWebSocketHandler: WebSocket 프로토콜 핸들러"
+          "3": "OuroWebSocketHandler: WebSocket 프로토콜 핸들러",
+          "4": "WebSocketTryIdentifier: WebSocket 메시지 Try 식별",
+          "5": "WebSocketMessageTracer: WebSocket 메시지 추적"
         }
       }
     },
     "storage": {
       "title": "데이터 저장",
-      "desc": "모든 API 명세서는 다음 위치에 단일 파일로 저장됩니다:",
-      "rest": "REST API 명세:",
-      "websocket": "WebSocket/STOMP API 명세:"
+      "apiSpec": {
+        "title": "API 명세 저장",
+        "desc": "모든 API 명세서는 다음 위치에 단일 파일로 저장됩니다:",
+        "rest": "REST API 명세:",
+        "websocket": "WebSocket/STOMP API 명세:"
+      },
+      "tryData": {
+        "title": "Try 데이터 저장",
+        "inMemory": "In-Memory (기본값): 메모리 저장",
+        "tempo": "Tempo:"
+      }
     }
   },
   "developer": {
@@ -990,7 +1180,7 @@
       },
       "methodTracingTitle": "선택 사항: Method Tracing",
       "methodTracingDesc": "메소드 수준까지 추적하려면 다음 설정을 추가합니다. (Try 기능 기본 사용에는 필요 없음)",
-      "methodTracingNote": "상세 설정은 Try 기능 가이드와 OUROBOROS_TRY_SETUP.md를 참고하세요.",
+      "methodTracingNote": "상세 설정은 Try 기능 가이드와 TRY_SETUP.md를 참고하세요.",
       "websocketTryTitle": "WebSocket 명세서 Try 기능 사용 시 주의사항",
       "websocketTryImportant": "중요: WebSocket 명세서의 Try 기능을 사용하려면 메시지 브로커의 /queue prefix를 열어줘야 합니다.",
       "websocketTryDesc": "메시지 브로커 설정에서 /queue prefix에 대한 접근 권한을 허용하지 않으면 WebSocket Try 기능이 정상적으로 동작하지 않을 수 있습니다."
@@ -1011,4 +1201,3 @@
     }
   }
 }
-

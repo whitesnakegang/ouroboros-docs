@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 export default function TryFeature() {
   const { t } = useTranslation();
@@ -86,8 +86,17 @@ export default function TryFeature() {
           <div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('tryFeature.advanced.methodTracing.title')}</h3>
             <p className="mb-3">{t('tryFeature.advanced.methodTracing.desc')}</p>
-            <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm"><code>{`ouroboros.method-tracing.enabled=true
+            <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm mb-3"><code>{`ouroboros.method-tracing.enabled=true
 ouroboros.method-tracing.allowed-packages=your.package`}</code></pre>
+            <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-lg px-4 py-3 text-sm">
+              <p className="mb-2">
+                <strong>{t('tryFeature.advanced.methodTracing.aspectjNote.title')}</strong>
+              </p>
+              <p className="mb-2">{t('tryFeature.advanced.methodTracing.aspectjNote.desc')}</p>
+              <p>
+                <Link to="/guide/try-feature-extension#aspectj" className="underline font-medium">{t('tryFeature.advanced.methodTracing.aspectjNote.link')}</Link>
+              </p>
+            </div>
           </div>
           <div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('tryFeature.advanced.traceStorage.title')}</h3>
@@ -113,7 +122,7 @@ ouroboros.method-tracing.allowed-packages=your.package`}</code></pre>
             </p>
             <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm mb-3"><code>{t('tryFeature.tempoConfigCode')}</code></pre>
             <p className="text-gray-700 text-sm">
-              {t('tryFeature.advanced.traceStorage.tempo.details')} <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">OUROBOROS_TRY_SETUP.md</code>
+              <Link to="/guide/try-feature-extension#tempo" className="text-primary hover:underline">{t('tryFeature.advanced.traceStorage.tempo.detailsLink')}</Link>
             </p>
           </div>
           <div>
@@ -135,15 +144,6 @@ ouroboros.method-tracing.allowed-packages=your.package`}</code></pre>
             </p>
           </div>
         </div>
-      </section>
-
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('tryFeature.resources.title')}</h2>
-        <ul className="list-disc list-inside space-y-2 text-gray-700">
-          <li><Link to="/api/try" className="text-primary hover:underline">{t('tryFeature.resources.items.1')}</Link></li>
-          <li><a href="https://ouroboros.co.kr" className="text-primary hover:underline" target="_blank" rel="noreferrer">{t('tryFeature.resources.items.2')}</a></li>
-          <li><code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">OUROBOROS_TRY_SETUP.md</code> – {t('tryFeature.resources.items.3')}</li>
-        </ul>
       </section>
     </div>
   );

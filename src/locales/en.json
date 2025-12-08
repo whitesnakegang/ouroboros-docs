@@ -347,7 +347,12 @@
       "title": "Advanced Configuration (Optional)",
       "methodTracing": {
         "title": "Method Tracing",
-        "desc": "To trace down to internal method calls, add the following configuration."
+        "desc": "To trace down to internal method calls, add the following configuration.",
+        "aspectjNote": {
+          "title": "💡 Spring AOP Limitations",
+          "desc": "Default Spring AOP cannot trace Self-invocation, Private methods, Final Classes, and Static methods. To trace all methods without these limitations, use AspectJ mode.",
+          "link": "View AspectJ Setup Guide →"
+        }
       },
       "traceStorage": {
         "title": "Trace Storage Duration",
@@ -365,7 +370,8 @@
             }
           },
           "setup": "To enable Tempo integration, add the following configuration to application.properties:",
-          "details": "For detailed Tempo setup methods, refer to the Tempo Integration section in the OUROBOROS_TRY_SETUP.md document."
+          "details": "For detailed Tempo setup methods, refer to the Tempo Integration section in the TRY_SETUP.md document.",
+          "detailsLink": "View Tempo Detailed Setup Guide →"
         }
       },
       "websocketTry": {
@@ -381,7 +387,7 @@
       "items": {
         "1": "Try & Performance Tracking API – Detailed REST API documentation",
         "2": "Official Documentation – Latest guides",
-        "3": "OUROBOROS_TRY_SETUP.md – Detailed Try feature setup guide"
+        "3": "TRY_SETUP.md – Detailed Try feature setup guide"
       }
     },
     "tempoConfigCode": "# Enable Tempo Integration\nouroboros.tempo.enabled=true\nouroboros.tempo.base-url=http://localhost:3200\n\n# OpenTelemetry Exporter Configuration\nmanagement.tracing.enabled=true\nmanagement.otlp.tracing.endpoint=http://localhost:4318/v1/traces",
@@ -389,7 +395,7 @@
   },
   "tryFeatureExtension": {
     "title": "Try Feature Extension",
-    "subtitle": "Guide for setting up persistent trace storage and advanced analysis features using Grafana Tempo",
+    "subtitle": "AspectJ Method Tracing and Grafana Tempo for permanent trace storage and advanced analysis",
     "tempo": {
       "title": "Tempo Integration (Optional)",
       "whenToUse": {
@@ -460,6 +466,177 @@
             }
           }
         }
+      }
+    },
+    "aspectj": {
+      "title": "AspectJ Method Tracing Setup Guide",
+      "subtitle": "Ouroboros's AspectJ mode enables tracing of all methods without Spring AOP limitations.",
+      "why": {
+        "title": "Why Use AspectJ Mode?",
+        "springAop": {
+          "title": "Spring AOP (default mode) cannot trace:",
+          "items": {
+            "1": "Self-invocation (internal method calls within the same class)",
+            "2": "Private methods",
+            "3": "Final class methods",
+            "4": "Static methods"
+          }
+        },
+        "aspectj": {
+          "title": "With AspectJ mode:",
+          "items": {
+            "1": "All methods can be traced",
+            "2": "Reduced runtime overhead with compile-time weaving"
+          }
+        }
+      },
+      "quickStart": {
+        "title": "Quick Start (Gradle)",
+        "step1": {
+          "title": "1. Configure build.gradle",
+          "pluginsCode": "plugins {\n    id 'java'\n    id 'org.springframework.boot' version '3.5.6'\n    id 'io.spring.dependency-management' version '1.1.7'\n\n    // Add AspectJ plugin\n    id 'io.freefair.aspectj.post-compile-weaving' version '8.11'\n}",
+          "depsCode": "dependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.6'\n\n    // AspectJ configuration (just add 2 lines!)\n    aspect 'io.github.whitesnakegang:ouroboros:1.0.6'\n    aspect 'org.aspectj:aspectjweaver:1.9.22'\n\n    // ... other dependencies\n}"
+        },
+        "step2": {
+          "title": "2. Configure application.properties",
+          "code": "ouroboros.method-tracing.enabled=true\nouroboros.method-tracing.allowed-packages=com.example.service, com.example.repository\n\n# Enable AspectJ mode\nouroboros.method-tracing.mode=ASPECTJ  # Add mode configuration"
+        },
+        "step3": {
+          "title": "3. Build and Run",
+          "code": "./gradlew clean build\n./gradlew bootRun"
+        }
+      },
+      "verification": {
+        "title": "Verification",
+        "desc": "If you see the following logs during application startup, it's working:",
+        "logCode": "AspectJ Compile-Time Weaving Mode Enabled for Method Tracing\n\nMode: ASPECTJ (Compile-Time Weaving)\nSuccessfully retrieved AspectJ singleton instance via aspectOf()"
+      },
+      "maven": {
+        "title": "Maven Users",
+        "code": "<dependencies>\n    <dependency>\n        <groupId>io.github.whitesnakegang</groupId>\n        <artifactId>ouroboros</artifactId>\n        <version>1.0.6</version>\n    </dependency>\n</dependencies>\n\n<build>\n    <plugins>\n        <plugin>\n            <groupId>dev.aspectj</groupId>\n            <artifactId>aspectj-maven-plugin</artifactId>\n            <version>1.14</version>\n            <configuration>\n                <complianceLevel>17</complianceLevel>\n                <aspectLibraries>\n                    <aspectLibrary>\n                        <groupId>io.github.whitesnakegang</groupId>\n                        <artifactId>ouroboros</artifactId>\n                    </aspectLibrary>\n                </aspectLibraries>\n            </configuration>\n            <executions>\n                <execution>\n                    <goals>\n                        <goal>compile</goal>\n                    </goals>\n                </execution>\n            </executions>\n        </plugin>\n    </plugins>\n</build>"
+      },
+      "troubleshooting": {
+        "title": "Troubleshooting",
+        "aspectOfError": {
+          "title": "\"aspectOf() method not found\" Warning",
+          "cause": "Cause: AspectJ weaving configuration missing",
+          "solution": "Solution:",
+          "step1": "Check plugin in build.gradle:",
+          "step1Code": "id 'io.freefair.aspectj.post-compile-weaving' version '8.11'",
+          "step2": "Check aspect configuration:",
+          "step2Code": "aspect 'io.github.whitesnakegang:ouroboros:1.0.6'\naspect 'org.aspectj:aspectjweaver:1.9.22'",
+          "step3": "Run clean build:",
+          "step3Code": "./gradlew clean build"
+        },
+        "noTracing": {
+          "title": "Methods Not Being Traced",
+          "step1": "Check Try request header:",
+          "step1Code": "curl -H \"X-Ouroboros-Try: true\" http://localhost:8080/api/test",
+          "step2": "Check package configuration:",
+          "step2Code": "# Verify package name is correct\nouroboros.method-tracing.allowed-packages[0]=com.example",
+          "step3": "Enable debug logging:",
+          "step3Code": "logging.level.kr.co.ouroboros=DEBUG"
+        }
+      },
+      "testing": {
+        "title": "Testing",
+        "step1": "Send Try request",
+        "step1Code": "curl -H \"X-Ouroboros-Try: true\" http://localhost:8080/api/test\n\n# Check tryId in response header:\n# X-Ouroboros-Try-Id: 550e8400-e29b-41d4-a716-446655440000",
+        "step2": "Query trace",
+        "step2Code": "curl http://localhost:8080/ouro/tries/550e8400-e29b-41d4-a716-446655440000"
+      },
+      "examples": {
+        "title": "AspectJ Mode Tracing Result Examples",
+        "selfInvocation": {
+          "title": "Test Code Example: Self-Invocation and Private Methods",
+          "desc": "Below is actual code testing self-invocation and private methods in AspectJ mode:",
+          "code": "@RestController\n@RequestMapping(\"/api/aop-test\")\npublic class AopTestController {\n\n    private final AopTestService aopTestService;\n\n    @GetMapping(\"/self-invocation\")\n    public ResponseEntity<String> testSelfInvocation() {\n        aopTestService.externalCall();\n        // Self-invocation: direct call to internal method in same class\n        aopTestService.callInternalPublicMethod();\n        aopTestService.callPrivateMethod();\n        return ResponseEntity.ok(\"Self-invocation test completed\");\n    }\n}\n\n@Service\npublic class AopTestService {\n\n    // Method called externally\n    public void externalCall() {\n        System.out.println(\"External call\");\n    }\n\n    // Public method called via self-invocation\n    public void callInternalPublicMethod() {\n        internalPublicMethod();\n    }\n\n    public void internalPublicMethod() {\n        System.out.println(\"Internal public method\");\n    }\n\n    // Calls private method\n    public void callPrivateMethod() {\n        privateMethod();\n    }\n\n    // Private method\n    private void privateMethod() {\n        System.out.println(\"Private method\");\n    }\n}",
+          "springAopImage": "/images/scrennshots/proxy-self-invocation.png",
+          "springAopCaption": "Spring AOP mode misses self-invocation and private methods in trace",
+          "springAopResult": {
+            "desc": "As shown in the image above:",
+            "items": {
+              "1": "✅ AopTestController.testSelfInvocation (controller method)",
+              "2": "✅ AopTestService.externalCall (external call)",
+              "3": "✅ AopTestService.callInternalPublicMethod (self-invocation)",
+              "4": "❌ AopTestService.internalPublicMethod (internal public method - trace missing)",
+              "5": "✅ AopTestService.callPrivateMethod (private method call)",
+              "6": "❌ AopTestService.privateMethod (private method - trace missing)"
+            },
+            "note": "Spring AOP mode cannot trace self-invocation and private methods."
+          },
+          "aspectjImage": "/images/scrennshots/aspectj-self-invocation.png",
+          "aspectjCaption": "Example of AspectJ mode tracing both self-invocation and private methods",
+          "aspectjResult": {
+            "desc": "As shown in the image above:",
+            "items": {
+              "1": "✅ AopTestController.testSelfInvocation (controller method)",
+              "2": "✅ AopTestService.externalCall (external call)",
+              "3": "✅ AopTestService.callInternalPublicMethod (self-invocation)",
+              "4": "✅ AopTestService.internalPublicMethod (internal public method)",
+              "5": "✅ AopTestService.callPrivateMethod (private method call)",
+              "6": "✅ AopTestService.privateMethod (private method)"
+            },
+            "note": "AspectJ mode can trace self-invocation and private methods!"
+          }
+        },
+        "cglibLimitations": {
+          "title": "Test Code Example: Final Class, Static Methods",
+          "desc": "Below is actual code testing Spring AOP limitations with final classes and static methods:",
+          "code": "@RestController\n@RequestMapping(\"/api/aop-test\")\npublic class AopTestController {\n\n    private FinalClassService finalClassService;\n    private final StaticMethodService staticMethodService;\n\n\n    @GetMapping(\"/cglib-limitations\")\n    public ResponseEntity<String> testCglibLimitations() {\n        finalClassService.finalClassMethod();\n        staticMethodService.instanceMethod();\n        return ResponseEntity.ok(\"CGLIB limitations test completed\");\n    }\n}\n\n@Service\npublic final class FinalClassService {\n\n    public void finalClassMethod() {\n        System.out.println(\"Final class method called\");\n    }\n}\n\n@Service\npublic class StaticMethodService {\n\n    // Instance method (traceable)\n    public void instanceMethod() {\n        System.out.println(\"Instance method called\");\n\n        // Static method call (not traceable in Spring AOP)\n        staticMethod();\n    }\n\n    // Static method (not traceable in Spring AOP!)\n    public static void staticMethod() {\n        System.out.println(\"Static method called\");\n    }\n}",
+          "springAopImage": "/images/scrennshots/proxy-cglib-limitations.png",
+          "springAopCaption": "Spring AOP mode misses final class and static methods in trace",
+          "springAopResult": {
+            "desc": "As shown in the image above:",
+            "items": {
+              "1": "✅ AopTestController.testCglibLimitations (controller method)",
+              "2": "✅ StaticMethodService.instanceMethod (instance method)",
+              "3": "❌ FinalClassService.finalClassMethod (final method - proxy creation failed (inheritance error, server shutdown))",
+              "4": "❌ StaticMethodService.staticMethod (static method - trace missing)"
+            },
+            "note": "Spring AOP mode cannot trace final classes and static methods."
+          },
+          "aspectjImage": "/images/scrennshots/aspectj-cglib-limitations.png",
+          "aspectjCaption": "Example of AspectJ mode tracing both final and static methods",
+          "aspectjResult": {
+            "desc": "As shown in the image above:",
+            "items": {
+              "1": "✅ AopTestController.testCglibLimitations (controller method)",
+              "2": "✅ StaticMethodService.instanceMethod (instance method)",
+              "3": "✅ FinalClassService.finalClassMethod (final method)",
+              "4": "✅ StaticMethodService.staticMethod (static method)"
+            },
+            "note": "AspectJ mode can trace self-invocation, private, final class, and static methods!"
+          }
+        }
+      },
+      "comparison": {
+        "title": "Comparison: Spring AOP vs AspectJ",
+        "table": {
+          "feature": "Feature",
+          "springAop": "Spring AOP",
+          "aspectj": "AspectJ",
+          "selfInvocation": "Self-invocation",
+          "privateMethod": "Private methods",
+          "staticMethod": "Static methods",
+          "configComplexity": "Config Complexity",
+          "buildTime": "Build Time",
+          "runtimePerformance": "Runtime Performance",
+          "impossible": "Not possible",
+          "possible": "Possible",
+          "simple": "Simple",
+          "slightlyComplex": "Slightly complex",
+          "fast": "Fast",
+          "slightlySlow": "Slightly slower",
+          "proxyOverhead": "Proxy overhead",
+          "almostNoOverhead": "Almost no overhead"
+        }
+      },
+      "moreInfo": {
+        "title": "Learn More",
+        "ouroboros": "Ouroboros GitHub",
+        "aspectj": "AspectJ Official Documentation",
+        "footer": "If the problem persists: Please contact us at GitHub Issues."
       }
     }
   },
@@ -783,7 +960,7 @@
     },
     "backendSetupCode": "cd backend\n\n# Build\n./gradlew build\n\n# Run tests\n./gradlew test\n\n# Run application\n./gradlew bootRun\n\n# Publish to local Maven repository (for testing)\n./gradlew publishToMavenLocal",
     "frontendSetupCode": "cd front\n\n# Install dependencies\nnpm install\n\n# Run dev server\nnpm run dev\n\n# Build\nnpm run build\n\n# Run lint\nnpm run lint",
-    "localTestCode": "# Build backend and publish to local Maven repository\ncd backend\n./gradlew publishToMavenLocal\n\n# Use in test project\ndependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.5-SNAPSHOT'\n}"
+    "localTestCode": "# Build backend and publish to local Maven repository\ncd backend\n./gradlew publishToMavenLocal\n\n# Use in test project\ndependencies {\n    implementation 'io.github.whitesnakegang:ouroboros:1.0.6-SNAPSHOT'\n}"
   },
   "projectStructure": {
     "title": "Project Structure",
@@ -810,7 +987,11 @@
         "items": {
           "1": "OuroApiSpecManager: Single source of specification cache (central cache)",
           "2": "OuroProtocolHandler: Protocol strategy pattern (REST, WebSocket support)",
-          "3": "SpecSyncPipeline: Specification synchronization pipeline"
+          "3": "SpecSyncPipeline: Specification synchronization pipeline",
+          "4": "TryService: Try business logic and trace queries",
+          "5": "MethodTracingConfig: Spring AOP method tracing (default)",
+          "6": "AspectJMethodTracingConfig: AspectJ Post-Compile Weaving method tracing",
+          "7": "TraceStorageConfig: In-Memory or Tempo storage auto-configuration"
         }
       },
       "rest": {
@@ -819,7 +1000,8 @@
           "1": "RestApiYamlParser: OpenAPI 3.1.0 YAML parsing",
           "2": "RestApiSpecService: REST API specification CRUD service",
           "3": "OuroborosMockFilter: Mock server filter",
-          "4": "ApiStateGlobalMethodFilter: @ApiState method filtering"
+          "4": "ApiStateGlobalMethodFilter: @ApiState method filtering",
+          "5": "RestTryIdentifier: REST request Try identification"
         }
       },
       "websocket": {
@@ -827,15 +1009,25 @@
         "items": {
           "1": "AsyncApiYamlParser: AsyncAPI 3.0.0 YAML parsing",
           "2": "WebSocketSpecService: WebSocket specification CRUD service",
-          "3": "OuroWebSocketHandler: WebSocket protocol handler"
+          "3": "OuroWebSocketHandler: WebSocket protocol handler",
+          "4": "WebSocketTryIdentifier: WebSocket message Try identification",
+          "5": "WebSocketMessageTracer: WebSocket message tracing"
         }
       }
     },
     "storage": {
       "title": "Data Storage",
-      "desc": "All API specifications are stored in a single file at the following locations:",
-      "rest": "REST API Specifications:",
-      "websocket": "WebSocket/STOMP API Specifications:"
+      "apiSpec": {
+        "title": "API Specification Storage",
+        "desc": "All API specifications are stored in a single file at the following locations:",
+        "rest": "REST API Specifications:",
+        "websocket": "WebSocket/STOMP API Specifications:"
+      },
+      "tryData": {
+        "title": "Try Data Storage",
+        "inMemory": "In-Memory (default): Memory storage",
+        "tempo": "Tempo:"
+      }
     }
   },
   "developer": {
@@ -877,7 +1069,6 @@
         "2": "OpenAPI schema parsing errors",
         "3": "Cannot access web UI"
       },
-      "cause": "Cause: Conflicts occur when both Swagger UI and Ouroboros try to process OpenAPI schemas, causing path conflicts or empty configuration conflicts. Particularly, compatibility issues occur when springdoc-openapi-starter-webmvc-ui version is below 2.8.13 (e.g., 2.2.0).",
       "solution": {
         "title": "Solution",
         "desc": "Upgrade springdoc-openapi-starter-webmvc-ui to version 2.8.13 or higher."
@@ -990,7 +1181,7 @@
       },
       "methodTracingTitle": "Optional: Method Tracing",
       "methodTracingDesc": "To trace down to method level, add the following configuration. (Not required for basic Try feature usage)",
-      "methodTracingNote": "For detailed settings, refer to Try Feature Guide and OUROBOROS_TRY_SETUP.md.",
+      "methodTracingNote": "For detailed settings, refer to Try Feature Guide and TRY_SETUP.md.",
       "websocketTryTitle": "WebSocket Spec Try Feature Notes",
       "websocketTryImportant": "Important: To use Try feature with WebSocket specs, the message broker's /queue prefix must be enabled.",
       "websocketTryDesc": "If access to /queue prefix is not allowed in message broker configuration, WebSocket Try feature may not work properly."
@@ -1011,4 +1202,3 @@
     }
   }
 }
-

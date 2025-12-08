@@ -58,7 +58,7 @@ export default function QuickStart() {
         </div>
         <h4 className="text-lg font-semibold text-gray-900 mt-4 mb-2">Gradle</h4>
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`dependencies {
-    implementation 'io.github.whitesnakegang:ouroboros:1.0.5'
+    implementation 'io.github.whitesnakegang:ouroboros:1.0.6'
 }`}</code></pre>
 
         <h4 className="text-lg font-semibold text-gray-900 mt-4 mb-2">Maven</h4>
@@ -217,7 +217,7 @@ export default function QuickStart() {
         <pre className="bg-gray-100 border border-gray-200 rounded-lg p-4 overflow-x-auto"><code>{`ouroboros.method-tracing.enabled=true
 ouroboros.method-tracing.allowed-packages=your.package`}</code></pre>
         <p className="text-gray-700 mt-3 text-sm">
-          {t('quickStart.step7.methodTracingNote')} <Link to="/guide/try-feature" className="text-primary hover:underline">{t('sidebar.tryFeature')}</Link> {t('quickStart.prerequisites.methodTracingNoteEnd')} <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">OUROBOROS_TRY_SETUP.md</code> {t('quickStart.prerequisites.methodTracingNoteEnd2')}
+          {t('quickStart.step7.methodTracingNote')} <Link to="/guide/try-feature" className="text-primary hover:underline">{t('sidebar.tryFeature')}</Link> {t('quickStart.prerequisites.methodTracingNoteEnd')} <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">TRY_SETUP.md</code> {t('quickStart.prerequisites.methodTracingNoteEnd2')}
         </p>
 
         <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">{t('quickStart.step7.websocketTryTitle')}</h3>
